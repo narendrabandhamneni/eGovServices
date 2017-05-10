@@ -1,0 +1,8 @@
+{
+"propertyType" :[
+{"tenantId":"11123","code":"1111","name":"Vacant Land","description":"Vacant Land"},
+{"tenantId":"11124","code":"1111","name":"Independent Building","description":"Independent Building"},
+{"tenantId":"11125","code":"1111","name":"Flats in Multi-Storied Building","description":"Flats in Multi-Storied Building"},
+{"tenantId":"11126","code":"1111","name":"Commerical Building","description":"Commerical Building"}
+]
+}
