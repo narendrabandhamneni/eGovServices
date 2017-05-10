@@ -1,12 +1,12 @@
-package org.egov;
+package org.egov.propertyDeamand;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class PtUserValidatorApplication {
+public class PtDemandApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(PtUserValidatorApplication.class, args);
+		SpringApplication.run(PtDemandApplication.class, args);
 	}
 }

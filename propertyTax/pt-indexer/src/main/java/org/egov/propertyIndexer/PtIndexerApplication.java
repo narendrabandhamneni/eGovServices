@@ -1,12 +1,12 @@
-package org.egov;
+package org.egov.propertyIndexer;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class PtDemandApplication {
+public class PtIndexerApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(PtDemandApplication.class, args);
+		SpringApplication.run(PtIndexerApplication.class, args);
 	}
 }

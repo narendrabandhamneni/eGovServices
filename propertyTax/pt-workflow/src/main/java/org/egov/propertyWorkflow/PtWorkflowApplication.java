@@ -1,12 +1,12 @@
-package org.egov;
+package org.egov.propertyWorkflow;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class PtPropertyApplication {
+public class PtWorkflowApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(PtPropertyApplication.class, args);
+		SpringApplication.run(PtWorkflowApplication.class, args);
 	}
 }
