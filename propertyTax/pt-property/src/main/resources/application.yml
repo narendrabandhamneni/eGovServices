@@ -1,0 +1,29 @@
+masterList:
+ propertyType:
+  - tenantId: ap.kurnool
+    code: 1111
+    name: Vacant Land
+    description: Vacant Land
+  - tenantId: ap.guntur
+    code: '1111'
+    name: Independent Building
+    description: Independent Building
+  - tenantId: ap.ongole
+    code: 1111
+    name: Flats in Multi-Storied Building
+    description: Flats in Multi-Storied Building
+  - tenantId: '11126'
+    code: ap.kadapa
+    name: Commerical Building
+    description: Commerical Building
+    
+jsonFile: src/main/resources/master.json
+
+spring:
+ datasource:
+  url: jdbc:postgresql://localhost:5432/poc?useSSL=false
+  username: root 
+  password: narendra
+
+   
+ 

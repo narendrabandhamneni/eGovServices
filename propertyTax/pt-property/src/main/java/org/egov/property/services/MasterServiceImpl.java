@@ -1,34 +1,93 @@
 package org.egov.property.services;
-
-import java.io.FileInputStream;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.egov.property.exception.InvalidInputException;
+import org.egov.property.model.MasterListModel;
 import org.egov.property.model.MasterModel;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
 public class MasterServiceImpl  implements Masterservice{
 
-	@Value("${jsonFile}")
-	private String jsonFile;
+	@Autowired
+	private MasterListModel masterList;
 
 	@Override
-	public MasterModel GetPropertyTypes(long tenantId, int code) throws Exception {
-		ObjectMapper objectMapper=new ObjectMapper();
-
-		@SuppressWarnings("unchecked")
-		Map<String,List<MasterModel>>	 jsonData=	objectMapper.readValue(new FileInputStream(jsonFile),Map.class);
-		List<MasterModel> propertyTypeList= jsonData.get("propertyType");
-		List<MasterModel>  resultPropertyType=	propertyTypeList.stream()                
-				.filter(propertyType-> propertyType.getTenantId()==tenantId && propertyType.getCode()==code)     
-				.collect(Collectors.toList()); 
-		return resultPropertyType.get(0);
+	public MasterModel getPropertyTypes(String tenantId, String code) throws Exception {
+		List<MasterModel> modelList= masterList.getPropertyType().stream().filter(m->m.getTenantId().equalsIgnoreCase(tenantId)&& m.getCode().equalsIgnoreCase(code)).collect(Collectors.toList());
+		if(modelList.size()==0)
+			throw new InvalidInputException();
+		return modelList.get(0);
 	}
+
+	
+
+	@Override
+	public MasterModel getUsageMaster(String tenantId, String code) throws Exception {
+		List<MasterModel> modelList= masterList.getUsageMaster().stream().filter(m->m.getTenantId().equalsIgnoreCase(tenantId)&& m.getCode().equalsIgnoreCase(code)).collect(Collectors.toList());
+		if(modelList.size()==0)
+			throw new InvalidInputException();
+		return modelList.get(0);
+	}
+
+	@Override
+	public MasterModel getOcupancyMaster(String tenantId, String code) throws Exception {
+		List<MasterModel> modelList= masterList.getOccupancyMaster().stream().filter(m->m.getTenantId().equalsIgnoreCase(tenantId)&& m.getCode().equalsIgnoreCase(code)).collect(Collectors.toList());
+		if(modelList.size()==0)
+			throw new InvalidInputException();
+		return modelList.get(0);
+	}
+
+	@Override
+	public MasterModel getTaxRateMaster(String tenantId, String code) throws Exception {
+		List<MasterModel> modelList= masterList.getTaxRateMaster().stream().filter(m->m.getTenantId().equalsIgnoreCase(tenantId)&& m.getCode().equalsIgnoreCase(code)).collect(Collectors.toList());
+		if(modelList.size()==0)
+			throw new InvalidInputException();
+		return modelList.get(0);
+	}
+
+	@Override
+	public MasterModel getWallTypeMaster(String tenantId, String code) throws Exception {
+		List<MasterModel> modelList= masterList.getWallTypeMaster().stream().filter(m->m.getTenantId().equalsIgnoreCase(tenantId)&& m.getCode().equalsIgnoreCase(code)).collect(Collectors.toList());
+		if(modelList.size()==0)
+			throw new InvalidInputException();
+		return modelList.get(0);
+	}
+
+	@Override
+	public MasterModel getRoofTypeMaster(String tenantId, String code) throws Exception {
+		List<MasterModel> modelList= masterList.getRoofTypeMaster().stream().filter(m->m.getTenantId().equalsIgnoreCase(tenantId)&& m.getCode().equalsIgnoreCase(code)).collect(Collectors.toList());
+		if(modelList.size()==0)
+			throw new InvalidInputException();
+		return modelList.get(0);
+	}
+
+	@Override
+	public MasterModel getWoodTypeMaster(String tenantId, String code) throws Exception {
+		List<MasterModel> modelList= masterList.getWoodTypeMaster().stream().filter(m->m.getTenantId().equalsIgnoreCase(tenantId)&& m.getCode().equalsIgnoreCase(code)).collect(Collectors.toList());
+		if(modelList.size()==0)
+			throw new InvalidInputException();
+		return modelList.get(0);
+	}
+
+	@Override
+	public MasterModel getApartmentMaster(String tenantId, String code) throws Exception {
+		List<MasterModel> modelList= masterList.getApartmentMaster().stream().filter(m->m.getTenantId().equalsIgnoreCase(tenantId)&& m.getCode().equalsIgnoreCase(code)).collect(Collectors.toList());
+		if(modelList.size()==0)
+			throw new InvalidInputException();
+		return modelList.get(0);
+	}
+
+	@Override
+	public MasterModel getFloorTypeMaster(String tenantId, String code) throws Exception {
+		List<MasterModel> modelList= masterList.getFloorTypeMaster().stream().filter(m->m.getTenantId().equalsIgnoreCase(tenantId)&& m.getCode().equalsIgnoreCase(code)).collect(Collectors.toList());
+		if(modelList.size()==0)
+			throw new InvalidInputException();
+		return modelList.get(0);
+	}
+	
 
 }

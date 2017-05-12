@@ -1,9 +1,11 @@
 package org.egov.property.api;
-
-
 import org.egov.property.model.MasterModel;
+import org.egov.property.model.MasterResponse;
+import org.egov.property.model.RequestInfo;
+import org.egov.property.model.ResponseInfo;
 import org.egov.property.services.Masterservice;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,18 +20,89 @@ public class PropertyMasterController {
 	@Autowired
 	Masterservice masterService;
 	
-	@RequestMapping(path="/propertyType/_search",method=RequestMethod.GET)
-	public MasterModel GetPropertyTypes(@RequestParam long tenantId,@RequestParam int code){
-		try{
-		 
-		return	masterService.GetPropertyTypes(tenantId, code);
-
-		}
-		catch (Exception e) {
-			
-			System.out.println(e.getMessage());
-		}
-		
-		return new MasterModel();
+	@RequestMapping(path="/propertyType/_search",method=RequestMethod.POST)
+	public MasterResponse getPropertyTypes(@RequestParam String tenantId,@RequestParam String code,@RequestBody RequestInfo requestInfo) throws Exception {
+		MasterModel	masterModel=	masterService.getPropertyTypes(tenantId, code);
+		MasterResponse masterResponse=new MasterResponse();
+		masterResponse.setMasterModel(masterModel);
+		masterResponse.setResonseInfo(new ResponseInfo());
+		return masterResponse;
 	}
+	
+	@RequestMapping(path="/apartmentMaster/_search",method=RequestMethod.POST)
+	public MasterResponse getApartmentMaster(@RequestParam String tenantId,@RequestParam String code,@RequestBody RequestInfo requestInfo) throws Exception {
+
+		MasterModel	masterModel=	masterService.getApartmentMaster(tenantId, code);
+		MasterResponse masterResponse=new MasterResponse();
+		masterResponse.setMasterModel(masterModel);
+		masterResponse.setResonseInfo(new ResponseInfo());
+		return masterResponse;
+	}
+	
+	@RequestMapping(path="/floorTypeMaster/_search",method=RequestMethod.POST)
+	public MasterResponse getFloorTypeMaster(@RequestParam String tenantId,@RequestParam String code,@RequestBody RequestInfo requestInfo) throws Exception {
+
+		MasterModel	masterModel=	masterService.getFloorTypeMaster(tenantId, code);
+		MasterResponse masterResponse=new MasterResponse();
+		masterResponse.setMasterModel(masterModel);
+		masterResponse.setResonseInfo(new ResponseInfo());
+		return masterResponse;
+	}
+	
+	@RequestMapping(path="/ocupancyMaster/_search",method=RequestMethod.POST)
+	public MasterResponse getOcupancyMaster(@RequestParam String tenantId,@RequestParam String code,@RequestBody RequestInfo requestInfo) throws Exception {
+
+		MasterModel	masterModel=	masterService.getOcupancyMaster(tenantId, code);
+		MasterResponse masterResponse=new MasterResponse();
+		masterResponse.setMasterModel(masterModel);
+		masterResponse.setResonseInfo(new ResponseInfo());
+		return masterResponse;
+	}
+	
+	@RequestMapping(path="/roofTypeMaster/_search",method=RequestMethod.POST)
+	public MasterResponse getRoofTypeMaster(@RequestParam String tenantId,@RequestParam String code,@RequestBody RequestInfo requestInfo) throws Exception {
+
+		MasterModel	masterModel=	masterService.getRoofTypeMaster(tenantId, code);
+		MasterResponse masterResponse=new MasterResponse();
+		masterResponse.setMasterModel(masterModel);
+		masterResponse.setResonseInfo(new ResponseInfo());
+		return masterResponse;
+	}
+	@RequestMapping(path="/taxRateMaster/_search",method=RequestMethod.POST)
+	public MasterResponse getTaxRateMaster(@RequestParam String tenantId,@RequestParam String code,@RequestBody RequestInfo requestInfo) throws Exception {
+
+		MasterModel	masterModel=	masterService.getTaxRateMaster(tenantId, code);
+		MasterResponse masterResponse=new MasterResponse();
+		masterResponse.setMasterModel(masterModel);
+		masterResponse.setResonseInfo(new ResponseInfo());
+		return masterResponse;
+	}
+	@RequestMapping(path="/wallTypeMaster/_search",method=RequestMethod.POST)
+	public MasterResponse getWallTypeMaster(@RequestParam String tenantId,@RequestParam String code,@RequestBody RequestInfo requestInfo) throws Exception {
+
+		MasterModel	masterModel=	masterService.getWallTypeMaster(tenantId, code);
+		MasterResponse masterResponse=new MasterResponse();
+		masterResponse.setMasterModel(masterModel);
+		masterResponse.setResonseInfo(new ResponseInfo());
+		return masterResponse;
+	}
+	@RequestMapping(path="/woodTypeMaster/_search",method=RequestMethod.POST)
+	public MasterResponse getWoodTypeMaster(@RequestParam String tenantId,@RequestParam String code,@RequestBody RequestInfo requestInfo) throws Exception {
+
+		MasterModel	masterModel=	masterService.getWoodTypeMaster(tenantId, code);
+		MasterResponse masterResponse=new MasterResponse();
+		masterResponse.setMasterModel(masterModel);
+		masterResponse.setResonseInfo(new ResponseInfo());
+		return masterResponse;
+	}
+	@RequestMapping(path="/usageMaster/_search",method=RequestMethod.POST)
+	public MasterResponse getUsageMaster(@RequestParam String tenantId,@RequestParam String code,@RequestBody RequestInfo requestInfo) throws Exception {
+
+		MasterModel	masterModel=	masterService.getUsageMaster(tenantId, code);
+		MasterResponse masterResponse=new MasterResponse();
+		masterResponse.setMasterModel(masterModel);
+		masterResponse.setResonseInfo(new ResponseInfo());
+		return masterResponse;
+	}
+	
 }
