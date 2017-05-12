@@ -21,8 +21,14 @@ public interface Masterservice {
 	public MasterModel getApartmentMaster(String tenantId,String code) throws Exception;
 	
 	public MasterModel getFloorTypeMaster(String tenantId,String code) throws Exception;
-
 	
+	public MasterModel getStructureMaster(String tenantId,String code) throws Exception;
+	
+	public MasterModel getMutationReasonMaster(String tenantId,String code) throws Exception;
+	
+	public MasterModel getMutationRateMaster(String tenantId,String code) throws Exception;
+
+	public MasterModel getDocumentTypeMaster(String tenantId,String code) throws Exception;
 	
 	
 }

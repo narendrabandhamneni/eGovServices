@@ -31,8 +31,17 @@ public class MasterListModel {
 	private	List<MasterModel> floorTypeMaster;
 
 	private	List<MasterModel> woodTypeMaster;
-
+	
 	private	List<MasterModel> apartmentMaster;
+
+	private	List<MasterModel> structureMaster;
+	
+	private	List<MasterModel> documentTypeMaster;
+	
+	private	List<MasterModel> mutationReasonMaster;
+	
+	private	List<MasterModel> mutationRateMaster;
+	
 	
 }
 
