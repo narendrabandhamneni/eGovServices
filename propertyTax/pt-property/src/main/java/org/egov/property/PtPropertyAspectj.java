@@ -27,17 +27,17 @@ private static final Logger logger=LoggerFactory.getLogger(PtPropertyAspectj.cla
 	public void controller() {
 	}
 
-	/*@Pointcut("execution(* org.egov*(..))")
+	@Pointcut("execution(public * *(..))")
 	protected void allMethod() {
 	}
-*/
+
 	
 	
 	
 	
 	/*before -> Any resource annotated with @Controller annotation */
 	
-	@Before("controller()")
+	@Before("controller() && allMethod()")
 	public void logBefore(JoinPoint joinPoint) {
 		
 		logger.debug("Entering in Method :  " + joinPoint.getSignature().getName());
@@ -53,7 +53,7 @@ private static final Logger logger=LoggerFactory.getLogger(PtPropertyAspectj.cla
 	
 	/*After -> All method within resource annotated with @Controller annotation and return a  value*/
 	
-	@AfterReturning(pointcut = " controller()", returning = "result")
+	@AfterReturning(pointcut = "controller() && allMethod()", returning = "result")
 	public void logAfter(JoinPoint joinPoint, Object result) {
 		
 		String returnValue = this.getValue(result);
@@ -67,7 +67,7 @@ private static final Logger logger=LoggerFactory.getLogger(PtPropertyAspectj.cla
 	//After -> Any method within resource annotated with @Controller annotation 
 	// throws an exception ...Log it
 	
-	@AfterThrowing(pointcut = " controller()", throwing = "exception")
+	@AfterThrowing(pointcut = "controller() && allMethod()", throwing = "exception")
 	public void logAfterThrowing(JoinPoint joinPoint, Throwable exception) {
 		logger.error("An exception has been thrown in " + joinPoint.getSignature().getName() + " ()");
 		logger.error("Cause : " + exception.getCause());
@@ -76,7 +76,7 @@ private static final Logger logger=LoggerFactory.getLogger(PtPropertyAspectj.cla
 	
 	//Around -> Any method within resource annotated with @Controller annotation 
 	
-	@Around("controller()")
+	@Around("controller() && allMethod()")
 	public Object logAround(ProceedingJoinPoint joinPoint) throws Throwable {
 		
 		long start = System.currentTimeMillis();
