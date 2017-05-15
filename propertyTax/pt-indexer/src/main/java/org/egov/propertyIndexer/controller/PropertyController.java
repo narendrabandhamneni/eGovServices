@@ -1,7 +1,7 @@
-package org.egov.propertyindexer.controller;
+package org.egov.propertyIndexer.controller;
 
-import org.egov.propertyindexer.model.PropertyDetails;
-import org.egov.propertyindexer.service.PropertyService;
+import org.egov.propertyIndexer.model.PropertyDetails;
+import org.egov.propertyIndexer.service.PropertyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;

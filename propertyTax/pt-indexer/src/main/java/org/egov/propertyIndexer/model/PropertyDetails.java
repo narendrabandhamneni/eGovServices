@@ -1,4 +1,4 @@
-package org.egov.propertyindexer.model;
+package org.egov.propertyIndexer.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

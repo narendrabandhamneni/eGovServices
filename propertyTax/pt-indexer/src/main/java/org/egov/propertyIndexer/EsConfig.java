@@ -1,4 +1,4 @@
-package org.egov.propertyindexer;
+package org.egov.propertyIndexer;
 
 import java.net.InetAddress;
 import org.elasticsearch.client.Client;

@@ -1,7 +1,7 @@
-package org.egov.propertyindexer.kafka;
+package org.egov.propertyIndexer.kafka;
 
-import org.egov.propertyindexer.model.PropertyDetails;
-import org.egov.propertyindexer.service.PropertyService;
+import org.egov.propertyIndexer.model.PropertyDetails;
+import org.egov.propertyIndexer.service.PropertyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.kafka.annotation.KafkaListener;

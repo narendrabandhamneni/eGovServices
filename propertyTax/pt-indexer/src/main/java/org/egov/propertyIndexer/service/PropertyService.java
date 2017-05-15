@@ -1,6 +1,6 @@
-package org.egov.propertyindexer.service;
+package org.egov.propertyIndexer.service;
 
-import org.egov.propertyindexer.model.PropertyDetails;
+import org.egov.propertyIndexer.model.PropertyDetails;
 import org.springframework.stereotype.Service;
 /**
  * 

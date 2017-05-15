@@ -1,8 +1,8 @@
-package org.egov.propertyindexer.service;
+package org.egov.propertyIndexer.service;
 
-import org.egov.propertyindexer.entity.PropertyDetailsElasticSearch;
-import org.egov.propertyindexer.model.PropertyDetails;
-import org.egov.propertyindexer.repository.PropertyElasticSearchRepository;
+import org.egov.propertyIndexer.entity.PropertyDetailsElasticSearch;
+import org.egov.propertyIndexer.model.PropertyDetails;
+import org.egov.propertyIndexer.repository.PropertyElasticSearchRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;

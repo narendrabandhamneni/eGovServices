@@ -1,10 +1,10 @@
-package org.egov.propertyindexer.kafka;
+package org.egov.propertyIndexer.kafka;
 
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
-import org.egov.propertyindexer.model.PropertyDetails;
+import org.egov.propertyIndexer.model.PropertyDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

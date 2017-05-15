@@ -1,6 +1,6 @@
-package org.egov.propertyindexer.repository;
+package org.egov.propertyIndexer.repository;
 
-import org.egov.propertyindexer.entity.PropertyDetailsElasticSearch;
+import org.egov.propertyIndexer.entity.PropertyDetailsElasticSearch;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 import org.springframework.stereotype.Repository;
 

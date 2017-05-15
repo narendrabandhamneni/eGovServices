@@ -1,4 +1,4 @@
-package org.egov.propertyindexer.aspect;
+package org.egov.propertyIndexer.aspect;
 
 import java.util.Arrays;
 

@@ -1,4 +1,4 @@
-package org.egov.propertyindexer.entity;
+package org.egov.propertyIndexer.entity;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
