@@ -1,5 +1,7 @@
 package org.egov.models;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -43,7 +45,7 @@ public class BasicProperty {
 	private String eastBoundedBy;
 	private String westBoundedBy;
 	private String southBoundedBy;
-	private Object[] properties;
+	private List<PropertyDetail> propertyDetails;
 	@NonNull
 	private String channel;
 	private int createdBy;
@@ -52,7 +54,7 @@ public class BasicProperty {
 	private String lastModifiedDate;
 
 	@NonNull
-	private Integer tenantId;
+	private String tenantId;
 	
 	
 	

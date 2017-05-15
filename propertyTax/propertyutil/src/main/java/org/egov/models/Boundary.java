@@ -6,14 +6,23 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+/**
+ * Boundary
+ */
+
 @Getter
 @Setter
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
-public class Boundary {
-	private int id;
-	private String name;
-	
+public class Boundary   {
+ 
+  private String id;
+
+  
+  private String name;
+
+
 
 }
+

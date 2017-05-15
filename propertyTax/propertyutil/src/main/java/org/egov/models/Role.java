@@ -1,19 +1,24 @@
 package org.egov.models;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.ToString;
 
-@Getter
-@Setter
+/**
+ * Role
+ */
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class Role {
-	private String name;
-	private String code;
-	
+public class Role   {
+ 
+  private String name;
 
+  
+  private String code;
+
+  
 }
+
