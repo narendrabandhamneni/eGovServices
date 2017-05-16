@@ -1,6 +1,7 @@
 package org.egov.propertyIndexer.indexerConsumer;
 
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,7 +20,9 @@ import org.springframework.stereotype.Service;
 
 import io.searchbox.client.JestClient;
 import io.searchbox.client.JestClientFactory;
+import io.searchbox.client.JestResult;
 import io.searchbox.client.config.HttpClientConfig;
+import io.searchbox.core.Index;
 
 
 @Service
@@ -78,12 +81,19 @@ public class Consumer {
 		return this.client;
 	}
 
-    @KafkaListener(topics={})
-	public void recive(Property property){
+    @KafkaListener(topics="${indexer.create}")
+	public JestResult recive(Property property) throws IOException{
 
     	Map<String,Property> propertyMap=new HashMap<String,Property>();
     	propertyMap.put("property", property);
-    	
+    	JestResult result = client.execute(
+				new Index.Builder(propertyMap)
+				.index("property")
+				.type("property")
+	             .build()
+				);
+
+    	return result;
 	}
 
 

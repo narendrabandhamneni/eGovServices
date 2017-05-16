@@ -31,17 +31,6 @@ public class PropertyIndexerAspectJ {
 	protected void allMethod() {
 	}
 
-	@Pointcut("execution(public * *(..))")
-	protected void loggingPublicOperation() {
-	}
-
-	@Pointcut("execution(* *.*(..))")
-	protected void loggingAllOperation() {
-	}
-
-	@Pointcut("within(com.alliance.web.catalog..*)")
-	private void logAnyFunctionWithinResource() {
-	}
 
 	
 	
