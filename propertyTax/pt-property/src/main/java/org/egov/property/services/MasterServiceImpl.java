@@ -20,8 +20,6 @@ public class MasterServiceImpl  implements Masterservice{
 		return	getMaster(masterList.getPropertyType(),tenantId,code);
 	}
 
-
-
 	@Override
 	public MasterModel getUsageMaster(String tenantId, String code) throws Exception {
 		return	getMaster(masterList.getUsageMaster(),tenantId,code);
@@ -69,14 +67,10 @@ public class MasterServiceImpl  implements Masterservice{
 		return modelList.get(0);
 	}
 
-
-
 	@Override
 	public MasterModel getStructureMaster(String tenantId, String code) throws Exception {
 		return	getMaster(masterList.getStructureMaster(),tenantId,code);
 	}
-
-
 
 	@Override
 	public MasterModel getMutationReasonMaster(String tenantId, String code) throws Exception {
