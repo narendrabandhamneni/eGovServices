@@ -1,9 +1,6 @@
 package org.egov.propertyUser.model;
 
-import java.util.List;
-
 import org.egov.models.ResponseInfo;
-import org.egov.models.User;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,13 +8,15 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @ToString
-public class UserResonseInfo {
-	
-	private List<User> users;
-	
+public class UserAuthResponseInfo {
+	private String access_token;
+	private String token_type;
+	private String refresh_token;
+	private String expires_in;
+	private String scope;
 	private ResponseInfo responseInfo;
-
+	private UserRequest userRequest;
 }
