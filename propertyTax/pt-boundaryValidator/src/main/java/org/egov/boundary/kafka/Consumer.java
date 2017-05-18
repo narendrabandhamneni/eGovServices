@@ -38,6 +38,7 @@ public class Consumer {
 		ResponseEntity<BoundaryResponseInfo> searchResponse = restTemplate.exchange(builder.build(true).toUri(), HttpMethod.POST,entity , BoundaryResponseInfo.class);
 		
 		if(searchResponse.getStatusCodeValue()==200){
+			boundaryRequestInfo.getBoundary().setId(searchResponse.getBody().getBoundary().getId());
 			kafkaTemplate.send(env.getProperty("topic.property"),boundaryRequestInfo);
 		}
 

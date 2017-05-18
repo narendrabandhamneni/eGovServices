@@ -18,18 +18,16 @@ import lombok.ToString;
 @NoArgsConstructor
 public class PropertyBoundary {
 
-	private String id;
+	private Integer id;
 
-	private String longitude;
+	private Double longitude;
 
-	private String latitude;
-
-	private String materializedPath;
+	private Double latitude;
 
 	@NonNull
 	private String tenantId;
 
-	private String revenueZone;
+	private Integer revenueZone;
 
 	private String revenueWard;
 

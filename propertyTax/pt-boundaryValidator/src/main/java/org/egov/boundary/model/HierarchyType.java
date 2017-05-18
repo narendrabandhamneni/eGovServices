@@ -1,4 +1,4 @@
-package org.egov.models;
+package org.egov.boundary.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,4 +20,5 @@ public class HierarchyType {
 	private String name;
 	
 	private String loalname;
+
 }
