@@ -89,8 +89,8 @@ public class Consumer {
     String propertyData=	new ObjectMapper().writeValueAsString(property);
     	JestResult result = client.execute(
 				new Index.Builder(propertyData)
-				.index("property")
-				.type("property")
+				.index(environment.getProperty("property.index"))
+				.type(environment.getProperty("property.indexType"))
 	             .build()
 				);
 
