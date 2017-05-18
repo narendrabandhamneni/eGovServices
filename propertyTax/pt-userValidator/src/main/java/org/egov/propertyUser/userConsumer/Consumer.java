@@ -8,7 +8,6 @@ import org.apache.kafka.common.serialization.StringDeserializer;
 import org.egov.models.PropertyRequest;
 import org.egov.propertyUser.model.UserAuthResponseInfo;
 import org.egov.propertyUser.model.UserResonseInfo;
-import org.egov.propertyUser.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
@@ -29,9 +28,6 @@ import org.springframework.web.client.RestTemplate;
 @RestController
 @SuppressWarnings("unused")
 public class Consumer {
-
-	@Autowired
-	UserService userService;
 
 	@Autowired
 	RestTemplate restTemplate;
