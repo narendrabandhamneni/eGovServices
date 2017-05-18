@@ -1,4 +1,4 @@
-package org.egov.models ;
+package org.egov.models;
 
 import java.time.LocalDate;
 
@@ -16,47 +16,37 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class VacantLandProperty   {
+public class VacantLandProperty {
 
-	private String id ;
+	private String id;
 
+	private String surveyNumber;
 
-	private String surveyNumber ;
+	private String pattaNumber;
 
+	private Double marketValue;
 
-	private String pattaNumber ;
+	private Double capitalValue;
 
+	private String layoutApprovedAuth;
 
-	private Double marketValue ;
+	private String layoutPermissionNo;
 
+	private String layoutPermissionDate;
 
-	private Double capitalValue ;
+	private Double resdPlotArea;
 
-	private String layoutApprovedAuth ;
+	private Double nonResdPlotArea;
 
-	private String layoutPermissionNo ;
+	private String createdBy;
 
+	private String createdDate;
 
-	private LocalDate layoutPermissionDate ;
+	private String lastModifiedBy;
 
-	private Double resdPlotArea ;
-
-	private Double nonResdPlotArea ;
-
-
-	private String createdBy ;
-
-
-	private LocalDate createdDate ;
-
-
-	private String lastModifiedBy ;
-
-	private LocalDate lastModifiedDate ;
+	private String lastModifiedDate;
 
 	@NonNull
-	private String tenantId ;
-
+	private String tenantId;
 
 }
-

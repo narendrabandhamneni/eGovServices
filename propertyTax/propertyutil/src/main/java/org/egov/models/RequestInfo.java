@@ -14,33 +14,23 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class RequestInfo   {
+public class RequestInfo {
 	@NonNull
 	private String apiId;
 
 	@NonNull
 	private String ver;
 
-
 	private String ts;
-
-
-	private String action;
-
 
 	private String did;
 
-
 	private String key;
-
 
 	private String msgId;
 
-
 	private String requesterId;
-
 
 	private String authToken;
 
 }
-

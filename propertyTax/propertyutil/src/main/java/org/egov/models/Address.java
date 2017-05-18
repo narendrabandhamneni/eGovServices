@@ -1,97 +1,56 @@
 package org.egov.models;
 
-import java.util.Objects;
-
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.NonNull;
 import lombok.ToString;
 
 /**
  * Address
  */
 
-@Getter
-@Setter
+@Data
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class Address   {
- 
-  private String id ;
+public class Address {
 
- 
-  private String houseNoBldgApt ;
+	private String id;
 
-  
-  private String streetRoadLine ;
+	private String houseNoBldgApt;
 
- 
-  private String landmark;
-  
+	private String streetRoadLine;
 
-  private String areaLocalitySector ;
+	private String landmark;
 
- 
-  private String cityTownVillage ;
+	private String areaLocalitySector;
 
+	private String cityTownVillage;
 
-  private String district;
+	private String district;
 
+	private String subDistrict;
 
-  private String subDistrict;
+	private String postOffice;
 
+	private String state;
 
-  private String postOffice;
+	private String country;
 
+	private String pinCode;
 
-  private String state;
+	private String type;
 
+	@NonNull
+	private String tenantId;
 
-  private String country;
+	private String createdBy;
 
+	private String createdDate;
 
-  private String pinCode;
+	private String lastModifiedBy;
 
-  private String type;
-
-
-  private String tenantId;
-
- 
-
-
-  @Override
-  public boolean equals(java.lang.Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-    Address address = (Address) o;
-    return Objects.equals(this.id, address.id) &&
-        Objects.equals(this.houseNoBldgApt, address.houseNoBldgApt) &&
-        Objects.equals(this.streetRoadLine, address.streetRoadLine) &&
-        Objects.equals(this.landmark, address.landmark) &&
-        Objects.equals(this.areaLocalitySector, address.areaLocalitySector) &&
-        Objects.equals(this.cityTownVillage, address.cityTownVillage) &&
-        Objects.equals(this.district, address.district) &&
-        Objects.equals(this.subDistrict, address.subDistrict) &&
-        Objects.equals(this.postOffice, address.postOffice) &&
-        Objects.equals(this.state, address.state) &&
-        Objects.equals(this.country, address.country) &&
-        Objects.equals(this.pinCode, address.pinCode) &&
-        Objects.equals(this.type, address.type) &&
-        Objects.equals(this.tenantId, address.tenantId);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(id, houseNoBldgApt, streetRoadLine, landmark, areaLocalitySector, cityTownVillage, district, subDistrict, postOffice, state, country, pinCode, type, tenantId);
-  }
-
+	private String lastModifiedDate;
 
 }
-

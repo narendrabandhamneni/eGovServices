@@ -3,6 +3,7 @@ package org.egov.models;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -10,24 +11,21 @@ import lombok.ToString;
  * Error
  */
 
-
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class Error   {
-  
-  private String code;
+public class Error {
 
-  
-  private String message;
+	@NonNull
+	private String code;
 
- 
-  private String description;
+	@NonNull
+	private String message;
 
- 
-  private Object filelds;
+	private String description;
+
+	private Object filelds;
 
 }
-

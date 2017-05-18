@@ -1,6 +1,5 @@
 package org.egov.models;
 
-
 import java.time.LocalDate;
 import java.util.List;
 
@@ -9,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.ToString;
+
 /**
  * Property
  */
@@ -18,103 +18,72 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 
-public class Property   {
- 
-  private String id;
+public class Property {
 
-  @NonNull
-  private String upicNo;
+	private String id;
 
-  
-  private String oldUpicNo;
+	@NonNull
+	private String upicNo;
 
- 
-  private String vltUpicNo;
+	private String oldUpicNo;
 
-  @NonNull
-  private String creationReason;
+	private String vltUpicNo;
 
-  
-  private Address address;
+	@NonNull
+	private String creationReason;
 
-  
-  private List<User> owners ;
+	private Address address;
 
-  @NonNull
-  private LocalDate assessmentDate;
+	private List<User> owners;
 
-  @NonNull
-  private LocalDate occupancyDate;
+	@NonNull
 
-  
-  private String gisRefNo;
+	private String assessmentDate;
 
-  
-  private Double longitude;
+	@NonNull
 
-  
-  private Double latitude;
+	private String occupancyDate;
 
-  
-  private Long revenueZone;
+	private String gisRefNo;
 
-  
-  private Long revenueWard;
+	private Double longitude;
 
-  
-  private Long revenueBlock;
+	private Double latitude;
 
-  
-  private Long area;
+	private Long revenueZone;
 
- 
-  private Long locality;
+	private Long revenueWard;
 
-  
-  private Long street;
+	private Long revenueBlock;
 
-  
-  private Long adminWard;
+	private Long area;
 
-  
-  private Boolean isAuthorised;
+	private Long locality;
 
-  
-  private Boolean isUnderWorkflow;
+	private Long street;
 
-  
-  private String northBoundedBy;
+	private Long adminWard;
 
-  
-  private String eastBoundedBy;
+	private Boolean isAuthorised;
 
- 
-  private String westBoundedBy;
+	private Boolean isUnderWorkflow;
 
-  
-  private String southBoundedBy;
+	private PropertyBoundary propertyBoundary;
 
- 
-  private List<PropertyDetail> properties ;
+	private PropertyDetail propertydetails;
 
-  @NonNull
-  private String channel;
+	@NonNull
+	private String channel;
 
+	private String createdBy;
 
-  private Integer createdBy;
+	private String createdDate;
 
- 
-  private LocalDate createdDate;
+	private String lastModifiedBy;
 
-  
-  private Integer lastModifiedBy;
+	private String lastModifiedDate;
 
-  
-  private LocalDate lastModifiedDate;
+	@NonNull
+	private String tenantId;
 
-  @NonNull
-  private String tenantId;
-
- 
 }
-

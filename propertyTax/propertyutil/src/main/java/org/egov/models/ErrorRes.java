@@ -15,13 +15,10 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 
-public class ErrorRes   {
-  
-  private ResponseInfo resposneInfo;
+public class ErrorRes {
 
-  
-  private Error error;
+	private ResponseInfo resposneInfo;
 
-  
+	private Error error;
+
 }
-

@@ -16,101 +16,75 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 
-public class Floor   {
-  @NonNull
-  private String id;
+public class Floor {
+	@NonNull
+	private String id;
 
-  @NonNull
-  private String floorNo;
+	@NonNull
+	private String floorNo;
 
-  
-  private String unitNo;
+	private String unitNo;
 
- 
-  private String type;
+	private String type;
 
-  
-  private Double length;
+	private Double length;
 
-  
-  private Double width;
+	private Double width;
 
-  @NonNull
-  private Double builtupArea;
+	@NonNull
+	private Double builtupArea;
 
-  
-  private Double assessableArea;
+	private Double assessableArea;
 
-  
-  private Double bpaBuiltupArea;
+	private Double bpaBuiltupArea;
 
-  
-  private String category;
+	private String category;
 
- @NonNull
-  private String usage;
+	@NonNull
+	private String usage;
 
-  @NonNull
-  private String occupancy;
+	@NonNull
+	private String occupancy;
 
-  @NonNull
-  private String structure;
+	@NonNull
+	private String structure;
 
-  
-  private String depreciation;
+	private String depreciation;
 
-  
-  private String occupierName;
+	private String occupierName;
 
-  
-  private String firmName;
+	private String firmName;
 
-  
-  private Double rentCollected;
+	private Double rentCollected;
 
-  
-  private String exemptionReason;
+	private String exemptionReason;
 
-  
-  private Boolean isStructured;
+	private Boolean isStructured;
 
- 
-  private LocalDate occupancyDate;
+	private String occupancyDate;
 
-  
-  private LocalDate constCompletionDate;
+	private String constCompletionDate;
 
-  
-  private String bpaNo;
+	private String bpaNo;
 
-  
-  private LocalDate bpaDate;
+	private LocalDate bpaDate;
 
-  
-  private Double manualArv;
+	private Double manualArv;
 
-  
-  private Double arv;
+	private Double arv;
 
-  
-  private String electricMeterNo;
+	private String electricMeterNo;
 
-  
-  private String waterMeterNo;
+	private String waterMeterNo;
 
-  
-  private Integer createdBy;
+	private String createdBy;
 
-  
-  private LocalDate createdDate;
+	private String createdDate;
 
-  private Integer lastModifiedBy;
+	private String lastModifiedBy;
 
-  
-  private LocalDate lastModifiedDate;
+	private String lastModifiedDate;
 
-  
-  private String tenantId;
+	private String tenantId;
 
 }
-

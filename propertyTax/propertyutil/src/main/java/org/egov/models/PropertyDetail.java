@@ -9,6 +9,7 @@ import lombok.ToString;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+
 /**
  * PropertyDetail
  */
@@ -17,139 +18,94 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class PropertyDetail   {
-  
-  private String id;
+public class PropertyDetail {
 
-  
-  private String regdDocNo;
+	private String id;
 
-  
-  private LocalDate regdDocDate;
+	private String regdDocNo;
 
- 
-  private LocalDate occupancyDate;
+	private LocalDate regdDocDate;
 
-  
-  private String reason;
+	private LocalDate occupancyDate;
 
-  
-  private String status;
+	private String reason;
 
- 
-  private Boolean isVerified;
+	private String status;
 
-  
-  private LocalDate verificationDate;
+	private Boolean isVerified;
 
-  
-  private Boolean isExempted;
+	private LocalDate verificationDate;
 
-  
-  private String exemptionReason;
+	private Boolean isExempted;
 
-  
-  private String propertyType;
+	private String exemptionReason;
 
-  
-  private String category;
+	private String propertyType;
 
- 
-  private String usage;
+	private String category;
 
-  
-  private String department;
+	private String usage;
 
-  
-  private String apartment;
+	private String department;
 
- 
-  private Double length;
+	private String apartment;
 
-  
-  private Double breadth;
+	private Double length;
 
- 
-  private Double sitalArea;
+	private Double breadth;
 
-  
-  private Double totalBuiltupArea;
+	private Double sitalArea;
 
-  
-  private Double undividedShare;
+	private Double totalBuiltupArea;
 
-  
-  private Long noOfFloors;
+	private Double undividedShare;
 
-  
-  private List<Floor> floors ;
+	private Long noOfFloors;
 
- 
-  private Boolean isSuperStructure;
+	private List<Floor> floors;
 
-  
-  private String landOwner;
+	private Boolean isSuperStructure;
 
-  
-  private String floorType;
+	private String landOwner;
 
-  
-  private String woodType;
+	private String floorType;
 
-  
-  private String roofType;
+	private String woodType;
 
-  
-  private String wallType;
+	private String roofType;
 
-  
-  private Boolean lift;
+	private String wallType;
 
-  
-  private Boolean toilet;
+	private Boolean lift;
 
-  
-  private Boolean waterTap;
+	private Boolean toilet;
 
-  
-  private Boolean electricity;
+	private Boolean waterTap;
 
-  
-  private Boolean attachedBathRoom;
+	private Boolean electricity;
 
- 
-  private Boolean waterHarvesting;
+	private Boolean attachedBathRoom;
 
-  
-  private Boolean cableConnection;
+	private Boolean waterHarvesting;
 
+	private Boolean cableConnection;
 
-  private VacantLandProperty vacantLand;
+	private VacantLandProperty vacantLand;
 
-  
-  private List<String> demands = new ArrayList<String>();
+	@NonNull
+	private String channel;
 
- @NonNull
-  private String channel;
+	private String applicationNo;
 
-  
-  private String applicationNo;
+	private String createdBy;
 
-  
-  private String createdBy;
+	private String createdDate;
 
-  
-  private LocalDate createdDate;
+	private String lastModifiedBy;
 
-  
-  private String lastModifiedBy;
+	private LocalDate lastModifiedDate;
 
- 
-  private LocalDate lastModifiedDate;
+	// @NonNull
+	private String tenantId;
 
-  @NonNull
-  private String tenantId;
-
-  
 }
-

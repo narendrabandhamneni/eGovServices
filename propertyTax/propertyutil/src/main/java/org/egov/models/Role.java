@@ -12,13 +12,24 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class Role   {
- 
-  private String name;
+public class Role {
 
-  
-  private String code;
+	private String name;
 
-  
+	private String description;
+
+	private String code;
+
+	private String id;
+
+	private Integer createdBy;
+
+	private String createdDate;
+
+	private Integer lastModifiedBy;
+
+	private String lastModifiedDate;
+
+	private String tenantId;
+
 }
-

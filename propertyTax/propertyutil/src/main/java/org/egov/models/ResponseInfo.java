@@ -14,25 +14,19 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class ResponseInfo   {
-  
-  @NonNull	
-  private String apiId;
+public class ResponseInfo {
 
-  @NonNull
-  private String ver;
+	private String apiId;
 
-  @NonNull
-  private String ts;
+	private String ver;
 
-  private String resMsgId;
+	private String ts;
 
- 
-  private String msgId;
+	private String resMsgId;
 
- @NonNull
-  private String status;
+	private String msgId;
 
- 
+	@NonNull
+	private String status;
+
 }
-
