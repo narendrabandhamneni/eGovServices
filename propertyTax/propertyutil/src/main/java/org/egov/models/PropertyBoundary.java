@@ -18,7 +18,7 @@ import lombok.ToString;
 @NoArgsConstructor
 public class PropertyBoundary {
 
-	private Integer id;
+	private String id;
 
 	private Double longitude;
 
