@@ -1,13 +1,11 @@
 package org.egov.boundary.kafka;
 
-import org.egov.boundary.model.BoundaryRequestInfo;
+import java.net.URI;
+
 import org.egov.boundary.model.BoundaryResponseInfo;
-import org.egov.models.RequestInfo;
+import org.egov.models.PropertyRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.client.RestTemplate;
@@ -22,25 +20,20 @@ public class Consumer {
 	Environment env;
 
 	@Autowired
-	private KafkaTemplate<String, BoundaryRequestInfo> kafkaTemplate;
+	private KafkaTemplate<String, PropertyRequest> kafkaTemplate;
 	
 	@KafkaListener(topics = "${topic.property}")
-	public void receive(BoundaryRequestInfo boundaryRequestInfo) {
-
-		// Query parameters
-		UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(env.getProperty("boundary.boundaryUrl"))
-				// Add query parameter
-				.queryParam("tenantId", "default")
-				.queryParam("locationName", "Kotta Peta Super Structure");
-
-		HttpEntity<RequestInfo> entity=new HttpEntity<RequestInfo>(boundaryRequestInfo.getRequestInfo());
-
-		ResponseEntity<BoundaryResponseInfo> searchResponse = restTemplate.exchange(builder.build(true).toUri(), HttpMethod.POST,entity , BoundaryResponseInfo.class);
+	public void receive(PropertyRequest propertyRequest) {
 		
-		if(searchResponse.getStatusCodeValue()==200){
-			boundaryRequestInfo.getBoundary().setId(searchResponse.getBody().getBoundary().getId());
-			kafkaTemplate.send(env.getProperty("topic.property"),boundaryRequestInfo);
-		}
+		URI uri = UriComponentsBuilder.fromUriString(env.getProperty("boundary.boundaryUrl"))
+				.queryParam("Boundary.tenantId", "default")
+				.queryParam("Boundary.id", "1").build(true).encode().toUri();
+		
+		String boundaryResponseInfo=	restTemplate.getForObject(uri, String.class);
+		System.out.println(boundaryResponseInfo);
+//		if(boundaryResponseInfo.getResponseInfo().getStatus().equalsIgnoreCase(env.getProperty("statusCode"))){
+//			kafkaTemplate.send(env.getProperty("topic.boundaryUpdateProperty"), propertyRequest);
+//		}
 
 	}
 }

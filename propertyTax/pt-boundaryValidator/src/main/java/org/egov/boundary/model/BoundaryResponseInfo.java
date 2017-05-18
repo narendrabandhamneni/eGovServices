@@ -1,6 +1,9 @@
 package org.egov.boundary.model;
 
+import java.util.List;
+
 import org.egov.models.RequestInfo;
+import org.egov.models.ResponseInfo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,8 +16,8 @@ import lombok.ToString;
 @ToString
 public class BoundaryResponseInfo {
 	
-	private RequestInfo requestInfo;
+	private ResponseInfo responseInfo;
 	
-	private Boundary boundary;
+	private List<Boundary> boundaries;
 	
 }

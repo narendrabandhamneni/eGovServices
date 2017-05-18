@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
-import org.egov.boundary.model.BoundaryRequestInfo;
+import org.egov.models.PropertyRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -35,15 +35,15 @@ public class ConsumerConfiguration {
 	}
 	
 	@Bean
-	public ConsumerFactory<String, BoundaryRequestInfo> consumerFactory(){
+	public ConsumerFactory<String, PropertyRequest> consumerFactory(){
 		return new DefaultKafkaConsumerFactory<>(consumerConfig(),new StringDeserializer(),
-		        new JsonDeserializer<>(BoundaryRequestInfo.class));
+		        new JsonDeserializer<>(PropertyRequest.class));
 		
 	}
 	
 	@Bean
-	public ConcurrentKafkaListenerContainerFactory<String, BoundaryRequestInfo> kafkaListenerContainerFactory(){
-		ConcurrentKafkaListenerContainerFactory<String, BoundaryRequestInfo> factory=new ConcurrentKafkaListenerContainerFactory<String,BoundaryRequestInfo>();
+	public ConcurrentKafkaListenerContainerFactory<String, PropertyRequest> kafkaListenerContainerFactory(){
+		ConcurrentKafkaListenerContainerFactory<String, PropertyRequest> factory=new ConcurrentKafkaListenerContainerFactory<String,PropertyRequest>();
 		 factory.setConsumerFactory(consumerFactory());
 		 return factory;
 	}
