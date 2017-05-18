@@ -18,6 +18,8 @@ import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import io.searchbox.client.JestClient;
 import io.searchbox.client.JestClientFactory;
 import io.searchbox.client.JestResult;
@@ -70,7 +72,7 @@ public class Consumer {
 		if (this.client==null){
 			JestClientFactory factory = new JestClientFactory();
 			factory.setHttpClientConfig(new HttpClientConfig
-					.Builder("http://"+environment.getProperty("elasticsearch.host")+":"+environment.getProperty("elasticsearch.host"))
+					.Builder("http://"+environment.getProperty("elasticsearch.host")+":"+environment.getProperty("elasticsearch.port"))
 					.multiThreaded(Boolean.valueOf(environment.getProperty("multiThread")))
 					.readTimeout(Integer.valueOf(environment.getProperty("timeout")))
 					.build());
@@ -81,13 +83,12 @@ public class Consumer {
 		return this.client;
 	}
 
-    @KafkaListener(topics="${indexer.create}")
+    @KafkaListener(topics="${propertyIndexer.create}")
 	public JestResult recive(Property property) throws IOException{
-
-    	Map<String,Property> propertyMap=new HashMap<String,Property>();
-    	propertyMap.put("property", property);
+    	
+    String propertyData=	new ObjectMapper().writeValueAsString(property);
     	JestResult result = client.execute(
-				new Index.Builder(propertyMap)
+				new Index.Builder(propertyData)
 				.index("property")
 				.type("property")
 	             .build()
