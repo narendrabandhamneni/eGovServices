@@ -6,7 +6,7 @@ import java.util.Map;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.egov.models.PropertyRequest;
-import org.egov.propertyUser.model.UserAuthResponseInfo;
+import org.egov.models.UserAuthResponseInfo;
 import org.egov.propertyUser.model.UserResonseInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

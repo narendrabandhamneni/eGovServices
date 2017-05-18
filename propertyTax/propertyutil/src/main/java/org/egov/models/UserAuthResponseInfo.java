@@ -1,4 +1,5 @@
-package org.egov.propertyUser.model;
+package org.egov.models;
+
 
 import org.egov.models.ResponseInfo;
 
