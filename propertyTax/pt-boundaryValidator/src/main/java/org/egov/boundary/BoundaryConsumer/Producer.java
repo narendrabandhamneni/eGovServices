@@ -1,4 +1,4 @@
-package org.egov.boundary.kafka;
+package org.egov.boundary.BoundaryConsumer;
 
 import java.util.HashMap;
 import java.util.Map;
