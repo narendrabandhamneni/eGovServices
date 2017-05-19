@@ -2,7 +2,6 @@ package org.egov.boundary.model;
 
 import java.util.List;
 
-import org.egov.models.RequestInfo;
 import org.egov.models.ResponseInfo;
 
 import lombok.AllArgsConstructor;
