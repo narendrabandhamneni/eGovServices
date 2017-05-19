@@ -4,6 +4,7 @@ import java.net.URI;
 
 import org.egov.boundary.model.BoundaryResponseInfo;
 import org.egov.models.PropertyRequest;
+import org.egov.property.exception.InvalidPropertyBoundaryException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.web.client.RestTemplate;
@@ -16,7 +17,7 @@ public class BoundaryValidator {
 	@Autowired
 	RestTemplate restTemplate;
 	
-	public void validatePropertyBoundary(PropertyRequest propertyRequest) {
+	public void validatePropertyBoundary(PropertyRequest propertyRequest) throws InvalidPropertyBoundaryException{
 		
 		URI uri = UriComponentsBuilder.fromUriString(env.getProperty("boundary.boundaryUrl"))
 				.queryParam("Boundary.tenantId", propertyRequest.getProperties().get(0).getBoundary().getTenantId())
@@ -27,7 +28,7 @@ public class BoundaryValidator {
 		if(boundaryResponseInfo.getResponseInfo().getStatus().equalsIgnoreCase(env.getProperty("statusCode"))){
 			//property is valid
 		} else {
-			//TODO if boundary for the property is invalid 
+			throw new InvalidPropertyBoundaryException();
 		}
 
 	}

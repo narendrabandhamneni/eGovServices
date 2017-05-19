@@ -21,6 +21,12 @@ public class GlobalExceptionHandler {
 			ResponseInfo responseInfo=new ResponseInfo();
 			responseInfo.setStatus(HttpStatus.BAD_REQUEST.toString());
 			return new ErrorRes(responseInfo,error);		}
+		else if(ex instanceof InvalidPropertyBoundaryException){
+			Error error=new Error(HttpStatus.BAD_REQUEST.toString(),environment.getProperty("invalidPropertyBoundary"),null,null);
+			ResponseInfo responseInfo=new ResponseInfo();
+			responseInfo.setStatus(HttpStatus.BAD_REQUEST.toString());
+			return new ErrorRes(responseInfo,error);
+		}
 		else{
 			Error error=new Error(HttpStatus.INTERNAL_SERVER_ERROR.toString(),ex.getMessage(),null,null);
 			ResponseInfo responseInfo=new ResponseInfo();
