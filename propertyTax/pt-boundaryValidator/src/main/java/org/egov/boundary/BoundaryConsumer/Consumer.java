@@ -17,12 +17,13 @@ import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @SuppressWarnings("unused")
-@RestController
+@Service
 public class Consumer {
 	
 	@Autowired
@@ -64,7 +65,7 @@ public class Consumer {
 		return new RestTemplate();
 	}
 	
-	@KafkaListener(topics = "${topic.property}")
+	@KafkaListener(topics = "${boundary.property}")
 	public void receive(PropertyRequest propertyRequest) {
 		
 		URI uri = UriComponentsBuilder.fromUriString(env.getProperty("boundary.boundaryUrl"))
@@ -72,11 +73,9 @@ public class Consumer {
 				.queryParam("Boundary.id", propertyRequest.getProperties().get(0).getBoundary().getId()).build(true).encode().toUri();
 		
 		BoundaryResponseInfo boundaryResponseInfo = restTemplate.getForObject(uri, BoundaryResponseInfo.class);
-		System.out.println(boundaryResponseInfo);
-		
 		
 		if(boundaryResponseInfo.getResponseInfo().getStatus().equalsIgnoreCase(env.getProperty("statusCode"))){
-			kafkaTemplate.send(env.getProperty("topic.boundaryUpdateProperty"), propertyRequest);
+			kafkaTemplate.send(env.getProperty("boundary.boundaryUpdateProperty"), propertyRequest);
 		} else {
 			//TODO if boundary for the property is invalid 
 		}
