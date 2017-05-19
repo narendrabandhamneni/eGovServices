@@ -15,7 +15,6 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-@SuppressWarnings("unused")
 public class BoundaryRequestInfo {
 	
 	private String tenantId;

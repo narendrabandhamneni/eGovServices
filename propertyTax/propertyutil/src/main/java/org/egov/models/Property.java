@@ -1,6 +1,5 @@
 package org.egov.models;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -68,7 +67,7 @@ public class Property {
 
 	private Boolean isUnderWorkflow;
 
-	private PropertyBoundary propertyBoundary;
+	private PropertyBoundary boundary;
 
 	private PropertyDetail propertydetails;
 
