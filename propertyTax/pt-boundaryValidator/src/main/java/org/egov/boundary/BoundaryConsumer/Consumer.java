@@ -65,7 +65,7 @@ public class Consumer {
 		return new RestTemplate();
 	}
 	
-	@KafkaListener(topics = "${boundary.property}")
+	@KafkaListener(topics="#{environment.getProperty('boundary.property')}")
 	public void receive(PropertyRequest propertyRequest) {
 		
 		URI uri = UriComponentsBuilder.fromUriString(env.getProperty("boundary.boundaryUrl"))
