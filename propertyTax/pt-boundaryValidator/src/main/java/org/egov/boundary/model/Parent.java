@@ -11,7 +11,7 @@ import lombok.ToString;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class Boundary {
+public class Parent {
 	
 	private String id;
 	
@@ -23,10 +23,10 @@ public class Boundary {
 	
 	private String boundaryNum;
 	
-	private Parent parent;
+	private String parent;
 	
 	private String tenantId;
 	
-	private BoundaryType boundaryType;
+	private String boundaryType;
 	
 }

@@ -26,14 +26,18 @@ public class Consumer {
 	public void receive(PropertyRequest propertyRequest) {
 		
 		URI uri = UriComponentsBuilder.fromUriString(env.getProperty("boundary.boundaryUrl"))
-				.queryParam("Boundary.tenantId", "default")
-				.queryParam("Boundary.id", "1").build(true).encode().toUri();
+				.queryParam("Boundary.tenantId", propertyRequest.getProperties().get(0).getBoundary().getTenantId())
+				.queryParam("Boundary.id", propertyRequest.getProperties().get(0).getBoundary().getId()).build(true).encode().toUri();
 		
-		String boundaryResponseInfo=	restTemplate.getForObject(uri, String.class);
+		BoundaryResponseInfo boundaryResponseInfo = restTemplate.getForObject(uri, BoundaryResponseInfo.class);
 		System.out.println(boundaryResponseInfo);
-//		if(boundaryResponseInfo.getResponseInfo().getStatus().equalsIgnoreCase(env.getProperty("statusCode"))){
-//			kafkaTemplate.send(env.getProperty("topic.boundaryUpdateProperty"), propertyRequest);
-//		}
+		
+		
+		if(boundaryResponseInfo.getResponseInfo().getStatus().equalsIgnoreCase(env.getProperty("statusCode"))){
+			kafkaTemplate.send(env.getProperty("topic.boundaryUpdateProperty"), propertyRequest);
+		} else {
+			//TODO if boundary for the property is invalid 
+		}
 
 	}
 }

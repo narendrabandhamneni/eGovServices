@@ -16,8 +16,8 @@ import lombok.ToString;
 @ToString
 public class BoundaryResponseInfo {
 	
-	private ResponseInfo responseInfo;
+	private ResponseInfo ResponseInfo;
 	
-	private List<Boundary> boundaries;
+	private List<Boundary> Boundary;
 	
 }
