@@ -2,8 +2,10 @@ package org.egov.models;
 
 import java.util.List;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.Setter;
 import lombok.ToString;
@@ -13,9 +15,10 @@ import lombok.ToString;
  */
 
 @Data
-@Getter
-@Setter
 @ToString
+@NoArgsConstructor
+@AllArgsConstructor
+@SuppressWarnings("unused")
 public class User {
 
 	private String id;

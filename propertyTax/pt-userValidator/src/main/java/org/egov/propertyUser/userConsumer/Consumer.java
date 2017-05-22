@@ -7,7 +7,7 @@ import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.egov.models.PropertyRequest;
 import org.egov.models.UserAuthResponseInfo;
-import org.egov.propertyUser.model.UserResonseInfo;
+import org.egov.propertyUser.model.UserResponseInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
@@ -100,7 +100,7 @@ public class Consumer {
 			userSearchRequestInfo.put("tenantId",propertyRequest.getProperties().get(0).getOwners().get(0).getTenantId());
 			userSearchRequestInfo.put("RequestInfo",propertyRequest.getRequestInfo());
 
-			UserResonseInfo userResponse= restTemplate.postForObject(env.getProperty("user.searchUrl"), userSearchRequestInfo, UserResonseInfo.class);
+			UserResponseInfo userResponse= restTemplate.postForObject(env.getProperty("user.searchUrl"), userSearchRequestInfo, UserResponseInfo.class);
 
 			if(userResponse.getResponseInfo().getStatus().equalsIgnoreCase(env.getProperty("statusCode"))){
 				if(userResponse.getUsers()==null){
@@ -109,8 +109,8 @@ public class Consumer {
 					userCreateRequestInfo.put("RequestInfo",propertyRequest.getRequestInfo());
 
 
-					UserResonseInfo userCreateResponse = restTemplate.postForObject(env.getProperty("user.createUrl"),
-							userCreateRequestInfo, UserResonseInfo.class);	
+					UserResponseInfo userCreateResponse = restTemplate.postForObject(env.getProperty("user.createUrl"),
+							userCreateRequestInfo, UserResponseInfo.class);	
 				}
 				else{
 					propertyRequest.getProperties().get(0).getOwners().get(0).setId(userResponse.getUsers().get(0).getId());
@@ -123,8 +123,8 @@ public class Consumer {
 			userCreateRequestInfo.put("User",propertyRequest.getProperties().get(0).getOwners());
 			userCreateRequestInfo.put("RequestInfo",propertyRequest.getRequestInfo());
 
-			UserResonseInfo userCreateResponse = restTemplate.postForObject(env.getProperty("user.createUrl"),
-					userCreateRequestInfo, UserResonseInfo.class);
+			UserResponseInfo userCreateResponse = restTemplate.postForObject(env.getProperty("user.createUrl"),
+					userCreateRequestInfo, UserResponseInfo.class);
 			kafkaTemplate.send(env.getProperty("update.user"), propertyRequest);
 
 		}

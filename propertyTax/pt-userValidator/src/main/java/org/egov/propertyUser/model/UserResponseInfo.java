@@ -14,7 +14,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class UserResonseInfo {
+public class UserResponseInfo {
 	
 	private List<User> users;
 	
