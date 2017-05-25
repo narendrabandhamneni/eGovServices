@@ -1,4 +1,4 @@
-package org.egov.boundary.model;
+package org.egov.property.model;
 
 import java.util.List;
 

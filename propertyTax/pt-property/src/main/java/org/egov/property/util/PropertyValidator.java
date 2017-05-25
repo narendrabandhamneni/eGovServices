@@ -1,10 +1,10 @@
-package org.egov.property.validator;
+package org.egov.property.util;
 
 import java.net.URI;
 
-import org.egov.boundary.model.BoundaryResponseInfo;
 import org.egov.models.Property;
 import org.egov.property.exception.InvalidPropertyBoundaryException;
+import org.egov.property.model.BoundaryResponseInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
