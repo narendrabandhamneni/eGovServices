@@ -2,6 +2,9 @@ package org.egov.models;
 
 import java.util.List;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,10 +25,15 @@ public class Property {
 	private String id;
 
 	@NonNull
+	@Max(value = 128)
+	@Min(value=8)
 	private String upicNo;
-
+	
+	@Max(value = 128)
+	@Min(value=8)
 	private String oldUpicNo;
-
+	@Max(value = 128)
+	@Min(value=4)
 	private String vltUpicNo;
 
 	@NonNull
@@ -72,6 +80,8 @@ public class Property {
 	private PropertyDetail propertydetails;
 
 	@NonNull
+	@Max(value = 16)
+	@Min(value=4)
 	private String channel;
 
 	private String createdBy;
@@ -83,6 +93,8 @@ public class Property {
 	private String lastModifiedDate;
 
 	@NonNull
+	@Max(value =128)
+	@Min(value=4)
 	private String tenantId;
 
 }

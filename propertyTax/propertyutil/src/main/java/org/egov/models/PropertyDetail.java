@@ -10,6 +10,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+
 /**
  * PropertyDetail
  */
@@ -22,14 +25,20 @@ public class PropertyDetail {
 
 	private String id;
 
+	@Max(value =64)
+	@Min(value=1)
 	private String regdDocNo;
 
 	private LocalDate regdDocDate;
 
 	private LocalDate occupancyDate;
 
+	@Max(value =16)
+	@Min(value=1)
 	private String reason;
-
+	
+	@Max(value =4)
+	@Min(value=1)
 	private String status;
 
 	private Boolean isVerified;
@@ -37,17 +46,29 @@ public class PropertyDetail {
 	private LocalDate verificationDate;
 
 	private Boolean isExempted;
-
+	
+	@Max(value =32)
+	@Min(value=1)
 	private String exemptionReason;
-
+	
+	@Max(value =16)
+	@Min(value=1)
 	private String propertyType;
-
+	
+	@Max(value =16)
+	@Min(value=1)
 	private String category;
-
+	
+	@Max(value =16)
+	@Min(value=1)
 	private String usage;
-
+	
+	@Max(value =16)
+	@Min(value=1)
 	private String department;
-
+	
+	@Max(value =16)
+	@Min(value=1)
 	private String apartment;
 
 	private Double length;
@@ -65,15 +86,25 @@ public class PropertyDetail {
 	private List<Floor> floors;
 
 	private Boolean isSuperStructure;
-
+	
+	@Max(value =128)
+	@Min(value=1)
 	private String landOwner;
-
+	
+	@Max(value =16)
+	@Min(value=1)
 	private String floorType;
 
+	@Max(value =16)
+	@Min(value=1)
 	private String woodType;
-
+	
+	@Max(value =16)
+	@Min(value=1)
 	private String roofType;
-
+	
+	@Max(value =16)
+	@Min(value=1)
 	private String wallType;
 
 	private Boolean lift;
@@ -93,8 +124,12 @@ public class PropertyDetail {
 	private VacantLandProperty vacantLand;
 
 	@NonNull
+	@Max(value =16)
+	@Min(value=4)
 	private String channel;
-
+	
+	@Max(value =32)
+	@Min(value=1)
 	private String applicationNo;
 
 	private String createdBy;
@@ -105,7 +140,9 @@ public class PropertyDetail {
 
 	private LocalDate lastModifiedDate;
 
-	// @NonNull
+	@NonNull
+	@Max(value =128)
+	@Min(value=4)
 	private String tenantId;
 
 }

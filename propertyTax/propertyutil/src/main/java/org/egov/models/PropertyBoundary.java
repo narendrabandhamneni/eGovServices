@@ -1,5 +1,8 @@
 package org.egov.models;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -40,13 +43,21 @@ public class PropertyBoundary {
 	private String street;
 
 	private String adminWard;
-
+	
+	@Max(value = 256)
+	@Min(value=1)
 	private String northBoundedBy;
 
+	@Max(value = 256)
+	@Min(value=1)
 	private String eastBoundedBy;
-
+	
+	@Max(value = 256)
+	@Min(value=1)
 	private String westBoundedBy;
-
+	
+	@Max(value = 256)
+	@Min(value=1)
 	private String southBoundedBy;
 
 	private String createdBy;
@@ -56,5 +67,9 @@ public class PropertyBoundary {
 	private String lastModifiedBy;
 
 	private String lastModifiedDate;
+	
+	@Max(value = 256)
+	@Min(value=4)
+	private String name;
 
 }
