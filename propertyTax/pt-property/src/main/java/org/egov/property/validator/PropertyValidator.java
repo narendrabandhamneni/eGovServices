@@ -5,20 +5,19 @@ import java.net.URI;
 import org.egov.boundary.model.BoundaryResponseInfo;
 import org.egov.models.Property;
 import org.egov.property.exception.InvalidPropertyBoundaryException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-public class BoundaryValidator {
+@Service
+public class PropertyValidator {
 	
+	@Autowired
 	private Environment env;
-	
-	private static final Logger logger=LoggerFactory.getLogger(BoundaryValidator.class);
-	
+
 	@Autowired
 	RestTemplate restTemplate;
 	
@@ -36,8 +35,11 @@ public class BoundaryValidator {
 				throw new InvalidPropertyBoundaryException();
 			}
 		} catch (HttpClientErrorException ex){
-			logger.error("HttpClientErrorException " + ex);
-			throw new InvalidPropertyBoundaryException();
+          throw new InvalidPropertyBoundaryException();
 		}
+	}
+	
+	public Boolean validateProperty(Property property){
+		return validatePropertyBoundary(property);
 	}
 }
