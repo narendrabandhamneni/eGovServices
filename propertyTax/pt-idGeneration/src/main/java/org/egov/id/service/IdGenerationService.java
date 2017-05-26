@@ -18,6 +18,7 @@ import org.egov.models.ResponseInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class IdGenerationService {
@@ -25,7 +26,17 @@ public class IdGenerationService {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 
+	public boolean containsAttribute(List<Attribute> attributeList, String key) {
+		for (Attribute attribute : attributeList) {
+			if (attribute.getKey().equalsIgnoreCase(key)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	@SuppressWarnings("unchecked")
+	@Transactional
 	public IdGenerationResponse generateId(IdGenerationRequest idGenReq){
 
 		RequestInfo requestInfo = idGenReq.getRequestInfo();
@@ -67,13 +78,15 @@ public class IdGenerationService {
 					regex = regex.replace("{seqNumber}", resultSet.getCurrentseqnum());
 				}
 			} else {
-				for(Attribute a:attributes){  
-					if(a.getKey().equalsIgnoreCase(str)){
-						regex = regex.replace("{"+str+"}", a.getValue());
-					} 
-					/*else {
-						//TODO throw the exception for attribute not found
-					}*/
+				if(containsAttribute(attributes, str)){
+					for(Attribute a:attributes){  
+						if(a.getKey().equalsIgnoreCase(str)){
+							regex = regex.replace("{"+str+"}", a.getValue());
+						} 
+					}
+				} else {
+					//throw the exception for attribute not found
+					throw new IllegalStateException("attribute "+ str +" Not found");
 				}
 			}
 		}
