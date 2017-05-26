@@ -1,17 +1,15 @@
 package org.egov.models;
 
+import java.util.List;
+
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.ToString;
-
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 
 /**
  * PropertyDetail
@@ -36,7 +34,7 @@ public class PropertyDetail {
 	@Max(value =16)
 	@Min(value=1)
 	private String reason;
-	
+
 	@Max(value =4)
 	@Min(value=1)
 	private String status;
@@ -46,27 +44,27 @@ public class PropertyDetail {
 	private String verificationDate;
 
 	private Boolean isExempted;
-	
+
 	@Max(value =32)
 	@Min(value=1)
 	private String exemptionReason;
-	
+
 	@Max(value =16)
 	@Min(value=1)
 	private String propertyType;
-	
+
 	@Max(value =16)
 	@Min(value=1)
 	private String category;
-	
+
 	@Max(value =16)
 	@Min(value=1)
 	private String usage;
-	
+
 	@Max(value =16)
 	@Min(value=1)
 	private String department;
-	
+
 	@Max(value =16)
 	@Min(value=1)
 	private String apartment;
@@ -86,11 +84,11 @@ public class PropertyDetail {
 	private List<Floor> floors;
 
 	private Boolean isSuperStructure;
-	
+
 	@Max(value =128)
 	@Min(value=1)
 	private String landOwner;
-	
+
 	@Max(value =16)
 	@Min(value=1)
 	private String floorType;
@@ -98,11 +96,11 @@ public class PropertyDetail {
 	@Max(value =16)
 	@Min(value=1)
 	private String woodType;
-	
+
 	@Max(value =16)
 	@Min(value=1)
 	private String roofType;
-	
+
 	@Max(value =16)
 	@Min(value=1)
 	private String wallType;
@@ -127,7 +125,7 @@ public class PropertyDetail {
 	@Max(value =16)
 	@Min(value=4)
 	private String channel;
-	
+
 	@Max(value =32)
 	@Min(value=1)
 	private String applicationNo;

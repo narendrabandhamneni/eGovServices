@@ -52,7 +52,7 @@ public class Producer {
 	public RestTemplate restTemplate(){
 		return new RestTemplate();
 	}
-	public void send(String topic,PropertyRequest property){
-		kafkaTemplate.send(topic, property);
+	public void send(String topic,PropertyRequest propertyRequest){
+		kafkaTemplate.send(topic, propertyRequest);
 	}
 }

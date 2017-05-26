@@ -1,7 +1,5 @@
 package org.egov.models;
 
-import java.time.LocalDate;
-
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 
@@ -20,7 +18,7 @@ import lombok.ToString;
 @ToString
 
 public class Floor {
-	@NonNull
+	//@NonNull
 	private String id;
 
 	@NonNull
