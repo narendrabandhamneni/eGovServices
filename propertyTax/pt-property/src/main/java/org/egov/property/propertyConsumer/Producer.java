@@ -15,6 +15,7 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.kafka.support.serializer.JsonSerializer;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 @Configuration
 @Service
@@ -47,6 +48,10 @@ public class Producer {
 		return new KafkaTemplate<>(producerFactory());
 	}
 
+	@Bean 
+	public RestTemplate restTemplate(){
+		return new RestTemplate();
+	}
 	public void send(String topic,PropertyRequest property){
 		kafkaTemplate.send(topic, property);
 	}

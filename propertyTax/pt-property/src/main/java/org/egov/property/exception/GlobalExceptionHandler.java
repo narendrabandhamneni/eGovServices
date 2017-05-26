@@ -1,5 +1,8 @@
 package org.egov.property.exception;
 import org.egov.models.ErrorRes;
+
+import java.util.HashMap;
+
 import org.egov.models.Error;
 import org.egov.models.ResponseInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,13 +25,13 @@ public class GlobalExceptionHandler {
 			responseInfo.setStatus(HttpStatus.BAD_REQUEST.toString());
 			return new ErrorRes(responseInfo,error);		}
 		else if(ex instanceof InvalidPropertyBoundaryException){
-			Error error=new Error(HttpStatus.BAD_REQUEST.toString(),environment.getProperty("invalidPropertyBoundary"),null,null);
+			Error error=new Error(HttpStatus.BAD_REQUEST.toString(),environment.getProperty("invalidPropertyBoundary"),null,new HashMap<String,String>());
 			ResponseInfo responseInfo=new ResponseInfo();
 			responseInfo.setStatus(HttpStatus.BAD_REQUEST.toString());
 			return new ErrorRes(responseInfo,error);
 		}
 		else{
-			Error error=new Error(HttpStatus.INTERNAL_SERVER_ERROR.toString(),ex.getMessage(),null,null);
+			Error error=new Error(HttpStatus.INTERNAL_SERVER_ERROR.toString(),ex.getMessage(),null,new HashMap<String,String>());
 			ResponseInfo responseInfo=new ResponseInfo();
 			responseInfo.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.toString());
 			return new ErrorRes(responseInfo,error);

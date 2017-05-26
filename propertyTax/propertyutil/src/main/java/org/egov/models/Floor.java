@@ -94,7 +94,7 @@ public class Floor {
 	@Min(value=1)
 	private String bpaNo;
 
-	private LocalDate bpaDate;
+	private String bpaDate;
 
 	private Double manualArv;
 

@@ -6,6 +6,7 @@ import org.egov.property.propertyConsumer.Producer;
 import org.egov.property.util.PropertyValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,7 +25,7 @@ public class PropertyController {
 	Environment environment;
 	
 	@RequestMapping(method=RequestMethod.POST,path="_create")
-	public String createProperty(PropertyRequest propertyRequest){
+	public String createProperty(@RequestBody PropertyRequest propertyRequest){
 		for(Property property :propertyRequest.getProperties()){
 			propertyValidator.validatePropertyBoundary(property);
 		}

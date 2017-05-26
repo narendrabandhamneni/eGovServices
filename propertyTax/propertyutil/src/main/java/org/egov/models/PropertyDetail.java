@@ -29,9 +29,9 @@ public class PropertyDetail {
 	@Min(value=1)
 	private String regdDocNo;
 
-	private LocalDate regdDocDate;
+	private String regdDocDate;
 
-	private LocalDate occupancyDate;
+	private String occupancyDate;
 
 	@Max(value =16)
 	@Min(value=1)
@@ -43,7 +43,7 @@ public class PropertyDetail {
 
 	private Boolean isVerified;
 
-	private LocalDate verificationDate;
+	private String verificationDate;
 
 	private Boolean isExempted;
 	
@@ -138,7 +138,7 @@ public class PropertyDetail {
 
 	private String lastModifiedBy;
 
-	private LocalDate lastModifiedDate;
+	private String lastModifiedDate;
 
 	@NonNull
 	@Max(value =128)
