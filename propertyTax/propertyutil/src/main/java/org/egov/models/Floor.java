@@ -18,7 +18,7 @@ import lombok.ToString;
 @ToString
 
 public class Floor {
-	//@NonNull
+	@NonNull
 	private String id;
 
 	@NonNull

@@ -29,7 +29,7 @@ public class PropertyValidator {
 		
 		try {
 			BoundaryResponseInfo boundaryResponseInfo = restTemplate.getForObject(uri, BoundaryResponseInfo.class);
-			if(boundaryResponseInfo.getResponseInfo().getStatus().equalsIgnoreCase(env.getProperty("statusCode")) && boundaryResponseInfo.getBoundary().size()==0){
+			if(boundaryResponseInfo.getResponseInfo().getStatus().equalsIgnoreCase(env.getProperty("statusCode")) && boundaryResponseInfo.getBoundary().size()!=0){
 				return true;
 			} else {
 				throw new InvalidPropertyBoundaryException();
