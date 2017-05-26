@@ -12,9 +12,9 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Attribute {
-	
+
 	private String key;
-	
+
 	private String value;
-	
+
 }

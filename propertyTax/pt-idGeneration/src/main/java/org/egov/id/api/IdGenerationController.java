@@ -11,15 +11,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class IdGenerationController {
-	
+
 	@Autowired
 	IdGenerationService idGenerationService;
-	
+
 	@RequestMapping(method=RequestMethod.POST, value="id/_create")
 	public IdGenerationResponse generateId(@RequestBody IdGenerationRequest idGenReq){
-		
+
 		return idGenerationService.generateId(idGenReq);
-		
+
 	}
-	
+
 }

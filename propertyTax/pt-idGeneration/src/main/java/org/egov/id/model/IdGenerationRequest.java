@@ -14,9 +14,9 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 public class IdGenerationRequest {
-	
+
 	private RequestInfo requestInfo;
-	
+
 	private IdRequest idRequest;
-	
+
 }
