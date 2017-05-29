@@ -4,18 +4,13 @@ package org.egov.property.propertyConsumer;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
+
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
-import org.egov.models.Property;
 import org.egov.models.PropertyRequest;
-import org.egov.models.UserAuthResponseInfo;
-import org.egov.property.services.PropertyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
@@ -23,11 +18,9 @@ import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 import org.springframework.stereotype.Service;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
-@SuppressWarnings("unused")
+
 @Service
 public class Consumer {
 
@@ -40,8 +33,8 @@ public class Consumer {
     @Autowired
      KafkaTemplate<String, PropertyRequest> kafkaTemplate;
     
-    @Autowired
-    PropertyService propertyService;
+  /*  @Autowired
+    PropertyService propertyService;*/
     
 
     @Bean
@@ -74,10 +67,10 @@ public class Consumer {
         return new RestTemplate();
     }
 
-    @KafkaListener(topics = "#{environment.getProperty('validate.user')}")
+  //  @KafkaListener(topics = "#{environment.getProperty('validate.user')}")
     public void receive(PropertyRequest propertyRequest) throws SQLException {
             
-       propertyService.addProperty(propertyRequest.getProperties());
+      // propertyService.addProperty(propertyRequest.getProperties());
 
     }
 }

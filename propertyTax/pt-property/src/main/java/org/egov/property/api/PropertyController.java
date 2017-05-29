@@ -1,6 +1,6 @@
 package org.egov.property.api;
 
-import java.sql.SQLException;
+import javax.validation.Valid;
 
 import org.egov.models.Property;
 import org.egov.models.PropertyRequest;
@@ -31,18 +31,15 @@ public class PropertyController {
 	public PropertyService  propertyService;
 
 	@RequestMapping(method=RequestMethod.POST,path="_create")
-	public String createProperty(@RequestBody PropertyRequest propertyRequest){
+	public String createProperty(@Valid @RequestBody PropertyRequest propertyRequest){
+		
 		for(Property property :propertyRequest.getProperties()){
 			propertyValidator.validatePropertyBoundary(property);
 		}
 		producer.send(environment.getProperty("property.create"), propertyRequest);
-
+		
 		return "";
 	}
-
-	@RequestMapping(path = { "/send" }, method = RequestMethod.POST)
-	public void sendUser(@RequestBody PropertyRequest propertyRequest) {
-		propertyService.sendPropertyToKafka(propertyRequest);
-	}
+	
 
 }
