@@ -81,7 +81,6 @@ public class IdGenerationService {
 				e.printStackTrace();
 			}
 		}
-		System.out.println(generatedId);
 		return generatedId;
 
 	}
