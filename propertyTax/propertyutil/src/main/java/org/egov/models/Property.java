@@ -2,13 +2,16 @@ package org.egov.models;
 
 import java.util.List;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
+
 import lombok.ToString;
 
 /**
@@ -24,30 +27,32 @@ public class Property {
 
 	private String id;
 
-	@NonNull
-	@Max(value = 128)
-	@Min(value=8)
+	@NotNull
+	@Size(min=8, max= 128)
 	private String upicNo;
 	
-	@Max(value = 128)
-	@Min(value=8)
+	@Size(min=8, max= 128)
 	private String oldUpicNo;
-	@Max(value = 128)
-	@Min(value=4)
+	
+	
+	@Size(min=8, max= 128)
 	private String vltUpicNo;
 
-	@NonNull
+	@NotNull
+	@Size(min=1, max= 256)
 	private String creationReason;
 
+	@Valid
 	private Address address;
 
+	@Valid
 	private List<User> owners;
 
-	@NonNull
+	@NotNull
 
 	private String assessmentDate;
 
-	@NonNull
+	@NotNull
 
 	private String occupancyDate;
 
@@ -75,26 +80,20 @@ public class Property {
 
 	private Boolean isUnderWorkflow;
 
+	@Valid
 	private PropertyBoundary boundary;
-
+	
+    @Valid
 	private PropertyDetail propertydetails;
 
-	@NonNull
-	@Max(value = 16)
-	@Min(value=4)
+	@NotNull
+	@Size(min=4, max= 16)
 	private String channel;
 
-	private String createdBy;
+	private AuditDetails auditDetails;
 
-	private String createdDate;
-
-	private String lastModifiedBy;
-
-	private String lastModifiedDate;
-
-	@NonNull
-	@Max(value =128)
-	@Min(value=4)
+	@NotNull
+	@Size(message="tenantId length should be in between  4 to 128 letters",min=4, max= 128)
 	private String tenantId;
 
 }

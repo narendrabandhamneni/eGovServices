@@ -1,12 +1,14 @@
 package org.egov.models;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
+
+
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 import lombok.ToString;
 
 /**
@@ -19,72 +21,54 @@ import lombok.ToString;
 @NoArgsConstructor
 public class Address {
 
+	
 	private String id;
 
-	@Max(value = 32)
-	@Min(value=4)
+	@Valid
+	@Size(min=4, max= 32)
 	private String houseNoBldgApt;
 
 
-	@Max(value = 256)
-	@Min(value=4)
+
+	@Size(min=4, max= 256)
 	private String streetRoadLine;
 	
-	@Max(value = 256)
-	@Min(value=4)
+	
+	@Size(min=4, max= 256)
 	private String landmark;
 
-	@Max(value = 256)
-	@Min(value=4)
+	
+	@Size(min=4, max= 256)
 	private String areaLocalitySector;
 	
-	@Max(value = 256)
-	@Min(value=4)
+	@Size(min=4, max= 256)
 	private String cityTownVillage;
 	
-	@Max(value =100)
-	@Min(value=4)
+	@Size(min=4, max= 100)
 	private String district;
 	
-	@Max(value =100)
-	@Min(value=4)
+	@Size(min=4, max= 100)
 	private String subDistrict;
 	
-	@Max(value =100)
-	@Min(value=4)
+	@Size(min=4, max= 100)
 	private String postOffice;
 	
-	@Max(value =100)
-	@Min(value=4)
+	@Size(min=4, max= 100)
 	private String state;
 
-	@Max(value =50)
-	@Min(value=4)
+	@Size(min=4, max= 50)
 	private String country;
 	
-	@Max(value =10)
-	@Min(value=6)
+	@Size(min=6, max= 10)
 	private String pinCode;
 	
-	@Max(value =50)
-	@Min(value=4)
+	@Size(min=4, max= 50)
 	private String type;
 
-	@NonNull
-	@Max(value =128)
-	@Min(value=4)
+	@NotNull
+	@Size(min=4, max= 128)
 	private String tenantId;
 	
-	@Max(value =16)
-	@Min(value=1)
-	private String createdBy;
-
-	private String createdDate;
-	
-	@Max(value =16)
-	@Min(value=1)
-	private String lastModifiedBy;
-
-	private String lastModifiedDate;
+	private AuditDetails auditDetails;
 
 }

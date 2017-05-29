@@ -2,8 +2,13 @@ package org.egov.models;
 
 import java.util.List;
 
+import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.Length;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,40 +30,33 @@ import lombok.ToString;
 public class User {
 
 	private String id;
-	@Max(value = 64)
-	@Min(value=1)
+	
+	@Length(min=1, max=64)
 	private String username;
 
 	private String password;
 	
-	@Max(value = 5)
-	@Min(value=1)
+	@Length(min=1, max=5)
 	private String salutation;
 	
-	@Max(value = 100)
-	@Min(value=1)
+	@Length(min=1, max= 100)
 	private String name;
 	
-	@Max(value = 8)
-	@Min(value=1)
+	@Length(min=1, max=8)
 	private String gender;
 	
-	@Max(value =10)
-	@Min(value=1)
+	@Length(min=1, max= 10)
 	private String mobileNumber;
 	
-	@Max(value =128)
-	@Min(value=1)
+	@Length(min=1, max= 128)
 	private String emailId;
 
 	private String altContactNumber;
 	
-	@Max(value =10)
-	@Min(value=1)
+	@Length(min=10, max= 10)
 	private String pan;
 	
-	@Max(value =12)
-	@Min(value=1)
+	@Length(min=12, max= 12)
 	private String aadhaarNumber;
 
 	private String permanentAddress;
@@ -83,20 +81,16 @@ public class User {
 
 	private String signature;
 	
-	@Max(value =16)
-	@Min(value=1)
+	@Length(min=1, max= 16)
 	private String type;
 	
-	@Max(value = 8)
-	@Min(value=1)
+	@Length(min=1, max=8)
 	private String title;
 	
-	@Max(value = 100)
-	@Min(value=1)
+	@Length(min=1, max= 100)
 	private String guardian;
 	
-	@Max(value =32)
-	@Min(value=1)
+	@Length(min=1, max=32)
 	private String guardianRelation;
 
 	private String fatherOrHusbandName;
@@ -107,21 +101,13 @@ public class User {
 
 	private String photo;
 
-	private Integer createdBy;
-
-	private String createdDate;
-
-	private Integer lastModifiedBy;
-
-	private String lastModifiedDate;
-
 	private String otpReference;
 	
-	@NonNull
-	@Max(value =128)
-	@Min(value=4)
+	@NotNull
+	@Length(min=4, max= 128)
 	private String tenantId;
 
+	@Valid
 	private List<Role> roles;
 
 }

@@ -2,8 +2,8 @@ package org.egov.models;
 
 import java.util.List;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
+import javax.validation.Valid;
+import javax.validation.constraints.Size;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,20 +23,17 @@ public class PropertyDetail {
 
 	private String id;
 
-	@Max(value =64)
-	@Min(value=1)
+	@Size(min=1, max=64)
 	private String regdDocNo;
 
 	private String regdDocDate;
 
 	private String occupancyDate;
 
-	@Max(value =16)
-	@Min(value=1)
+	@Size(min=1, max= 16)
 	private String reason;
 
-	@Max(value =4)
-	@Min(value=1)
+	@Size(min=1, max=4)
 	private String status;
 
 	private Boolean isVerified;
@@ -45,28 +42,22 @@ public class PropertyDetail {
 
 	private Boolean isExempted;
 
-	@Max(value =32)
-	@Min(value=1)
+	@Size(min=1, max=32)
 	private String exemptionReason;
 
-	@Max(value =16)
-	@Min(value=1)
+	@Size(min=1, max= 16)
 	private String propertyType;
 
-	@Max(value =16)
-	@Min(value=1)
+	@Size(min=1, max= 16)
 	private String category;
 
-	@Max(value =16)
-	@Min(value=1)
+	@Size(min=1, max= 16)
 	private String usage;
 
-	@Max(value =16)
-	@Min(value=1)
+	@Size(min=1, max= 16)
 	private String department;
 
-	@Max(value =16)
-	@Min(value=1)
+	@Size(min=1, max= 16)
 	private String apartment;
 
 	private Double length;
@@ -81,28 +72,24 @@ public class PropertyDetail {
 
 	private Long noOfFloors;
 
+	@Valid
 	private List<Floor> floors;
 
 	private Boolean isSuperStructure;
 
-	@Max(value =128)
-	@Min(value=1)
+	@Size(min=1, max= 128)
 	private String landOwner;
 
-	@Max(value =16)
-	@Min(value=1)
+	@Size(min=1, max= 16)
 	private String floorType;
 
-	@Max(value =16)
-	@Min(value=1)
+	@Size(min=1, max= 16)
 	private String woodType;
 
-	@Max(value =16)
-	@Min(value=1)
+	@Size(min=1, max= 16)
 	private String roofType;
 
-	@Max(value =16)
-	@Min(value=1)
+	@Size(min=1, max= 16)
 	private String wallType;
 
 	private Boolean lift;
@@ -118,29 +105,24 @@ public class PropertyDetail {
 	private Boolean waterHarvesting;
 
 	private Boolean cableConnection;
-
+	
+    @Valid
 	private VacantLandProperty vacantLand;
 
 	@NonNull
-	@Max(value =16)
-	@Min(value=4)
+	@Size(min=4, max= 16)
 	private String channel;
 
-	@Max(value =32)
-	@Min(value=1)
+	@Size(min=1, max=32)
 	private String applicationNo;
 
-	private String createdBy;
-
-	private String createdDate;
-
-	private String lastModifiedBy;
-
-	private String lastModifiedDate;
+	private AuditDetails auditDetails;
 
 	@NonNull
-	@Max(value =128)
-	@Min(value=4)
+	@Size(min=4, max= 128)
 	private String tenantId;
 
+	private WorkflowDetails workFlowDetails;
+	
+	private List<Document> documents;
 }

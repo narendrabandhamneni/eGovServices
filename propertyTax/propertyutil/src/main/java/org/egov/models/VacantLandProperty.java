@@ -1,9 +1,6 @@
 package org.egov.models;
 
-import java.time.LocalDate;
-
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
+import javax.validation.constraints.Size;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,24 +20,20 @@ public class VacantLandProperty {
 
 	private String id;
 
-	@Max(value =64)
-	@Min(value=4)
+	@Size(min=4, max=64)
 	private String surveyNumber;
 	
-	@Max(value =64)
-	@Min(value=4)
+	@Size(min=4, max=64)
 	private String pattaNumber;
 
 	private Double marketValue;
 
 	private Double capitalValue;
 	
-	@Max(value =64)
-	@Min(value=4)
+	@Size(min=4, max=64)
 	private String layoutApprovedAuth;
 	
-	@Max(value =64)
-	@Min(value=4)
+	@Size(min=4, max=64)
 	private String layoutPermissionNo;
 
 	private String layoutPermissionDate;
@@ -49,21 +42,10 @@ public class VacantLandProperty {
 
 	private Double nonResdPlotArea;
 	
-	@Max(value =16)
-	@Min(value=1)
-	private String createdBy;
-
-	private String createdDate;
-	
-	@Max(value =16)
-	@Min(value=1)
-	private String lastModifiedBy;
-
-	private String lastModifiedDate;
+	private AuditDetails auditDetails;
 
 	@NonNull
-	@Max(value =128)
-	@Min(value=4)
+	@Size(min=4, max=128)
 	private String tenantId;
 
 }

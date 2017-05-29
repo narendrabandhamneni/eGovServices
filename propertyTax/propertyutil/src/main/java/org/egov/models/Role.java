@@ -1,7 +1,6 @@
 package org.egov.models;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
+import javax.validation.constraints.Size;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,14 +15,12 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 public class Role {
-	@Max(value =32)
-	@Min(value=1)
+	@Size(message="",min=1, max=32)
 	private String name;
 
 	private String description;
 
-	@Max(value =32)
-	@Min(value=1)
+	@Size(message="",min=1, max=32)
 	private String code;
 
 	private String id;

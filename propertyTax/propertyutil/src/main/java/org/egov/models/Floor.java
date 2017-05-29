@@ -1,12 +1,11 @@
 package org.egov.models;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 import lombok.ToString;
 
 /**
@@ -18,68 +17,57 @@ import lombok.ToString;
 @ToString
 
 public class Floor {
-	@NonNull
+	@NotNull
 	private String id;
 
-	@NonNull
-	@Max(value =16)
-	@Min(value=1)
+	@NotNull
+	@Size(min=1, max= 16)
 	private String floorNo;
 	
-	@Max(value =8)
-	@Min(value=1)
+	@Size(min=1, max= 8)
 	private String unitNo;
 	
-	@Max(value =16)
-	@Min(value=1)
+	@Size(min=1, max= 16)
 	private String type;
 
 	private Double length;
 
 	private Double width;
 
-	@NonNull
+	@NotNull
 	private Double builtupArea;
 
 	private Double assessableArea;
 
 	private Double bpaBuiltupArea;
 
-	@Max(value =16)
-	@Min(value=1)
+	@Size(min=1, max= 16)
 	private String category;
 
-	@NonNull
-	@Max(value =16)
-	@Min(value=1)
+	@NotNull
+	@Size(min=1, max= 16)
 	private String usage;
 
-	@NonNull
-	@Max(value =16)
-	@Min(value=1)
+	@NotNull
+	@Size(min=1, max= 16)
 	private String occupancy;
 
-	@NonNull
-	@Max(value =16)
-	@Min(value=1)
+	@NotNull
+	@Size(min=1, max= 16)
 	private String structure;
 
-	@Max(value =16)
-	@Min(value=1)
+	@Size(min=1, max= 16)
 	private String depreciation;
 	
-	@Max(value =128)
-	@Min(value=1)
+	@Size(min=1, max= 128)
 	private String occupierName;
 	
-	@Max(value =128)
-	@Min(value=1)
+	@Size(min=1, max= 128)
 	private String firmName;
 
 	private Double rentCollected;
 
-	@Max(value =32)
-	@Min(value=1)
+	@Size(min=1, max=32)
 	private String exemptionReason;
 
 	private Boolean isStructured;
@@ -88,8 +76,7 @@ public class Floor {
 
 	private String constCompletionDate;
 
-	@Max(value =16)
-	@Min(value=1)
+	@Size(min=1, max= 16)
 	private String bpaNo;
 
 	private String bpaDate;
@@ -98,25 +85,16 @@ public class Floor {
 
 	private Double arv;
 
-	@Max(value =64)
-	@Min(value=1)
+	@Size(min=1, max=64)
 	private String electricMeterNo;
 	
-	@Max(value =64)
-	@Min(value=1)
+	@Size(min=1, max= 64)
 	private String waterMeterNo;
 
-	private String createdBy;
-
-	private String createdDate;
-
-	private String lastModifiedBy;
-
-	private String lastModifiedDate;
+	private AuditDetails auditDetails;
 	
-    @NonNull
-    @Max(value =128)
-	@Min(value=4)
+    @NotNull
+    @Size(min=4, max= 128)
 	private String tenantId;
 
 }
