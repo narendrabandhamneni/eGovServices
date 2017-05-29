@@ -93,7 +93,7 @@ public class Property {
 	private AuditDetails auditDetails;
 
 	@NotNull
-	@Size(message="tenantId length should be in between  4 to 128 letters",min=4, max= 128)
+	@Size(min=4, max= 128)
 	private String tenantId;
 
 }

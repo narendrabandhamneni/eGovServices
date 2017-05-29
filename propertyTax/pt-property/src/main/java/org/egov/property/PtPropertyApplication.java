@@ -14,10 +14,6 @@ public class PtPropertyApplication {
 		SpringApplication.run(PtPropertyApplication.class, args);
 
 	}
-	
-  /*  @Bean //this could be provided via auto-configuration
-    MethodValidationPostProcessor methodValidationPostProcessor() {
-        return new MethodValidationPostProcessor();
-    }*/
+
 
 }

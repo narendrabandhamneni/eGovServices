@@ -34,7 +34,7 @@ public class PropertyService {
 		producer.send(env.getProperty("validate.user"), propertyRequest);
 	}
 
-	@SuppressWarnings("unused")
+	/*@SuppressWarnings("unused")
 	@Transactional
 	public void addProperty(List<Property> properties) throws SQLException {
 
@@ -209,7 +209,7 @@ public class PropertyService {
 		}
 
 	}
-
+*/
 	/**
 	 * insertion common logic
 	 * 
