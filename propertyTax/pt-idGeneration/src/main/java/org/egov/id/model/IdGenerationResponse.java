@@ -14,9 +14,9 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 public class IdGenerationResponse {
-	
+
 	private ResponseInfo responseInfo;
-	
+
 	private IdResponse idResponse;
-	
+
 }

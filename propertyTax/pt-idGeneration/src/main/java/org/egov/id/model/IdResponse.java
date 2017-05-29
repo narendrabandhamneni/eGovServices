@@ -12,7 +12,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 public class IdResponse {
-	
+
 	private String id;
-	
+
 }

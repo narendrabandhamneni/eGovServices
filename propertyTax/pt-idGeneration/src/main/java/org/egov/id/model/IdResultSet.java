@@ -1,26 +1,30 @@
 package org.egov.id.model;
 
-import java.util.List;
-
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+@Data
 @Getter
 @Setter
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class IdRequest {
+public class IdResultSet {
 
-	private String idType;
+	private String id;
+
+	private String idtype;
 
 	private String entity;
 
-	private String tenentId;
+	private String tenentid;
 
-	private List<Attribute> attributes;
+	private String regex;
+
+	private String currentseqnum;
 
 }
