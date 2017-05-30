@@ -44,8 +44,10 @@ public class IdGenerationService {
 			conn = DataSourceUtils.getConnection(dataSource);
 			conn.setAutoCommit(false);
 			//select the id type from the id generation table 
-			String idSelectQuery = "SELECT * FROM " + environment.getProperty("idTypeTable")  + " WHERE (idtype=? and entity=? and tenentid=?) FOR UPDATE";
-			pst = conn.prepareStatement(idSelectQuery);
+			StringBuffer idSelectQuery = new StringBuffer();
+			idSelectQuery.append( "SELECT * FROM ") .append( environment.getProperty("idTypeTable"))
+					.append(" WHERE (idtype=? and entity=? and tenentid=?) FOR UPDATE" );
+			pst = conn.prepareStatement(idSelectQuery.toString());
 			pst.setString(1,idRequest.getIdType());
 			pst.setString(2,idRequest.getEntity());
 			pst.setString(3,idRequest.getTenentId());
