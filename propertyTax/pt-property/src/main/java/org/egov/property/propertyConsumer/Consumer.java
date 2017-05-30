@@ -8,7 +8,7 @@ import java.util.Map;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.egov.models.PropertyRequest;
-import org.egov.property.services.PropertyService;
+import org.egov.property.services.PersisterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
@@ -35,7 +35,7 @@ public class Consumer {
      KafkaTemplate<String, PropertyRequest> kafkaTemplate;
     
     @Autowired
-    PropertyService propertyService;
+    PersisterService persisterService;
     
 
     @Bean
@@ -71,7 +71,7 @@ public class Consumer {
     @KafkaListener(topics = "#{environment.getProperty('validate.user')}")
     public void receive(PropertyRequest propertyRequest) throws SQLException {
             
-      propertyService.addProperty(propertyRequest.getProperties());
+      persisterService.addProperty(propertyRequest.getProperties());
 
     }
 }

@@ -11,12 +11,9 @@ import org.egov.models.DocumentType;
 import org.egov.models.Floor;
 import org.egov.models.Property;
 import org.egov.models.PropertyDetail;
-import org.egov.models.PropertyRequest;
 import org.egov.models.User;
 import org.egov.models.VacantLandProperty;
-import org.egov.property.propertyConsumer.Producer;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -25,11 +22,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class PropertyService {
+public class PersisterService {
 
-	@Autowired
-
-	private Environment env;
 
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
