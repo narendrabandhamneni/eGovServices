@@ -25,7 +25,7 @@ import lombok.ToString;
 
 public class Property {
 
-	private String id;
+	private Integer id;
 
 	@NotNull
 	@Size(min=8, max= 128)

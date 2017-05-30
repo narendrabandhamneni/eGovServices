@@ -1,6 +1,5 @@
 package org.egov.models;
 
-import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -21,7 +20,7 @@ import lombok.ToString;
 @ToString
 public class VacantLandProperty {
 
-	private String id;
+	private Integer id;
 
 	@Size(min=4, max=64)
 	private String surveyNumber;
