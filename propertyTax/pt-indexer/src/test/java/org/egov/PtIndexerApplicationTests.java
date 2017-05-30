@@ -41,7 +41,7 @@ private Producer producer;
 		PropertyDetail propertyDetail=new PropertyDetail();
 		propertyDetail.setChannel("eseva");
 		Floor floor=new Floor();
-		floor.setId(1);
+		//floor.setId(1);
 		floor.setFloorNo("1");
 		floor.setBuiltupArea(1234.34);
 		floor.setStructure("flat");

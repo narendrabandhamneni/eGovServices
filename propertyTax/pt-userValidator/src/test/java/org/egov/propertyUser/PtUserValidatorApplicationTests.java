@@ -33,8 +33,6 @@ import org.egov.models.PropertyDetail;
 import org.egov.models.PropertyRequest;
 import org.egov.models.RequestInfo;
 import org.egov.models.User;
-import org.egov.propertyUser.PtUserValidatorApplication;
-import org.egov.propertyUser.userConsumer.Producer;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,8 +40,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.env.Environment;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
-import static org.junit.Assert.*;
-import org.junit.Test;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -54,8 +50,6 @@ public class PtUserValidatorApplicationTests {
 	@Autowired
 	Environment environment;
 
-	@Autowired
-	private Producer producer;
 
 	@Test
 	public void testCreatingProperty() throws Exception {
@@ -77,7 +71,6 @@ public class PtUserValidatorApplicationTests {
 			PropertyDetail propertyDetail = new PropertyDetail();
 			propertyDetail.setChannel("eseva");
 			Floor floor = new Floor();
-			floor.setId("floor123");
 			floor.setFloorNo("1");
 			floor.setBuiltupArea(1234.34);
 			floor.setStructure("flat");

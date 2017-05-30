@@ -10,10 +10,13 @@ import org.egov.models.IdGenerationResponse;
 import org.egov.models.IdRequest;
 import org.egov.models.Property;
 import org.egov.models.PropertyRequest;
+import org.egov.models.PropertyResponse;
+import org.egov.models.ResponseInfo;
 import org.egov.property.propertyConsumer.Producer;
 import org.egov.property.util.PropertyValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -38,7 +41,7 @@ public class PropertyController {
 
 
 	@RequestMapping(method=RequestMethod.POST,path="_create")
-	public List<String> createProperty(@Valid @RequestBody PropertyRequest propertyRequest){
+	public PropertyResponse createProperty(@Valid @RequestBody PropertyRequest propertyRequest){
         List<String> applicationList=new ArrayList<String>();
         
         //Boundary validations for all properties
@@ -60,8 +63,14 @@ public class PropertyController {
 			applicationList.add(idResponse.getIdResponse().getId());
 		}
 		producer.send(environment.getProperty("property.create"), propertyRequest);
+		ResponseInfo responseInfo=new ResponseInfo();
+		responseInfo.setStatus(HttpStatus.OK.toString());
 		
-		return applicationList;
+		PropertyResponse propertyResponse=new PropertyResponse();
+		propertyResponse.setResponseInfo(responseInfo);
+		propertyResponse.setProperties(propertyRequest.getProperties());	
+		return propertyResponse;
+		
 	}
 
 
