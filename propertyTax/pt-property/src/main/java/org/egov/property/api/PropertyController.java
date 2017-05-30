@@ -13,11 +13,11 @@ import org.egov.models.Property;
 import org.egov.models.PropertyRequest;
 import org.egov.models.PropertyResponse;
 import org.egov.models.ResponseInfo;
+import org.egov.models.ResponseInfoFactory;
 import org.egov.property.propertyConsumer.Producer;
 import org.egov.property.util.PropertyValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -39,13 +39,15 @@ public class PropertyController {
 
 	@Autowired
 	RestTemplate restTemplate;
+	
+	@Autowired
+	ResponseInfoFactory responseInfoFactory;
 
 
 	@RequestMapping(method=RequestMethod.POST,path="_create")
 	public PropertyResponse createProperty(@Valid @RequestBody PropertyRequest propertyRequest){
         List<String> applicationList=new ArrayList<String>();
-        
-        //Boundary validations for all properties
+       //Boundary validations for all properties
 		for(Property property :propertyRequest.getProperties()){
 			propertyValidator.validatePropertyBoundary(property);		
 		}
@@ -62,16 +64,14 @@ public class PropertyController {
 			IdGenerationResponse idResponse=restTemplate.patchForObject(environment.getProperty("id.creation"), idGeneration, IdGenerationResponse.class);
 		if(idResponse.getResponseInfo().getStatus().equalsIgnoreCase(environment.getProperty("statusCode"))){
 			if(idResponse.getResponseInfo().getStatus().equalsIgnoreCase(environment.getProperty("badRequest"))){
-				throw new AttributeNotFoundException(environment.getProperty("attribute.notfound"));
+				throw new AttributeNotFoundException(environment.getProperty("attribute.notfound"),propertyRequest.getRequestInfo());
 			}
 		}
 			property.getPropertydetails().setApplicationNo(idResponse.getIdResponse().getId());		
 			applicationList.add(idResponse.getIdResponse().getId());
 		}
 		producer.send(environment.getProperty("property.create"), propertyRequest);
-		ResponseInfo responseInfo=new ResponseInfo();
-		responseInfo.setStatus(HttpStatus.OK.toString());
-		
+	    ResponseInfo responseInfo=responseInfoFactory.createResponseInfoFromRequestInfo(propertyRequest.getRequestInfo(),true);
 		PropertyResponse propertyResponse=new PropertyResponse();
 		propertyResponse.setResponseInfo(responseInfo);
 		propertyResponse.setProperties(propertyRequest.getProperties());	

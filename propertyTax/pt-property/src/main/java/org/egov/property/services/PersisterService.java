@@ -38,15 +38,18 @@ public class PersisterService {
 	public void createProperty(List<Property> properties) {
 		for (Property property : properties) {
 
-			String propertySql = "INSERT INTO egpt_Property(tenantId, upicNo, oldUpicNo, vltUpicNo,"
-					+ " creationReason, assessmentDate, occupancyDate, gisRefNo,"
-					+ " isAuthorised, isUnderWorkflow, channel, createdBy, createdDate, lastModifiedBy, "
-					+ "lastModifiedDate,boundary_id) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-
+			StringBuffer propertySql=new StringBuffer();
+			
+			propertySql.append("INSERT INTO egpt_Property(tenantId, upicNo, oldUpicNo, vltUpicNo,")
+			           .append("creationReason, assessmentDate, occupancyDate, gisRefNo,")
+			           .append("isAuthorised, isUnderWorkflow, channel, createdBy, createdDate, lastModifiedBy, ")
+			           .append("lastModifiedDate,boundary_id) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+			
+			
 			final PreparedStatementCreator psc = new PreparedStatementCreator() {
 				@Override
 				public PreparedStatement createPreparedStatement(final Connection connection) throws SQLException {
-					final PreparedStatement ps = connection.prepareStatement(propertySql, new String[] { "id" });
+					final PreparedStatement ps = connection.prepareStatement(propertySql.toString(), new String[] { "id" });
 					ps.setString(1, property.getTenantId());
 					ps.setString(2, property.getUpicNo());
 					ps.setString(3, property.getOldUpicNo());
@@ -75,11 +78,14 @@ public class PersisterService {
 			Integer propertyId = holder.getKey().intValue();
 
 			Address address = property.getAddress();
+			
+			StringBuffer addressSql=new StringBuffer();
+			
+			addressSql.append("INSERT INTO egpt_Address(tenantId, houseNoBldgApt, streetRoadLine, landmark, ")
+					  .append( "areaLocalitySector, cityTownVillage, district, subDistrict, postOffice, state, country, pinCode,")
+					  .append(" type, createdBy, createdDate, lastModifiedBy, lastModifiedDate,property_id) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
-			String addressSql = "INSERT INTO egpt_Address(tenantId, houseNoBldgApt, streetRoadLine, landmark, "
-					+ "areaLocalitySector, cityTownVillage, district, subDistrict, postOffice, state, country, pinCode,"
-					+ " type, createdBy, createdDate, lastModifiedBy, lastModifiedDate,property_id) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-
+		
 			Object[] addressArgs = { address.getTenantId(), address.getHouseNoBldgApt(), address.getStreetRoadLine(),
 					address.getLandmark(), address.getAreaLocalitySector(), address.getCityTownVillage(),
 					address.getDistrict(), address.getSubDistrict(), address.getPostOffice(), address.getState(),
@@ -88,21 +94,25 @@ public class PersisterService {
 					address.getAuditDetails().getLastModifiedBy(), address.getAuditDetails().getLastModifiedDate(),
 					propertyId };
 
-			jdbcTemplate.update(addressSql, addressArgs);
+			jdbcTemplate.update(addressSql.toString(), addressArgs);
 
 			PropertyDetail propertyDetails = property.getPropertydetails();
+			
+			StringBuffer propertyDetailsSql=new StringBuffer();
+			
+			propertyDetailsSql.append("INSERT INTO egpt_propertydetails(tenantId, regdDocNo, regdDocDate,")
+			                  .append("occupancyDate, reason, status, isVerified, verificationDate, isExempted, exemptionReason,")
+			                  .append("propertyType, category, usage, department, apartment, length, breadth, sitalArea,")
+			                  .append(" totalBuiltupArea, undividedShare, noOfFloors, isSuperStructure, landOwner, floorType,")
+			                  .append(" woodType, roofType, wallType,createdBy, createdDate, lastModifiedBy, ")
+			                  .append("lastModifiedDate, property_id) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
-			String propertyDetailsSql = "INSERT INTO egpt_propertydetails(tenantId, regdDocNo, regdDocDate,"
-					+ " occupancyDate, reason, status, isVerified, verificationDate, isExempted, exemptionReason,"
-					+ " propertyType, category, usage, department, apartment, length, breadth, sitalArea,"
-					+ " totalBuiltupArea, undividedShare, noOfFloors, isSuperStructure, landOwner, floorType,"
-					+ " woodType, roofType, wallType,createdBy, createdDate, lastModifiedBy, "
-					+ "lastModifiedDate, property_id) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+		
 
 			final PreparedStatementCreator pscPropertyDetails = new PreparedStatementCreator() {
 				@Override
 				public PreparedStatement createPreparedStatement(final Connection connection) throws SQLException {
-					final PreparedStatement ps = connection.prepareStatement(propertyDetailsSql, new String[] { "id" });
+					final PreparedStatement ps = connection.prepareStatement(propertyDetailsSql.toString(), new String[] { "id" });
 					ps.setString(1, propertyDetails.getTenantId());
 					ps.setString(2, propertyDetails.getRegdDocNo());
 					ps.setString(3, propertyDetails.getRegdDocDate());
@@ -147,13 +157,14 @@ public class PersisterService {
 			Integer propertyDetailsId = holderPropertyDetails.getKey().intValue();
 
 			for (Floor floor : property.getPropertydetails().getFloors()) {
-
-				String floorSql = "insert into egpt_floors (tenantId,floorNo,unitNo,type,length,width,builtupArea,"
-						+ "assessableArea,bpaBuiltupArea,category,usage,occupancy,"
-						+ "structure,depreciation,occupierName,firmName,rentCollected,exemptionReason,"
-						+ "isStructured,occupancyDate,constCompletionDate,bpaNo,bpaDate,manualArv,"
-						+ "arv,electricMeterNo,waterMeterNo,createdBy,createdDate,lastModifiedBy,lastModifiedDate,property_details_id)"
-						+ " values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+				StringBuffer floorSql=new StringBuffer();
+				floorSql.append("insert into egpt_floors (tenantId,floorNo,unitNo,type,length,width,builtupArea,")
+						.append("assessableArea,bpaBuiltupArea,category,usage,occupancy,")
+						.append("structure,depreciation,occupierName,firmName,rentCollected,exemptionReason,")
+						.append("isStructured,occupancyDate,constCompletionDate,bpaNo,bpaDate,manualArv,")
+						.append("arv,electricMeterNo,waterMeterNo,createdBy,createdDate,lastModifiedBy,lastModifiedDate,property_details_id)")
+						.append(" values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+				
 
 				Object[] floorArgs = { floor.getTenantId(), floor.getFloorNo(), floor.getUnitNo(), floor.getType(),
 						floor.getLength(), floor.getWidth(), floor.getBuiltupArea(), floor.getAssessableArea(),
@@ -166,7 +177,7 @@ public class PersisterService {
 						floor.getAuditDetails().getLastModifiedBy(), floor.getAuditDetails().getLastModifiedDate(),
 						propertyDetailsId };
 				
-				jdbcTemplate.update(floorSql, floorArgs);
+				jdbcTemplate.update(floorSql.toString(), floorArgs);
 
 			}
 
@@ -205,11 +216,12 @@ public class PersisterService {
 			}
 
 			VacantLandProperty vacantLand = property.getPropertydetails().getVacantLand();
-
-			String vaccantLandSql = "insert into egpt_vacantland(tenantId,surveyNumber,pattaNumber,"
-					+ "marketValue,capitalValue,layoutApprovedAuth,layoutPermissionNo,layoutPermissionDate,"
-					+ "resdPlotArea,nonResdPlotArea,createdBy,createdDate,lastModifiedBy,lastModifiedDate,property_details_id) "
-					+ " values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+			StringBuffer vaccantLandSql=new StringBuffer();
+			vaccantLandSql.append("insert into egpt_vacantland(tenantId,surveyNumber,pattaNumber,")
+						  .append("marketValue,capitalValue,layoutApprovedAuth,layoutPermissionNo,layoutPermissionDate,")
+						  .append("resdPlotArea,nonResdPlotArea,createdBy,createdDate,lastModifiedBy,lastModifiedDate,property_details_id)")
+						  .append(" values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+			
 			Object[] vaccantLandArgs = { vacantLand.getTenantId(), vacantLand.getSurveyNumber(),
 					vacantLand.getPattaNumber(), vacantLand.getMarketValue(), vacantLand.getCapitalValue(),
 					vacantLand.getLayoutApprovedAuth(), vacantLand.getLayoutPermissionNo(),
@@ -218,7 +230,7 @@ public class PersisterService {
 					vacantLand.getAuditDetails().getLastModifiedBy(),
 					vacantLand.getAuditDetails().getLastModifiedDate(), propertyDetailsId };
 
-			jdbcTemplate.update(vaccantLandSql, vaccantLandArgs);
+			jdbcTemplate.update(vaccantLandSql.toString(), vaccantLandArgs);
 
 			for (User user : property.getOwners()) {
 				String userPropertySql = "insert into egpt_Property_user(property_Id, user_Id) values (?,?)";

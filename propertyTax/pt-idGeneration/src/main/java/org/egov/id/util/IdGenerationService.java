@@ -62,8 +62,10 @@ public class IdGenerationService {
 			}
 			generatedId = ValidateAttributesAndGetId(attributes, resultSet);
 			//updating the sequence number of the id type
-			String idUpdateQuery = "UPDATE  " + environment.getProperty("idTypeTable")  + " SET currentseqnum=? WHERE (idtype=? and entity=? and tenentid=?)";
-			pst = conn.prepareStatement(idUpdateQuery);
+			StringBuffer idUpdateQuery = new StringBuffer();
+			idUpdateQuery.append("UPDATE ").append(environment.getProperty("idTypeTable"))
+			.append(" SET currentseqnum=? WHERE (idtype=? and entity=? and tenentid=?)");
+			pst = conn.prepareStatement(idUpdateQuery.toString());
 			pst.setInt(1,Integer.parseInt(resultSet.getCurrentseqnum())+1);
 			pst.setString(2,idRequest.getIdType());
 			pst.setString(3,idRequest.getEntity());

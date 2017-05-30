@@ -1,4 +1,4 @@
-package org.egov.id.util;
+package org.egov.models;
 
 import org.egov.models.RequestInfo;
 import org.egov.models.ResponseInfo;
@@ -15,7 +15,7 @@ public class ResponseInfoFactory {
 			ts = requestInfo.getTs().toString();
 		String resMsgId = "uief87324"; // FIXME : Hard-coded
 		String msgId = requestInfo.getMsgId();
-		String responseStatus = success ? "201" : "400";
+		String responseStatus = success ? "successful" : "failed";
 		return new ResponseInfo(apiId, ver, ts, resMsgId, msgId, responseStatus);
 	}
 }
