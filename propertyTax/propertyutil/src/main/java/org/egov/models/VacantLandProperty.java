@@ -1,5 +1,8 @@
 package org.egov.models;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import lombok.AllArgsConstructor;
@@ -26,16 +29,20 @@ public class VacantLandProperty {
 	@Size(min=4, max=64)
 	private String pattaNumber;
 
+	
 	private Double marketValue;
 
+	@Min(value=500)
 	private Double capitalValue;
 	
 	@Size(min=4, max=64)
+	@NotNull
 	private String layoutApprovedAuth;
 	
 	@Size(min=4, max=64)
 	private String layoutPermissionNo;
 
+	@NotNull
 	private String layoutPermissionDate;
 
 	private Double resdPlotArea;

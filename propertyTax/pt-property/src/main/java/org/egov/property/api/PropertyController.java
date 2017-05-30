@@ -1,5 +1,8 @@
 package org.egov.property.api;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.egov.models.IdGenerationRequest;
@@ -35,23 +38,30 @@ public class PropertyController {
 
 
 	@RequestMapping(method=RequestMethod.POST,path="_create")
-	public String createProperty(@Valid @RequestBody PropertyRequest propertyRequest){
-
+	public List<String> createProperty(@Valid @RequestBody PropertyRequest propertyRequest){
+        List<String> applicationList=new ArrayList<String>();
+        
+        //Boundary validations for all properties
 		for(Property property :propertyRequest.getProperties()){
-			propertyValidator.validatePropertyBoundary(property);
+			propertyValidator.validatePropertyBoundary(property);		
+		}
+		
+		//generating acknowledgement number for all properties
+		for(Property property:propertyRequest.getProperties()){
+			IdRequest idrequest=new IdRequest();
+			idrequest.setEntity(environment.getProperty(environment.getProperty("id.entity")));
+			idrequest.setIdType(environment.getProperty("id.type"));
+			idrequest.setTenentId(propertyRequest.getProperties().get(0).getTenantId());
+			IdGenerationRequest idGeneration=new IdGenerationRequest();
+			idGeneration.setIdRequest(idrequest);
+			idGeneration.setRequestInfo(propertyRequest.getRequestInfo());
+			IdGenerationResponse idResponse=restTemplate.patchForObject(environment.getProperty("id.creation"), idGeneration, IdGenerationResponse.class);
+			property.getPropertydetails().setApplicationNo(idResponse.getIdResponse().getId());		
+			applicationList.add(idResponse.getIdResponse().getId());
 		}
 		producer.send(environment.getProperty("property.create"), propertyRequest);
-
-		IdRequest idrequest=new IdRequest();
-		idrequest.setEntity(environment.getProperty(environment.getProperty("id.entity")));
-		idrequest.setIdType(environment.getProperty("id.type"));
-		idrequest.setTenentId(propertyRequest.getProperties().get(0).getTenantId());
-
-		IdGenerationRequest idGeneration=new IdGenerationRequest();
-		idGeneration.setIdRequest(idrequest);
-		idGeneration.setRequestInfo(propertyRequest.getRequestInfo());
-		IdGenerationResponse idResponse=restTemplate.patchForObject(environment.getProperty("id.creation"), idGeneration, IdGenerationResponse.class);
-		return idResponse.getIdResponse().getId();
+		
+		return applicationList;
 	}
 
 
