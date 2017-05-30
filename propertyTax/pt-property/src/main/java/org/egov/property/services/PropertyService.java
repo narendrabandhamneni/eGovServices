@@ -34,13 +34,6 @@ public class PropertyService {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 
-	@Autowired
-	Producer producer;
-
-	public void sendPropertyToKafka(PropertyRequest propertyRequest) {
-		producer.send(env.getProperty("validate.user"), propertyRequest);
-	}
-
 	@Transactional
 	public void addProperty(List<Property> properties) throws SQLException {
 
@@ -84,6 +77,7 @@ public class PropertyService {
 			final KeyHolder holder = new GeneratedKeyHolder();
 
 			jdbcTemplate.update(psc, holder);
+			
 			Integer propertyId = holder.getKey().intValue();
 
 			Address address = property.getAddress();
@@ -155,6 +149,7 @@ public class PropertyService {
 			final KeyHolder holderPropertyDetails = new GeneratedKeyHolder();
 
 			jdbcTemplate.update(pscPropertyDetails, holderPropertyDetails);
+			
 			Integer propertyDetailsId = holderPropertyDetails.getKey().intValue();
 
 			for (Floor floor : property.getPropertydetails().getFloors()) {
@@ -176,6 +171,7 @@ public class PropertyService {
 						floor.getAuditDetails().getCreatedBy(), floor.getAuditDetails().getCreatedDate(),
 						floor.getAuditDetails().getLastModifiedBy(), floor.getAuditDetails().getLastModifiedDate(),
 						propertyDetailsId };
+				
 				jdbcTemplate.update(floorSql, floorArgs);
 
 			}
@@ -201,13 +197,14 @@ public class PropertyService {
 				final KeyHolder holderDocumentType = new GeneratedKeyHolder();
 
 				jdbcTemplate.update(pscDocumentType, holderDocumentType);
+				
 				Integer documentTypeId = holderDocumentType.getKey().intValue();
 
 				// document insertion
 
-				String documentSql = "INSERT INTO  egpt_document(documentType,property,fileStore) values (?,?,?)";
+				String documentSql = "INSERT INTO  egpt_document(documentType,fileStore,property_details_id) values (?,?,?)";
 
-				Object[] documentArgs = { documentTypeId, document.getProperty(), document.getFileStore() };
+				Object[] documentArgs = { documentTypeId, document.getFileStore(), propertyDetailsId };
 
 				jdbcTemplate.update(documentSql, documentArgs);
 
@@ -230,9 +227,8 @@ public class PropertyService {
 			jdbcTemplate.update(vaccantLandSql, vaccantLandArgs);
 
 			for (User user : property.getOwners()) {
-				String getUserId = user.getId();
-				String userPropertySql = "insert into egpt_Property_user(propertyId, userId) values (?,?)";
-				Object[] userPropertyArgs = { propertyId, getUserId };
+				String userPropertySql = "insert into egpt_Property_user(property_Id, user_Id) values (?,?)";
+				Object[] userPropertyArgs = { propertyId, user.getId() };
 				jdbcTemplate.update(userPropertySql, userPropertyArgs);
 
 			}

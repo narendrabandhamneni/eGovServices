@@ -236,7 +236,6 @@ ALTER TABLE ONLY egpt_documenttype
 CREATE TABLE egpt_document (
     id integer NOT NULL,
     documenttype integer NOT NULL,
-    property integer,
     filestore character varying,
     property_details_id integer
 );
@@ -310,8 +309,8 @@ ALTER TABLE ONLY egpt_vacantland
 
 CREATE TABLE egpt_property_user (
     id integer NOT NULL,
-    propertyid integer NOT NULL,
-    userid character varying
+    property_id integer NOT NULL,
+    user_id character varying
 );
 
 
@@ -334,7 +333,7 @@ ALTER TABLE ONLY egpt_property_user
 
 
 ALTER TABLE ONLY egpt_property_user
-    ADD CONSTRAINT egpt_property_fk FOREIGN KEY (propertyid) REFERENCES egpt_property(id) DEFERRABLE INITIALLY DEFERRED;
+    ADD CONSTRAINT egpt_property_fk FOREIGN KEY (property_id) REFERENCES egpt_property(id) DEFERRABLE INITIALLY DEFERRED;
 
 
 

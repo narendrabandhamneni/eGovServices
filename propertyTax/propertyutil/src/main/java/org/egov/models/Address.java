@@ -22,7 +22,7 @@ import lombok.ToString;
 public class Address {
 
 	
-	private String id;
+	private Integer id;
 
 	@Valid
 	@Size(min=4, max= 32)

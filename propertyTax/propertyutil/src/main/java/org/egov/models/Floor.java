@@ -17,8 +17,8 @@ import lombok.ToString;
 @ToString
 
 public class Floor {
-	@NotNull
-	private String id;
+	
+	private Integer id;
 
 	@NotNull
 	@Size(min=1, max= 16)

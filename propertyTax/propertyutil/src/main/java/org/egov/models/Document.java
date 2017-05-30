@@ -13,7 +13,5 @@ public class Document {
 	
 	private DocumentType documentType;
 	
-	private Integer  property;
-	
 	private String fileStore;
 }

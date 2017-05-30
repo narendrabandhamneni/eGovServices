@@ -21,7 +21,7 @@ import lombok.ToString;
 @ToString
 public class PropertyDetail {
 
-	private String id;
+	private Integer id;
 
 	@Size(min=1, max=64)
 	private String regdDocNo;
