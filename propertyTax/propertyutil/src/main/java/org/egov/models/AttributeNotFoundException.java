@@ -1,4 +1,4 @@
-package org.egov.id.exception;
+package org.egov.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

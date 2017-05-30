@@ -1,10 +1,11 @@
 package org.egov.id.api;
 
-import org.egov.id.model.IdGenerationRequest;
-import org.egov.id.model.IdGenerationResponse;
-import org.egov.id.model.IdResponse;
+
 import org.egov.id.util.IdGenerationService;
 import org.egov.id.util.ResponseInfoFactory;
+import org.egov.models.IdGenerationRequest;
+import org.egov.models.IdGenerationResponse;
+import org.egov.models.IdResponse;
 import org.egov.models.RequestInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;

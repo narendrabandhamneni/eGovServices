@@ -11,11 +11,11 @@ import java.util.regex.Pattern;
 
 import javax.sql.DataSource;
 
-import org.egov.id.exception.AttributeNotFoundException;
-import org.egov.id.model.Attribute;
-import org.egov.id.model.IdGenerationRequest;
-import org.egov.id.model.IdRequest;
 import org.egov.id.model.IdResultSet;
+import org.egov.models.AttributeNotFoundException;
+import org.egov.models.IdAttribute;
+import org.egov.models.IdGenerationRequest;
+import org.egov.models.IdRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DataSourceUtils;
@@ -33,7 +33,7 @@ public class IdGenerationService {
 	public String generateId(IdGenerationRequest idGenReq) throws Exception {
 
 		IdRequest idRequest = idGenReq.getIdRequest();
-		List<Attribute> attributes = new ArrayList<Attribute>(idRequest.getAttributes());
+		List<IdAttribute> attributes = new ArrayList<IdAttribute>(idRequest.getAttributes());
 		IdResultSet resultSet = new IdResultSet();
 		//connection and prepared statement
 		PreparedStatement pst = null;
@@ -77,9 +77,9 @@ public class IdGenerationService {
 	}
 
 	//method to check the attribute exists or not
-	public boolean containsAttribute(List<Attribute> attributeList, String key) {
+	public boolean containsAttribute(List<IdAttribute> attributeList, String key) {
 
-		for (Attribute attribute : attributeList) {
+		for (IdAttribute attribute : attributeList) {
 			if (attribute.getKey().equals(key)) {
 				return true;
 			}
@@ -100,7 +100,7 @@ public class IdGenerationService {
 	}
 
 	//method to validate the attributes and returns the generated id
-	public String ValidateAttributesAndGetId( List<Attribute> attributes, IdResultSet resultSet ){
+	public String ValidateAttributesAndGetId( List<IdAttribute> attributes, IdResultSet resultSet ){
 
 		String regex = resultSet.getRegex();
 		List<String> matchList = new ArrayList<String>();
@@ -109,24 +109,24 @@ public class IdGenerationService {
 		while (regexMatcher.find()) {//Finds Matching Pattern in String
 			matchList.add(regexMatcher.group(1));//Fetching Group from String
 		}
-		for(String str:matchList) {
-			if(str.equalsIgnoreCase("randNo") || str.equalsIgnoreCase("seqNumber")){
-				if(str.equalsIgnoreCase("randNo")){
+		for(String attributeName:matchList) {
+			if(attributeName.equalsIgnoreCase("randNo") || attributeName.equalsIgnoreCase("seqNumber")){
+				if(attributeName.equalsIgnoreCase("randNo")){
 					regex = regex.replace("{randNo}", generateRandomText());
 				} else {
 					regex = regex.replace("{seqNumber}", resultSet.getCurrentseqnum());
 				}
 			} else {
-				if(containsAttribute(attributes, str)){
-					for(Attribute a:attributes){  
-						if(a.getKey().equalsIgnoreCase(str)){
-							regex = regex.replace("{"+str+"}", a.getValue());
+				if(containsAttribute(attributes, attributeName)){
+					for(IdAttribute attribute:attributes){  
+						if(attribute.getKey().equalsIgnoreCase(attributeName)){
+							regex = regex.replace("{"+attributeName+"}", attribute.getValue());
 						} 
 					}
 				} else {
 					//throw the exception for attribute not found
 					AttributeNotFoundException attException = new AttributeNotFoundException();
-					attException.setCustomMsg("attribute "+ str +" Not found");
+					attException.setCustomMsg("attribute "+ attributeName +" Not found");
 					throw attException;
 				}
 			}

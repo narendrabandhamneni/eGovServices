@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import org.egov.models.AttributeNotFoundException;
 import org.egov.models.IdGenerationRequest;
 import org.egov.models.IdGenerationResponse;
 import org.egov.models.IdRequest;
@@ -59,6 +60,11 @@ public class PropertyController {
 			idGeneration.setIdRequest(idrequest);
 			idGeneration.setRequestInfo(propertyRequest.getRequestInfo());
 			IdGenerationResponse idResponse=restTemplate.patchForObject(environment.getProperty("id.creation"), idGeneration, IdGenerationResponse.class);
+		if(idResponse.getResponseInfo().getStatus().equalsIgnoreCase(environment.getProperty("statusCode"))){
+			if(idResponse.getResponseInfo().getStatus().equalsIgnoreCase(environment.getProperty("badRequest"))){
+				throw new AttributeNotFoundException(environment.getProperty("attribute.notfound"));
+			}
+		}
 			property.getPropertydetails().setApplicationNo(idResponse.getIdResponse().getId());		
 			applicationList.add(idResponse.getIdResponse().getId());
 		}

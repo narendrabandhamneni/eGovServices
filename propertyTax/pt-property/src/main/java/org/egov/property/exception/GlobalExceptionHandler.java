@@ -2,6 +2,7 @@ package org.egov.property.exception;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.egov.models.AttributeNotFoundException;
 import org.egov.models.Error;
 import org.egov.models.ErrorRes;
 import org.egov.models.ResponseInfo;
@@ -44,6 +45,12 @@ public class GlobalExceptionHandler {
 			return new ErrorRes(responseInfo,error);		}
 		else if(ex instanceof InvalidPropertyBoundaryException){
 			Error error=new Error(HttpStatus.BAD_REQUEST.toString(),environment.getProperty("invalidPropertyBoundary"),null,new HashMap<String,String>());
+			ResponseInfo responseInfo=new ResponseInfo();
+			responseInfo.setStatus(HttpStatus.BAD_REQUEST.toString());
+			return new ErrorRes(responseInfo,error);
+		}
+		else if(ex instanceof AttributeNotFoundException){
+			Error error=new Error(environment.getProperty("property.invalid.code"),environment.getProperty("invalid.input"),environment.getProperty("attribute.notfound"),new HashMap<String,String>());
 			ResponseInfo responseInfo=new ResponseInfo();
 			responseInfo.setStatus(HttpStatus.BAD_REQUEST.toString());
 			return new ErrorRes(responseInfo,error);

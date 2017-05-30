@@ -1,6 +1,7 @@
 package org.egov.id.exception;
 import java.util.HashMap;
 
+import org.egov.models.AttributeNotFoundException;
 import org.egov.models.Error;
 import org.egov.models.ErrorRes;
 import org.egov.models.ResponseInfo;
