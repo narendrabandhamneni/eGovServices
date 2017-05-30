@@ -30,7 +30,7 @@ public class IdGenerationService {
 	@Autowired
 	private Environment environment;
 
-	public String generateId(IdGenerationRequest idGenReq) {
+	public String generateId(IdGenerationRequest idGenReq) throws Exception {
 
 		IdRequest idRequest = idGenReq.getIdRequest();
 		List<Attribute> attributes = new ArrayList<Attribute>(idRequest.getAttributes());
@@ -70,19 +70,10 @@ public class IdGenerationService {
 			//committing the transaction
 			conn.commit();
 			conn.setAutoCommit(true);
-		} catch (SQLException ex) {
-			// TODO Auto-generated catch block
-			ex.printStackTrace();
-		} finally {
-			try {
-				conn.close();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		} finally{
+			conn.close();
 		}
 		return generatedId;
-
 	}
 
 	//method to check the attribute exists or not

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping(path="/id/")
 public class IdGenerationController {
 
 	@Autowired
@@ -21,8 +22,8 @@ public class IdGenerationController {
 	@Autowired
 	private ResponseInfoFactory responseInfoFactory;
 
-	@RequestMapping(method=RequestMethod.POST, value="id/_create")
-	public IdGenerationResponse generateIdResponse(@RequestBody IdGenerationRequest idGenReq){
+	@RequestMapping(method=RequestMethod.POST, path="_create")
+	public IdGenerationResponse generateIdResponse(@RequestBody IdGenerationRequest idGenReq) throws Exception{
 		
 		RequestInfo requestInfo = idGenReq.getRequestInfo();
 		IdGenerationResponse idGenerationResponse = new IdGenerationResponse();
