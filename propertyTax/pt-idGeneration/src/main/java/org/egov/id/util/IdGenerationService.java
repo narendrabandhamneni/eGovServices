@@ -1,9 +1,8 @@
-package org.egov.id.service;
+package org.egov.id.util;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -12,6 +11,7 @@ import java.util.regex.Pattern;
 
 import javax.sql.DataSource;
 
+import org.egov.id.exception.AttributeNotFoundException;
 import org.egov.id.model.Attribute;
 import org.egov.id.model.IdGenerationRequest;
 import org.egov.id.model.IdRequest;
@@ -125,7 +125,9 @@ public class IdGenerationService {
 					}
 				} else {
 					//throw the exception for attribute not found
-					throw new IllegalStateException("attribute "+ str +" Not found");
+					AttributeNotFoundException attException = new AttributeNotFoundException();
+					attException.setCustomMsg("attribute "+ str +" Not found");
+					throw attException;
 				}
 			}
 		}
