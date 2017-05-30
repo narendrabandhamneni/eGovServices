@@ -5,7 +5,9 @@ import java.util.Map;
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
+import org.egov.models.Property;
 import org.egov.models.PropertyRequest;
+import org.egov.models.User;
 import org.egov.models.UserAuthResponseInfo;
 import org.egov.propertyUser.model.UserResponseInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,8 +39,8 @@ public class Consumer {
 
 	@Autowired
 	private KafkaTemplate<String, PropertyRequest> kafkaTemplate;
-	
-	
+
+
 	@Bean
 	public Map<String,Object> consumerConfig(){
 		Map<String,Object> consumerProperties=new HashMap<String,Object>();
@@ -49,21 +51,21 @@ public class Consumer {
 		consumerProperties.put(ConsumerConfig.GROUP_ID_CONFIG, "user");
 		return consumerProperties;
 	}
-	
+
 	@Bean
 	public ConsumerFactory<String, PropertyRequest> consumerFactory(){
 		return new DefaultKafkaConsumerFactory<>(consumerConfig(),new StringDeserializer(),
-		        new JsonDeserializer<>(PropertyRequest.class));
-		
+				new JsonDeserializer<>(PropertyRequest.class));
+
 	}
-	
+
 	@Bean
 	public ConcurrentKafkaListenerContainerFactory<String, PropertyRequest> kafkaListenerContainerFactory(){
 		ConcurrentKafkaListenerContainerFactory<String, PropertyRequest> factory=new ConcurrentKafkaListenerContainerFactory<String,PropertyRequest>();
-		 factory.setConsumerFactory(consumerFactory());
-		 return factory;
+		factory.setConsumerFactory(consumerFactory());
+		return factory;
 	}
-	
+
 
 	@Bean
 	public RestTemplate restTemplate(){
@@ -93,42 +95,45 @@ public class Consumer {
 
 		propertyRequest.getRequestInfo().setAuthToken(userAuthResponseInfo.getAccess_token());
 
-		if(propertyRequest.getProperties().get(0).getOwners().get(0).getId() !=null){
+		for(Property property:propertyRequest.getProperties()){
+			for(User user: property.getOwners()){
+				if(user.getId() !=null){
 
-			Map<String,Object> userSearchRequestInfo=new HashMap<String,Object >();
-			userSearchRequestInfo.put("username",propertyRequest.getProperties().get(0).getOwners().get(0).getUsername());
-			userSearchRequestInfo.put("tenantId",propertyRequest.getProperties().get(0).getOwners().get(0).getTenantId());
-			userSearchRequestInfo.put("RequestInfo",propertyRequest.getRequestInfo());
+					Map<String,Object> userSearchRequestInfo=new HashMap<String,Object >();
+					userSearchRequestInfo.put("username",propertyRequest.getProperties().get(0).getOwners().get(0).getUsername());
+					userSearchRequestInfo.put("tenantId",propertyRequest.getProperties().get(0).getOwners().get(0).getTenantId());
+					userSearchRequestInfo.put("RequestInfo",propertyRequest.getRequestInfo());
 
-			UserResponseInfo userResponse= restTemplate.postForObject(env.getProperty("user.searchUrl"), userSearchRequestInfo, UserResponseInfo.class);
+					UserResponseInfo userResponse= restTemplate.postForObject(env.getProperty("user.searchUrl"), userSearchRequestInfo, UserResponseInfo.class);
 
-			if(userResponse.getResponseInfo().getStatus().equalsIgnoreCase(env.getProperty("statusCode"))){
-				if(userResponse.getUsers()==null){
+					if(userResponse.getResponseInfo().getStatus().equalsIgnoreCase(env.getProperty("statusCode"))){
+						if(userResponse.getUsers()==null){
+							Map<String,Object> userCreateRequestInfo=new HashMap<String,Object >();
+							userCreateRequestInfo.put("User",propertyRequest.getProperties().get(0).getOwners());
+							userCreateRequestInfo.put("RequestInfo",propertyRequest.getRequestInfo());
+
+
+							UserResponseInfo userCreateResponse = restTemplate.postForObject(env.getProperty("user.createUrl"),
+									userCreateRequestInfo, UserResponseInfo.class);	
+						}
+						else{
+							propertyRequest.getProperties().get(0).getOwners().get(0).setId(userResponse.getUsers().get(0).getId());
+							kafkaTemplate.send(env.getProperty("update.user"), propertyRequest);
+						}
+					}
+
+				}else{
 					Map<String,Object> userCreateRequestInfo=new HashMap<String,Object >();
 					userCreateRequestInfo.put("User",propertyRequest.getProperties().get(0).getOwners());
 					userCreateRequestInfo.put("RequestInfo",propertyRequest.getRequestInfo());
 
-
 					UserResponseInfo userCreateResponse = restTemplate.postForObject(env.getProperty("user.createUrl"),
-							userCreateRequestInfo, UserResponseInfo.class);	
-				}
-				else{
-					propertyRequest.getProperties().get(0).getOwners().get(0).setId(userResponse.getUsers().get(0).getId());
+							userCreateRequestInfo, UserResponseInfo.class);
 					kafkaTemplate.send(env.getProperty("update.user"), propertyRequest);
+
 				}
 			}
-
-		}else{
-			Map<String,Object> userCreateRequestInfo=new HashMap<String,Object >();
-			userCreateRequestInfo.put("User",propertyRequest.getProperties().get(0).getOwners());
-			userCreateRequestInfo.put("RequestInfo",propertyRequest.getRequestInfo());
-
-			UserResponseInfo userCreateResponse = restTemplate.postForObject(env.getProperty("user.createUrl"),
-					userCreateRequestInfo, UserResponseInfo.class);
-			kafkaTemplate.send(env.getProperty("update.user"), propertyRequest);
-
 		}
-
 
 	}
 
