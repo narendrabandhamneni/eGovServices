@@ -3,7 +3,6 @@ package org.egov.property.services;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.List;
 
 import org.egov.models.Address;
@@ -49,10 +48,8 @@ public class PropertyService {
 
 	}
 
-	public Integer createProperty(List<Property> properties) {
+	public void createProperty(List<Property> properties) {
 		for (Property property : properties) {
-
-			String boundaryId = property.getBoundary().getId();
 
 			String propertySql = "INSERT INTO egpt_Property(tenantId, upicNo, oldUpicNo, vltUpicNo,"
 					+ " creationReason, assessmentDate, occupancyDate, gisRefNo,"
@@ -233,9 +230,6 @@ public class PropertyService {
 			jdbcTemplate.update(vaccantLandSql, vaccantLandArgs);
 
 			for (User user : property.getOwners()) {
-
-				// property and user bridge table insertion
-
 				String getUserId = user.getId();
 				String userPropertySql = "insert into egpt_Property_user(propertyId, userId) values (?,?)";
 				Object[] userPropertyArgs = { propertyId, getUserId };
@@ -244,7 +238,6 @@ public class PropertyService {
 			}
 
 		}
-		return 0;
 	}
 
 }
