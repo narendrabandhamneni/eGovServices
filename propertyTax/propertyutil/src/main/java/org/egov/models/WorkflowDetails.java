@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class WorkflowDetails {
 
+	private Integer workFlowId;
+
 	private String	department;
 
 	private String  designation;	
@@ -18,5 +20,4 @@ public class WorkflowDetails {
 	private String	 action;	
 
 	private String	status;
-
 }
