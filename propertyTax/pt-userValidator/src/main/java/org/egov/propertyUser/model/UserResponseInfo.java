@@ -15,9 +15,9 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 public class UserResponseInfo {
-	
-	private List<User> users;
-	
+
+	private List<User> user;
+
 	private ResponseInfo responseInfo;
 
 }

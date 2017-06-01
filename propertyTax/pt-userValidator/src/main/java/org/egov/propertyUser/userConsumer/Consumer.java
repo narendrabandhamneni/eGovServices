@@ -1,6 +1,8 @@
 package org.egov.propertyUser.userConsumer;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;
@@ -9,6 +11,8 @@ import org.egov.models.Property;
 import org.egov.models.PropertyRequest;
 import org.egov.models.User;
 import org.egov.models.UserAuthResponseInfo;
+import org.egov.models.UserRequest;
+import org.egov.propertyUser.model.UserRequestInfo;
 import org.egov.propertyUser.model.UserResponseInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -35,17 +39,24 @@ public class Consumer {
 	RestTemplate restTemplate;
 
 	@Autowired
-	Environment env;
+	Environment environment;
 
 	@Autowired
-	private KafkaTemplate<String, PropertyRequest> kafkaTemplate;
+	private Producer producer;
+	
+	
+
+	@Bean
+	public RestTemplate restTemplate(){
+		return new RestTemplate();
+	}
 
 
 	@Bean
 	public Map<String,Object> consumerConfig(){
 		Map<String,Object> consumerProperties=new HashMap<String,Object>();
-		consumerProperties.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, env.getProperty("autoOffsetResetConfig"));
-		consumerProperties.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, env.getProperty("bootstrap-servers"));
+		consumerProperties.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, environment.getProperty("autoOffsetResetConfig"));
+		consumerProperties.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, environment.getProperty("bootstrap-servers"));
 		consumerProperties.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
 		consumerProperties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
 		consumerProperties.put(ConsumerConfig.GROUP_ID_CONFIG, "user");
@@ -67,31 +78,24 @@ public class Consumer {
 	}
 
 
-	@Bean
-	public RestTemplate restTemplate(){
-		return new RestTemplate();
-	}
-
-
-
-	@KafkaListener(topics ="${validate.user}")
+	@KafkaListener(topics ="#{environment.getProperty('validate.user')}")
 	public void receive(PropertyRequest propertyRequest) {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-		headers.add("Authorization",env.getProperty("authkey") );
+		headers.add("Authorization",environment.getProperty("authkey") );
 
 		MultiValueMap<String, String> map = new LinkedMultiValueMap<String, String>();
-		map.add("username", env.getProperty("oauth.username"));
-		map.add("password", env.getProperty("password"));
-		map.add("grant_type", env.getProperty("grant_type"));
-		map.add("scope", env.getProperty("scope"));
+		map.add("username", environment.getProperty("oauth.username"));
+		map.add("password", environment.getProperty("password"));
+		map.add("grant_type", environment.getProperty("grant_type"));
+		map.add("scope", environment.getProperty("scope"));
 		map.add("tenantId",propertyRequest.getProperties().get(0).getOwners().get(0).getTenantId());
 
 		HttpEntity<MultiValueMap<String, String>> requestEntity= 
 				new HttpEntity<MultiValueMap<String, String>>(map, headers);
 
 
-		UserAuthResponseInfo userAuthResponseInfo=	restTemplate.postForObject(env.getProperty("user.auth"), requestEntity, UserAuthResponseInfo.class);
+		UserAuthResponseInfo userAuthResponseInfo=	restTemplate.postForObject(environment.getProperty("user.auth"), requestEntity, UserAuthResponseInfo.class);
 
 		propertyRequest.getRequestInfo().setAuthToken(userAuthResponseInfo.getAccess_token());
 
@@ -100,39 +104,36 @@ public class Consumer {
 				if(user.getId() !=null){
 
 					Map<String,Object> userSearchRequestInfo=new HashMap<String,Object >();
-					userSearchRequestInfo.put("username",user.getUsername());
+					userSearchRequestInfo.put("username",user.getUserName());
 					userSearchRequestInfo.put("tenantId",user.getTenantId());
 					userSearchRequestInfo.put("RequestInfo",propertyRequest.getRequestInfo());
 
-					UserResponseInfo userResponse= restTemplate.postForObject(env.getProperty("user.searchUrl"), userSearchRequestInfo, UserResponseInfo.class);
+					UserResponseInfo userResponse= restTemplate.postForObject(environment.getProperty("user.searchUrl"), userSearchRequestInfo, UserResponseInfo.class);
 
-					if(userResponse.getResponseInfo().getStatus().equalsIgnoreCase(env.getProperty("statusCode"))){
-						if(userResponse.getUsers()==null){
-							Map<String,Object> userCreateRequestInfo=new HashMap<String,Object >();
-							userCreateRequestInfo.put("User",user);
-							userCreateRequestInfo.put("RequestInfo",propertyRequest.getRequestInfo());
-
-
-							UserResponseInfo userCreateResponse = restTemplate.postForObject(env.getProperty("user.createUrl"),
-									userCreateRequestInfo, UserResponseInfo.class);	
+					if(userResponse.getResponseInfo().getStatus().equalsIgnoreCase(environment.getProperty("statusCode"))){
+						if(userResponse.getUser()==null){
+							UserRequestInfo userRequestInfo=new UserRequestInfo();
+							userRequestInfo.setRequestInfo(propertyRequest.getRequestInfo());
+							userRequestInfo.setUser(user);
+							UserResponseInfo userCreateResponse = restTemplate.postForObject(environment.getProperty("user.createUrl"),
+									userRequestInfo, UserResponseInfo.class);	
 						}
 						else{
-							user.setId(userResponse.getUsers().get(0).getId());
-							kafkaTemplate.send(env.getProperty("update.user"), propertyRequest);
+							user.setId(userResponse.getUser().get(0).getId());
 						}
 					}
 
 				}else{
-					Map<String,Object> userCreateRequestInfo=new HashMap<String,Object >();
-					userCreateRequestInfo.put("User",user);
-					userCreateRequestInfo.put("RequestInfo",propertyRequest.getRequestInfo());
+	        UserRequestInfo userRequestInfo=new UserRequestInfo();
+					userRequestInfo.setRequestInfo(propertyRequest.getRequestInfo());
+					userRequestInfo.setUser(user);
 
-					UserResponseInfo userCreateResponse = restTemplate.postForObject(env.getProperty("user.createUrl"),
-							userCreateRequestInfo, UserResponseInfo.class);
-					user.setId(userCreateResponse.getUsers().get(0).getId());
-					kafkaTemplate.send(env.getProperty("update.user"), propertyRequest);
-
+					UserResponseInfo userCreateResponse = restTemplate.postForObject(environment.getProperty("user.createUrl"),
+							userRequestInfo, UserResponseInfo.class);
+					System.out.println(userCreateResponse+"user Create Response");
+					user.setId(userCreateResponse.getUser().get(0).getId());
 				}
+				producer.kafkaTemplate.send(environment.getProperty("update.user"), propertyRequest);
 			}
 		}
 

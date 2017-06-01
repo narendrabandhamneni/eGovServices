@@ -20,6 +20,9 @@ public class Producer {
 	@Autowired
 	private Environment envorniment;
 	
+	@Autowired
+	KafkaTemplate<String, PropertyRequest> kafkaTemplate;
+	
 	
 	@Bean
 	public Map<String,Object> producerConfig(){
@@ -38,5 +41,9 @@ public class Producer {
 	@Bean
 	public KafkaTemplate<String, PropertyRequest> kafkaTemplate(){
 		return new KafkaTemplate<>(producerFactory());
+	}
+	
+	public void send(String topic,PropertyRequest propertyRequest){
+		kafkaTemplate.send(topic, propertyRequest);
 	}
 }
