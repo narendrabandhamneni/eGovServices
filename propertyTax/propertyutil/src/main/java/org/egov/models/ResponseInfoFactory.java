@@ -1,10 +1,8 @@
 package org.egov.models;
 
-import org.egov.models.RequestInfo;
-import org.egov.models.ResponseInfo;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 public class ResponseInfoFactory {
 	public ResponseInfo createResponseInfoFromRequestInfo(RequestInfo requestInfo, Boolean success) {
 
