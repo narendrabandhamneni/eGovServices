@@ -43,8 +43,8 @@ public class Consumer {
 
 	@Autowired
 	private Producer producer;
-	
-	
+
+
 
 	@Bean
 	public RestTemplate restTemplate(){
@@ -124,13 +124,12 @@ public class Consumer {
 					}
 
 				}else{
-	        UserRequestInfo userRequestInfo=new UserRequestInfo();
+					UserRequestInfo userRequestInfo=new UserRequestInfo();
 					userRequestInfo.setRequestInfo(propertyRequest.getRequestInfo());
 					userRequestInfo.setUser(user);
 
 					UserResponseInfo userCreateResponse = restTemplate.postForObject(environment.getProperty("user.createUrl"),
 							userRequestInfo, UserResponseInfo.class);
-					System.out.println(userCreateResponse+"user Create Response");
 					user.setId(userCreateResponse.getUser().get(0).getId());
 				}
 				producer.kafkaTemplate.send(environment.getProperty("update.user"), propertyRequest);

@@ -115,7 +115,6 @@ public class PtUserValidatorApplicationTests {
 			propertyRequest.setRequestInfo(requestInfo);
 			producer.send(environment.getProperty("validate.user"), propertyRequest);
 		} catch (Exception e) {
-System.out.println(e.getMessage());
 		}
 	}
 
