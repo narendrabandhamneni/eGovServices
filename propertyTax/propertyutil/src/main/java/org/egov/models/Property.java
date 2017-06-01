@@ -6,8 +6,6 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,21 +23,22 @@ import lombok.ToString;
 
 public class Property {
 
-	private Integer id;
+	private String id;
+
+	private Integer workFlowId;
 
 	@NotNull
-	@Size(min=8, max= 128)
+	@Size(min = 8, max = 128)
 	private String upicNo;
-	
-	@Size(min=8, max= 128)
+
+	@Size(min = 8, max = 128)
 	private String oldUpicNo;
-	
-	
-	@Size(min=8, max= 128)
+
+	@Size(min = 8, max = 128)
 	private String vltUpicNo;
 
 	@NotNull
-	@Size(min=1, max= 256)
+	@Size(min = 1, max = 256)
 	private String creationReason;
 
 	@Valid
@@ -82,18 +81,18 @@ public class Property {
 
 	@Valid
 	private PropertyBoundary boundary;
-	
-    @Valid
+
+	@Valid
 	private PropertyDetail propertydetails;
 
 	@NotNull
-	@Size(min=4, max= 16)
+	@Size(min = 4, max = 16)
 	private String channel;
 
 	private AuditDetails auditDetails;
 
 	@NotNull
-	@Size(min=4, max= 128)
+	@Size(message = "tenantId length should be in between  4 to 128 letters", min = 4, max = 128)
 	private String tenantId;
 
 }
