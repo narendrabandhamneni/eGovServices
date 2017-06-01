@@ -25,29 +25,4 @@ public class WorkflowDetailsRequestInfo {
 
 	private WorkflowDetails workflowDetails;
 
-	public String getTenantId() {
-		return tenantId;
-	}
-
-	public void setTenantId(String tenantId) {
-		this.tenantId = tenantId;
-	}
-
-	public RequestInfo getRequestInfo() {
-		return requestInfo;
-	}
-
-	public void setRequestInfo(RequestInfo requestInfo) {
-		this.requestInfo = requestInfo;
-	}
-
-	public WorkflowDetails getWorkflowDetails() {
-		return workflowDetails;
-	}
-
-	public void setWorkflowDetails(WorkflowDetails workflowDetails) {
-		this.workflowDetails = workflowDetails;
-	}
-	
-	
 }
