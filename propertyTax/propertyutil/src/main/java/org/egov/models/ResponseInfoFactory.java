@@ -2,6 +2,11 @@ package org.egov.models;
 
 import org.springframework.stereotype.Service;
 
+/**
+ * <h1>ResponseInfoFactory</h1>
+ * @author Narendra
+ *
+ */
 @Service
 public class ResponseInfoFactory {
 	public ResponseInfo createResponseInfoFromRequestInfo(RequestInfo requestInfo, Boolean success) {

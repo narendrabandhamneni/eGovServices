@@ -12,7 +12,9 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 /**
- * Address
+ * <h1>Address</h1>
+ * @author S Anilkumar
+ *
  */
 
 @Data
@@ -21,7 +23,7 @@ import lombok.ToString;
 @NoArgsConstructor
 public class Address {
 
-	
+
 	private Integer id;
 
 	@Valid
@@ -32,43 +34,43 @@ public class Address {
 
 	@Size(min=4, max= 256)
 	private String streetRoadLine;
-	
-	
+
+
 	@Size(min=4, max= 256)
 	private String landmark;
 
-	
+
 	@Size(min=4, max= 256)
 	private String areaLocalitySector;
-	
+
 	@Size(min=4, max= 256)
 	private String cityTownVillage;
-	
+
 	@Size(min=4, max= 100)
 	private String district;
-	
+
 	@Size(min=4, max= 100)
 	private String subDistrict;
-	
+
 	@Size(min=4, max= 100)
 	private String postOffice;
-	
+
 	@Size(min=4, max= 100)
 	private String state;
 
 	@Size(min=4, max= 50)
 	private String country;
-	
+
 	@Size(min=6, max= 10)
 	private String pinCode;
-	
+
 	@Size(min=4, max= 50)
 	private String type;
 
 	@NotNull
 	@Size(min=4, max= 128)
 	private String tenantId;
-	
+
 	private AuditDetails auditDetails;
 
 }

@@ -5,7 +5,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-
+/**
+ * <h1>Boundary</h1>
+ * @author Narendra
+ *
+ */
 @Getter
 @Setter
 @ToString
@@ -14,7 +18,7 @@ import lombok.ToString;
 public class Boundary {
 
 	private String id;
-	
+
 	private String name;
-	
+
 }

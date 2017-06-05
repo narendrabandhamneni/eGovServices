@@ -7,9 +7,10 @@ import lombok.NonNull;
 import lombok.ToString;
 
 /**
- * ResponseInfo
+ * <h1>ResponseInfo</h1>
+ * @author Narendra
+ *
  */
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

@@ -21,57 +21,75 @@ import org.springframework.kafka.support.serializer.JsonDeserializer;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-
+/**
+ * Consumer class will use for listing  property object from kafka server to insert data in postgres database
+ * @author: S Anilkumar
+ */
 @Service
 public class Consumer {
 
-    @Autowired
-    RestTemplate restTemplate;
+	@Autowired
+	RestTemplate restTemplate;
 
-    @Autowired
-    Environment env;
+	@Autowired
+	Environment env;
 
-    @Autowired
-     KafkaTemplate<String, PropertyRequest> kafkaTemplate;
-    
-    @Autowired
-    PersisterService persisterService;
-    
+	@Autowired
+	KafkaTemplate<String, PropertyRequest> kafkaTemplate;
 
-    @Bean
-    public Map<String, Object> consumerConfig() {
-        Map<String, Object> consumerProperties = new HashMap<String, Object>();
-        consumerProperties.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, env.getProperty("autoOffsetResetConfig"));
-        consumerProperties.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, env.getProperty("bootstrap.servers"));
-        consumerProperties.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-        consumerProperties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
-        consumerProperties.put(ConsumerConfig.GROUP_ID_CONFIG, "boundary");
-        return consumerProperties;
-    }
+	@Autowired
+	PersisterService persisterService;
 
-    @Bean
-    public ConsumerFactory<String, PropertyRequest> consumerFactory() {
-        return new DefaultKafkaConsumerFactory<>(consumerConfig(), new StringDeserializer(),
-                new JsonDeserializer<>(PropertyRequest.class));
+	/**
+	 * This method for getting consumer configuration bean
+	 */
+	@Bean
+	public Map<String, Object> consumerConfig() {
+		Map<String, Object> consumerProperties = new HashMap<String, Object>();
+		consumerProperties.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, env.getProperty("autoOffsetResetConfig"));
+		consumerProperties.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, env.getProperty("bootstrap.servers"));
+		consumerProperties.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+		consumerProperties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
+		consumerProperties.put(ConsumerConfig.GROUP_ID_CONFIG, "boundary");
+		return consumerProperties;
+	}
 
-    }
+	/**
+	 * This method will return the consumer factory bean based on consumer configuration
+	 */
+	@Bean
+	public ConsumerFactory<String, PropertyRequest> consumerFactory() {
+		return new DefaultKafkaConsumerFactory<>(consumerConfig(), new StringDeserializer(),
+				new JsonDeserializer<>(PropertyRequest.class));
 
-    @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, PropertyRequest> kafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, PropertyRequest> factory = new ConcurrentKafkaListenerContainerFactory<String, PropertyRequest>();
-        factory.setConsumerFactory(consumerFactory());
-        return factory;
-    }
+	}
 
-    @Bean
-    public RestTemplate restTemplate() {
-        return new RestTemplate();
-    }
+	/**
+	 * This bean will return kafka listner object based on consumer factory
+	 */
 
-    @KafkaListener(topics = "#{environment.getProperty('validate.user')}")
-    public void receive(PropertyRequest propertyRequest) throws SQLException {
-            
-      persisterService.addProperty(propertyRequest.getProperties());
+	@Bean
+	public ConcurrentKafkaListenerContainerFactory<String, PropertyRequest> kafkaListenerContainerFactory() {
+		ConcurrentKafkaListenerContainerFactory<String, PropertyRequest> factory = new ConcurrentKafkaListenerContainerFactory<String, PropertyRequest>();
+		factory.setConsumerFactory(consumerFactory());
+		return factory;
+	}
 
-    }
+	/**
+	 * This method will create rest template object
+	 */
+	@Bean
+	public RestTemplate restTemplate() {
+		return new RestTemplate();
+	}
+
+	/**
+	 * This method will listen when ever we insert property to postgres
+	 */
+	@KafkaListener(topics = "#{environment.getProperty('validate.user')}")
+	public void receive(PropertyRequest propertyRequest) throws SQLException {
+
+		persisterService.addProperty(propertyRequest.getProperties());
+
+	}
 }

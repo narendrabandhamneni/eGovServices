@@ -22,6 +22,11 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * This class creates a property 
+ * @author S Anilkumar
+ *
+ */
 @Service
 public class PersisterService {
 
@@ -29,6 +34,12 @@ public class PersisterService {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 
+
+	/**
+	 * 
+	 * @param properties
+	 * @throws SQLException
+	 */
 	@Transactional
 	public void addProperty(List<Property> properties) throws SQLException {
 
@@ -36,6 +47,10 @@ public class PersisterService {
 
 	}
 
+	/**
+	 * 
+	 * @param properties
+	 */
 	//creating property 
 	public void createProperty(List<Property> properties) {
 

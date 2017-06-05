@@ -8,7 +8,9 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 /**
- * Role
+ * <h1>Role</h1>
+ * @author Narendra
+ *
  */
 @Data
 @AllArgsConstructor
