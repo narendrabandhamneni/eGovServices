@@ -6,6 +6,12 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Description : Invalid input custom exception class
+ * @author Narendra
+ *
+ */
+
 @AllArgsConstructor
 @Getter
 @Setter

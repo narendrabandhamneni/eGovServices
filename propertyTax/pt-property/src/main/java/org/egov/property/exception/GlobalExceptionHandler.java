@@ -17,11 +17,21 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 
+/**
+ * Description : Global exception handler for property module
+ * @author Narendra
+ *
+ */
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 	@Autowired
 	private Environment environment;
 	
+	/**
+	 * Description : MethodArgumentNotValidException type exception handler
+	 * @param ex
+	 * @return
+	 */
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -36,6 +46,14 @@ public class GlobalExceptionHandler {
 		responseInfo.setStatus(environment.getProperty("failed"));
 		return new ErrorRes(responseInfo,error);		
 		}
+    
+    /**
+     * Description : General exception handler method
+     * @param ex
+     * @param req
+     * @return
+     */
+    
 	@ExceptionHandler(value = { Exception.class })
 
 	public ErrorRes unknownException(Exception ex, WebRequest req) {

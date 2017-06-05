@@ -27,7 +27,7 @@ public class PropertyIndexerAspectJ {
 
 	public static final Logger logger = LoggerFactory.getLogger("org.egov.propertyindexer.logging");
 
-	/*
+	/**
 	 * This pointcut will execute for controller methods
 	 */
 
@@ -35,7 +35,7 @@ public class PropertyIndexerAspectJ {
 	public void controller() {
 	}
 
-	/*
+	/**
 	 * This pointcut will execute for all methods
 	 */
 
@@ -44,10 +44,10 @@ public class PropertyIndexerAspectJ {
 	}
 
 
-
-
-
-	/*before -> Any resource annotated with @Controller annotation */
+	/**
+	 * Description :This will log  before any resource annotated with @Controller annotation
+	 * @param joinPoint
+	 */
 
 	@Before("controller() && allMethod()")
 	public void logBefore(JoinPoint joinPoint) {
@@ -60,9 +60,11 @@ public class PropertyIndexerAspectJ {
 	}
 
 
-
-
-	/*After -> All method within resource annotated with @Controller annotation and return a  value*/
+	/**
+	 * Description :This will log for all method within resource annotated with @Controller annotation and return a  value
+	 * @param joinPoint
+	 * @param result
+	 */
 
 	@AfterReturning(pointcut = "controller() && allMethod()", returning = "result")
 	public void logAfter(JoinPoint joinPoint, Object result) {
@@ -73,10 +75,11 @@ public class PropertyIndexerAspectJ {
 	}
 
 
-
-
-	//After -> Any method within resource annotated with @Controller annotation 
-	// throws an exception ...Log it
+	/**
+	 * Description : This will log for any method within resource annotated with @Controller annotation  if any exception occurs
+	 * @param joinPoint
+	 * @param exception
+	 */
 
 	@AfterThrowing(pointcut = "controller() && allMethod()", throwing = "exception")
 	public void logAfterThrowing(JoinPoint joinPoint, Throwable exception) {
@@ -85,7 +88,12 @@ public class PropertyIndexerAspectJ {
 	}
 
 
-	//Around -> Any method within resource annotated with @Controller annotation 
+	/**
+	 * Description : This will log for any method within resource annotated with @Controller annotation 
+	 * @param joinPoint
+	 * @return
+	 * @throws Throwable
+	 */
 
 	@Around("controller() && allMethod()")
 	public Object logAround(ProceedingJoinPoint joinPoint) throws Throwable {
@@ -108,8 +116,11 @@ public class PropertyIndexerAspectJ {
 		}
 	}
 
-	/*
-	 * This method for returing string value of object
+
+	/**
+	 * Description : This method will return the string represntation of object
+	 * @param result
+	 * @return
 	 */
 
 	private String getValue(Object result) {

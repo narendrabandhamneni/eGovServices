@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
-/*
+/**
  * Property Controller have the api's related to property
  * @author Narendra
  */
@@ -46,11 +46,11 @@ public class PropertyController {
 	@Autowired
 	ResponseInfoFactory responseInfoFactory;
 
-	/*
-	 * Description:cretae property api for creating property
-	 * path:/properties/_create
-	 * Body:PropertyRequest object
-	 * responseType:PropertyResponse object
+
+	/**
+	 * description:cretae property api for creating new property
+	 * @param propertyRequest
+	 * @return propertyResponse
 	 */
 
 	@RequestMapping(method=RequestMethod.POST,path="_create")
