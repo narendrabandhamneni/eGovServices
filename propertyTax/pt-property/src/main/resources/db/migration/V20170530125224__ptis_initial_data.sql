@@ -1,7 +1,7 @@
 INSERT INTO egpt_property VALUES (1, 'default', '123', '123', '123', 'new property', '2017-05-30', '2017-05-16', 'test123', true, true, 'new property', '123', '2017-05-16', '123', '2017-05-16');
 INSERT INTO egpt_property VALUES (2, 'default', '456', '456', '456', 'old property', '2017-06-12', '2017-06-12', 'test456', true, true, 'old property', '456', '2017-06-12', '456', '2017-06-12');
 
-SELECT pg_catalog.setval('egpt_property_id_seq', 2, true);
+SELECT pg_catalog.setval('seq_egpt_property', 2, true);
 
 
 
@@ -10,12 +10,12 @@ INSERT INTO egpt_address VALUES (1, 'default', 'A-123', 'Hills colony', 'Near MR
 INSERT INTO egpt_address VALUES (2, 'default', 'A-456', 'Eastreen Street', 'Near juniourCollege', 'city', 'city', 'hyderabad', 'hyderabad', 'hyderabad', 'Telangana', 'India', '500004', 'old', '456', '2017-06-12', '456', '2017-06-12', 2);
 
 
-SELECT pg_catalog.setval('egpt_address_id_seq', 2, true);
+SELECT pg_catalog.setval('seq_egpt_address', 2, true);
 
 
 
 
-SELECT pg_catalog.setval('egpt_propertydetail_id_seq', 2, true);
+SELECT pg_catalog.setval('seq_egpt_propertydetails', 2, true);
 
 
 INSERT INTO egpt_propertydetails VALUES (1, 'default', '123', '2017-05-16', '2017-05-16', 'new property purchase', 'new', true, '2017-05-16', true, 'Need property', 'new', 'land', 'own', 'incometax', 'yes', 12, 25, 15, 14, 12, 2, true, 'anil', 'marble', 'normal', 'silling', 'normal', 1, '123', '2017-05-30', 'test', '2017-05-30');
@@ -28,7 +28,7 @@ INSERT INTO egpt_floors VALUES (2, 'default', '2', '2', 'old', 124, 40, 12, 11, 
 
 
 
-SELECT pg_catalog.setval('egpt_floors_id_seq', 2, true);
+SELECT pg_catalog.setval('seq_egpt_floors', 2, true);
 
 
 
@@ -38,7 +38,7 @@ INSERT INTO egpt_documenttype VALUES (2, 'new', 'CREATE');
 
 
 
-SELECT pg_catalog.setval('egpt_documenttype_id_seq', 2, true);
+SELECT pg_catalog.setval('seq_egpt_documenttype', 2, true);
 
 
 INSERT INTO egpt_document VALUES (1, 1, 'testfile', 1);
@@ -46,7 +46,7 @@ INSERT INTO egpt_document VALUES (2, 2, 'creatingfile', 2);
 
 
 
-SELECT pg_catalog.setval('egpt_document_id_seq', 2, true);
+SELECT pg_catalog.setval('seq_egpt_document', 2, true);
 
 
 
@@ -56,7 +56,7 @@ INSERT INTO egpt_vacantland VALUES (2, 'defaul', '456', '456', 1235236, 145258, 
 
 
 
-SELECT pg_catalog.setval('egpt_vacantland_id_seq', 2, true);
+SELECT pg_catalog.setval('seq_egpt_vacantland', 2, true);
 
 
 
@@ -65,7 +65,7 @@ INSERT INTO egpt_property_user VALUES (1, 1, 1,true,true,10,'anil');
 INSERT INTO egpt_property_user VALUES (2, 2, 2,false,false,15,'kumar');
 
 
-SELECT pg_catalog.setval('egpt_property_user_id_seq', 2, true);
+SELECT pg_catalog.setval('seq_egpt_property_user', 2, true);
 
 
 
@@ -74,7 +74,7 @@ INSERT INTO egpt_propertyboundary VALUES (1, 1, 1, 1, 'northtest1', 'easttest1',
 INSERT INTO egpt_propertyboundary VALUES (2, 2, 2, 2, 'northtest2', 'easttest2', 'westtest2', 'southtest2', '456', '2017-06-12', '456', '2017-06-12', 2);
 
 
-SELECT pg_catalog.setval('egpt_propertyboundary_id_seq', 2, true);
+SELECT pg_catalog.setval('seq_egpt_propertyboundary', 2, true);
 
 
 

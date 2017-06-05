@@ -20,7 +20,7 @@ CREATE TABLE egpt_property (
 
 
 
-CREATE SEQUENCE egpt_property_id_seq
+CREATE SEQUENCE seq_egpt_property
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -28,11 +28,11 @@ CREATE SEQUENCE egpt_property_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE egpt_property_id_seq OWNED BY egpt_property.id;
+ALTER SEQUENCE seq_egpt_property OWNED BY egpt_property.id;
 
 
 
-ALTER TABLE ONLY egpt_property ALTER COLUMN id SET DEFAULT nextval('egpt_property_id_seq'::regclass);
+ALTER TABLE ONLY egpt_property ALTER COLUMN id SET DEFAULT nextval('seq_egpt_property'::regclass);
 
 
 
@@ -65,7 +65,7 @@ CREATE TABLE egpt_address (
 
 
 
-CREATE SEQUENCE egpt_address_id_seq
+CREATE SEQUENCE seq_egpt_address
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -74,9 +74,9 @@ CREATE SEQUENCE egpt_address_id_seq
 
 
 
-ALTER SEQUENCE egpt_address_id_seq OWNED BY egpt_address.id;
+ALTER SEQUENCE seq_egpt_address OWNED BY egpt_address.id;
 
-ALTER TABLE ONLY egpt_address ALTER COLUMN id SET DEFAULT nextval('egpt_address_id_seq'::regclass);
+ALTER TABLE ONLY egpt_address ALTER COLUMN id SET DEFAULT nextval('seq_egpt_address'::regclass);
 
 
 ALTER TABLE ONLY egpt_address
@@ -126,7 +126,7 @@ CREATE TABLE egpt_propertydetails (
 
 
 
-CREATE SEQUENCE egpt_propertydetail_id_seq
+CREATE SEQUENCE seq_egpt_propertydetails
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -134,10 +134,10 @@ CREATE SEQUENCE egpt_propertydetail_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE egpt_propertydetail_id_seq OWNED BY egpt_propertydetails.id;
+ALTER SEQUENCE seq_egpt_propertydetails OWNED BY egpt_propertydetails.id;
 
 
-ALTER TABLE ONLY egpt_propertydetails ALTER COLUMN id SET DEFAULT nextval('egpt_propertydetail_id_seq'::regclass);
+ALTER TABLE ONLY egpt_propertydetails ALTER COLUMN id SET DEFAULT nextval('seq_egpt_propertydetails'::regclass);
 
 
 ALTER TABLE ONLY egpt_propertydetails
@@ -186,7 +186,7 @@ CREATE TABLE egpt_floors (
 
 
 
-CREATE SEQUENCE egpt_floors_id_seq
+CREATE SEQUENCE seq_egpt_floors
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -194,10 +194,10 @@ CREATE SEQUENCE egpt_floors_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE egpt_floors_id_seq OWNED BY egpt_floors.id;
+ALTER SEQUENCE seq_egpt_floors OWNED BY egpt_floors.id;
 
 
-ALTER TABLE ONLY egpt_floors ALTER COLUMN id SET DEFAULT nextval('egpt_floors_id_seq'::regclass);
+ALTER TABLE ONLY egpt_floors ALTER COLUMN id SET DEFAULT nextval('seq_egpt_floors'::regclass);
 
 
 ALTER TABLE ONLY egpt_floors
@@ -214,7 +214,7 @@ CREATE TABLE egpt_documenttype (
 );
 
 
-CREATE SEQUENCE egpt_documenttype_id_seq
+CREATE SEQUENCE seq_egpt_documenttype
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -222,10 +222,10 @@ CREATE SEQUENCE egpt_documenttype_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE egpt_documenttype_id_seq OWNED BY egpt_documenttype.id;
+ALTER SEQUENCE seq_egpt_documenttype OWNED BY egpt_documenttype.id;
 
 
-ALTER TABLE ONLY egpt_documenttype ALTER COLUMN id SET DEFAULT nextval('egpt_documenttype_id_seq'::regclass);
+ALTER TABLE ONLY egpt_documenttype ALTER COLUMN id SET DEFAULT nextval('seq_egpt_documenttype'::regclass);
 
 
 ALTER TABLE ONLY egpt_documenttype
@@ -241,7 +241,7 @@ CREATE TABLE egpt_document (
 
 
 
-CREATE SEQUENCE egpt_document_id_seq
+CREATE SEQUENCE seq_egpt_document
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -249,10 +249,10 @@ CREATE SEQUENCE egpt_document_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE egpt_document_id_seq OWNED BY egpt_document.id;
+ALTER SEQUENCE seq_egpt_document OWNED BY egpt_document.id;
 
 
-ALTER TABLE ONLY egpt_document ALTER COLUMN id SET DEFAULT nextval('egpt_document_id_seq'::regclass);
+ALTER TABLE ONLY egpt_document ALTER COLUMN id SET DEFAULT nextval('seq_egpt_document'::regclass);
 
 ALTER TABLE ONLY egpt_document
     ADD CONSTRAINT egpt_document_pk PRIMARY KEY (id);
@@ -286,7 +286,7 @@ CREATE TABLE egpt_vacantland (
 
 
 
-CREATE SEQUENCE egpt_vacantland_id_seq
+CREATE SEQUENCE seq_egpt_vacantland
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -294,10 +294,10 @@ CREATE SEQUENCE egpt_vacantland_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE egpt_vacantland_id_seq OWNED BY egpt_vacantland.id;
+ALTER SEQUENCE seq_egpt_vacantland OWNED BY egpt_vacantland.id;
 
 
-ALTER TABLE ONLY egpt_vacantland ALTER COLUMN id SET DEFAULT nextval('egpt_vacantland_id_seq'::regclass);
+ALTER TABLE ONLY egpt_vacantland ALTER COLUMN id SET DEFAULT nextval('seq_egpt_vacantland'::regclass);
 
 ALTER TABLE ONLY egpt_vacantland
     ADD CONSTRAINT egpt_vacantland_pk PRIMARY KEY (id);
@@ -313,11 +313,11 @@ CREATE TABLE egpt_property_user (
     isPrimaryOwner boolean,
     isSecondaryOwner boolean,
     ownerShipPercentage integer,
-    ownerType String
+    ownerType character varying
 );
 
 
-CREATE SEQUENCE egpt_property_user_id_seq
+CREATE SEQUENCE seq_egpt_property_user
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -325,10 +325,10 @@ CREATE SEQUENCE egpt_property_user_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE egpt_property_user_id_seq OWNED BY egpt_property_user.id;
+ALTER SEQUENCE seq_egpt_property_user OWNED BY egpt_property_user.id;
 
 
-ALTER TABLE ONLY egpt_property_user ALTER COLUMN id SET DEFAULT nextval('egpt_property_user_id_seq'::regclass);
+ALTER TABLE ONLY egpt_property_user ALTER COLUMN id SET DEFAULT nextval('seq_egpt_property_user'::regclass);
 
 
 ALTER TABLE ONLY egpt_property_user
@@ -357,7 +357,7 @@ CREATE TABLE egpt_propertyboundary (
 );
 
 
-CREATE SEQUENCE egpt_propertyboundary_id_seq
+CREATE SEQUENCE seq_egpt_propertyboundary
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -365,10 +365,10 @@ CREATE SEQUENCE egpt_propertyboundary_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE egpt_propertyboundary_id_seq OWNED BY egpt_propertyboundary.id;
+ALTER SEQUENCE seq_egpt_propertyboundary OWNED BY egpt_propertyboundary.id;
 
 
-ALTER TABLE ONLY egpt_propertyboundary ALTER COLUMN id SET DEFAULT nextval('egpt_propertyboundary_id_seq'::regclass);
+ALTER TABLE ONLY egpt_propertyboundary ALTER COLUMN id SET DEFAULT nextval('seq_egpt_propertyboundary'::regclass);
 
 
 ALTER TABLE ONLY egpt_propertyboundary
