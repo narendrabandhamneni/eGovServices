@@ -69,8 +69,14 @@ public class PropertyController {
 		}
 			property.getPropertydetails().setApplicationNo(idResponse.getIdResponse().getId());		
 			applicationList.add(idResponse.getIdResponse().getId());
+			PropertyRequest propertyRequestInfo=new PropertyRequest();
+			propertyRequestInfo.setRequestInfo(propertyRequest.getRequestInfo());
+			List<Property> propertyList=new ArrayList<Property>();
+			propertyList.add(property);
+			propertyRequestInfo.setProperties(propertyList);
+			producer.send(environment.getProperty("property.create"), propertyRequestInfo);
 		}
-		producer.send(environment.getProperty("property.create"), propertyRequest);
+		
 	    ResponseInfo responseInfo=responseInfoFactory.createResponseInfoFromRequestInfo(propertyRequest.getRequestInfo(),true);
 		PropertyResponse propertyResponse=new PropertyResponse();
 		propertyResponse.setResponseInfo(responseInfo);
