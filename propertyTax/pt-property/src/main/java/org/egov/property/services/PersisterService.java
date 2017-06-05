@@ -10,7 +10,9 @@ import org.egov.models.Document;
 import org.egov.models.DocumentType;
 import org.egov.models.Floor;
 import org.egov.models.Property;
+import org.egov.models.PropertyBoundary;
 import org.egov.models.PropertyDetail;
+import org.egov.models.PropertyLocation;
 import org.egov.models.User;
 import org.egov.models.VacantLandProperty;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,17 +37,21 @@ public class PersisterService {
 
 	}
 
+	//creating property 
 	public void createProperty(List<Property> properties) {
+
+		//iterating property from properties
 		for (Property property : properties) {
 
+			// property insertion
 			StringBuffer propertySql=new StringBuffer();
-			
+
 			propertySql.append("INSERT INTO egpt_Property(tenantId, upicNo, oldUpicNo, vltUpicNo,")
-			           .append("creationReason, assessmentDate, occupancyDate, gisRefNo,")
-			           .append("isAuthorised, isUnderWorkflow, channel, createdBy, createdDate, lastModifiedBy, ")
-			           .append("lastModifiedDate,boundary_id) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
-			
-			
+			.append("creationReason, assessmentDate, occupancyDate, gisRefNo,")
+			.append("isAuthorised, isUnderWorkflow, channel, createdBy, createdDate, lastModifiedBy, ")
+			.append("lastModifiedDate) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+
+
 			final PreparedStatementCreator psc = new PreparedStatementCreator() {
 				@Override
 				public PreparedStatement createPreparedStatement(final Connection connection) throws SQLException {
@@ -65,7 +71,6 @@ public class PersisterService {
 					ps.setString(13, property.getAuditDetails().getCreatedDate());
 					ps.setString(14, property.getAuditDetails().getLastModifiedBy());
 					ps.setString(15, property.getAuditDetails().getLastModifiedDate());
-					ps.setString(16, property.getBoundary().getId());
 					return ps;
 				}
 			};
@@ -74,18 +79,19 @@ public class PersisterService {
 			final KeyHolder holder = new GeneratedKeyHolder();
 
 			jdbcTemplate.update(psc, holder);
-			
+
 			Integer propertyId = holder.getKey().intValue();
 
+			//address insertion
 			Address address = property.getAddress();
-			
-			StringBuffer addressSql=new StringBuffer();
-			
-			addressSql.append("INSERT INTO egpt_Address(tenantId, houseNoBldgApt, streetRoadLine, landmark, ")
-					  .append( "areaLocalitySector, cityTownVillage, district, subDistrict, postOffice, state, country, pinCode,")
-					  .append(" type, createdBy, createdDate, lastModifiedBy, lastModifiedDate,property_id) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
-		
+			StringBuffer addressSql=new StringBuffer();
+
+			addressSql.append("INSERT INTO egpt_Address(tenantId, houseNoBldgApt, streetRoadLine, landmark, ")
+			.append( "areaLocalitySector, cityTownVillage, district, subDistrict, postOffice, state, country, pinCode,")
+			.append(" type, createdBy, createdDate, lastModifiedBy, lastModifiedDate,property_id) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+
+
 			Object[] addressArgs = { address.getTenantId(), address.getHouseNoBldgApt(), address.getStreetRoadLine(),
 					address.getLandmark(), address.getAreaLocalitySector(), address.getCityTownVillage(),
 					address.getDistrict(), address.getSubDistrict(), address.getPostOffice(), address.getState(),
@@ -96,18 +102,19 @@ public class PersisterService {
 
 			jdbcTemplate.update(addressSql.toString(), addressArgs);
 
+			//property detail insertion
 			PropertyDetail propertyDetails = property.getPropertydetails();
-			
-			StringBuffer propertyDetailsSql=new StringBuffer();
-			
-			propertyDetailsSql.append("INSERT INTO egpt_propertydetails(tenantId, regdDocNo, regdDocDate,")
-			                  .append("occupancyDate, reason, status, isVerified, verificationDate, isExempted, exemptionReason,")
-			                  .append("propertyType, category, usage, department, apartment, length, breadth, sitalArea,")
-			                  .append(" totalBuiltupArea, undividedShare, noOfFloors, isSuperStructure, landOwner, floorType,")
-			                  .append(" woodType, roofType, wallType,createdBy, createdDate, lastModifiedBy, ")
-			                  .append("lastModifiedDate, property_id) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
-		
+			StringBuffer propertyDetailsSql=new StringBuffer();
+
+			propertyDetailsSql.append("INSERT INTO egpt_propertydetails(tenantId, regdDocNo, regdDocDate,")
+			.append("occupancyDate, reason, status, isVerified, verificationDate, isExempted, exemptionReason,")
+			.append("propertyType, category, usage, department, apartment, length, breadth, sitalArea,")
+			.append(" totalBuiltupArea, undividedShare, noOfFloors, isSuperStructure, landOwner, floorType,")
+			.append(" woodType, roofType, wallType,createdBy, createdDate, lastModifiedBy, ")
+			.append("lastModifiedDate, property_id) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+
+
 
 			final PreparedStatementCreator pscPropertyDetails = new PreparedStatementCreator() {
 				@Override
@@ -153,18 +160,21 @@ public class PersisterService {
 			final KeyHolder holderPropertyDetails = new GeneratedKeyHolder();
 
 			jdbcTemplate.update(pscPropertyDetails, holderPropertyDetails);
-			
+
 			Integer propertyDetailsId = holderPropertyDetails.getKey().intValue();
 
+			//iterating floor from property
 			for (Floor floor : property.getPropertydetails().getFloors()) {
+
+				//floor insertion
 				StringBuffer floorSql=new StringBuffer();
 				floorSql.append("insert into egpt_floors (tenantId,floorNo,unitNo,type,length,width,builtupArea,")
-						.append("assessableArea,bpaBuiltupArea,category,usage,occupancy,")
-						.append("structure,depreciation,occupierName,firmName,rentCollected,exemptionReason,")
-						.append("isStructured,occupancyDate,constCompletionDate,bpaNo,bpaDate,manualArv,")
-						.append("arv,electricMeterNo,waterMeterNo,createdBy,createdDate,lastModifiedBy,lastModifiedDate,property_details_id)")
-						.append(" values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
-				
+				.append("assessableArea,bpaBuiltupArea,category,usage,occupancy,")
+				.append("structure,depreciation,occupierName,firmName,rentCollected,exemptionReason,")
+				.append("isStructured,occupancyDate,constCompletionDate,bpaNo,bpaDate,manualArv,")
+				.append("arv,electricMeterNo,waterMeterNo,createdBy,createdDate,lastModifiedBy,lastModifiedDate,property_details_id)")
+				.append(" values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+
 
 				Object[] floorArgs = { floor.getTenantId(), floor.getFloorNo(), floor.getUnitNo(), floor.getType(),
 						floor.getLength(), floor.getWidth(), floor.getBuiltupArea(), floor.getAssessableArea(),
@@ -176,12 +186,15 @@ public class PersisterService {
 						floor.getAuditDetails().getCreatedBy(), floor.getAuditDetails().getCreatedDate(),
 						floor.getAuditDetails().getLastModifiedBy(), floor.getAuditDetails().getLastModifiedDate(),
 						propertyDetailsId };
-				
+
 				jdbcTemplate.update(floorSql.toString(), floorArgs);
 
 			}
 
+			//iterating document from property
 			for (Document document : property.getPropertydetails().getDocuments()) {
+
+				//document type insertion
 
 				DocumentType documentType = document.getDocumentType();
 
@@ -202,7 +215,7 @@ public class PersisterService {
 				final KeyHolder holderDocumentType = new GeneratedKeyHolder();
 
 				jdbcTemplate.update(pscDocumentType, holderDocumentType);
-				
+
 				Integer documentTypeId = holderDocumentType.getKey().intValue();
 
 				// document insertion
@@ -215,13 +228,14 @@ public class PersisterService {
 
 			}
 
+			//vacantland property insertion
 			VacantLandProperty vacantLand = property.getPropertydetails().getVacantLand();
 			StringBuffer vaccantLandSql=new StringBuffer();
 			vaccantLandSql.append("insert into egpt_vacantland(tenantId,surveyNumber,pattaNumber,")
-						  .append("marketValue,capitalValue,layoutApprovedAuth,layoutPermissionNo,layoutPermissionDate,")
-						  .append("resdPlotArea,nonResdPlotArea,createdBy,createdDate,lastModifiedBy,lastModifiedDate,property_details_id)")
-						  .append(" values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
-			
+			.append("marketValue,capitalValue,layoutApprovedAuth,layoutPermissionNo,layoutPermissionDate,")
+			.append("resdPlotArea,nonResdPlotArea,createdBy,createdDate,lastModifiedBy,lastModifiedDate,property_details_id)")
+			.append(" values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+
 			Object[] vaccantLandArgs = { vacantLand.getTenantId(), vacantLand.getSurveyNumber(),
 					vacantLand.getPattaNumber(), vacantLand.getMarketValue(), vacantLand.getCapitalValue(),
 					vacantLand.getLayoutApprovedAuth(), vacantLand.getLayoutPermissionNo(),
@@ -232,10 +246,29 @@ public class PersisterService {
 
 			jdbcTemplate.update(vaccantLandSql.toString(), vaccantLandArgs);
 
+			//boundary insertion
+			PropertyLocation boundary = property.getBoundary();
+			StringBuffer boundarySql=new StringBuffer();
+			boundarySql.append("insert into egpt_propertyboundary(revenueBoundary, locationBoundary,")
+			.append(" adminBoundary, northBoundedBy,eastBoundedBy, westBoundedBy,")
+			.append("southBoundedBy, property_id) values (?,?,?,?,?,?,?,?);");
+
+			Object[] boundaryArgs = { boundary.getRevenueBoundary(),boundary.getLocationBoundary(),boundary.getAdminBoundary(),
+					boundary.getNorthBoundedBy(),boundary.getEastBoundedBy(),boundary.getWestBoundedBy(),
+					boundary.getSouthBoundedBy(),propertyId};
+
+			jdbcTemplate.update(boundarySql.toString(), boundaryArgs);
+
+
+			//property and user relation table insertion
 			for (User user : property.getOwners()) {
-				String userPropertySql = "insert into egpt_Property_user(property_Id, user_Id) values (?,?)";
-				Object[] userPropertyArgs = { propertyId, user.getId() };
-				jdbcTemplate.update(userPropertySql, userPropertyArgs);
+				StringBuffer userPropertySql = new StringBuffer();
+				userPropertySql.append("insert into egpt_Property_user(property_Id, user_Id,isPrimaryOwner,")
+				.append("isSecondaryOwner,ownerShipPercentage, ownerType)")
+				.append("values (?,?,?,?,?,?);");
+				Object[] userPropertyArgs = { propertyId, user.getId(),user.getIsPrimaryOwner(),
+						user.getIsSecondaryOwner(),user.getOwnerShipPercentage(),user.getOwnerType() };
+				jdbcTemplate.update(userPropertySql.toString(), userPropertyArgs);
 
 			}
 

@@ -73,7 +73,7 @@ public class User {
 	private UserDetails userDetails;
 
 	private AuditDetails auditDetails;
-	
+
 	private Boolean isPrimaryOwner;
 
 	private Boolean isSecondaryOwner;
@@ -81,5 +81,7 @@ public class User {
 	private Double ownerShipPercentage;
 
 	private String ownerType;
+
+	private String password;
 
 }

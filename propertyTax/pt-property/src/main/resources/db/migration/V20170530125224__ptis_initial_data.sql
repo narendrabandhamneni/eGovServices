@@ -1,5 +1,5 @@
-INSERT INTO egpt_property VALUES (1, 'default', '123', '123', '123', 'new property', '2017-05-30', '2017-05-16', 'test123', true, true, 'new property', '123', '2017-05-16', '123', '2017-05-16', 'b123');
-INSERT INTO egpt_property VALUES (2, 'default', '456', '456', '456', 'old property', '2017-06-12', '2017-06-12', 'test456', true, true, 'old property', '456', '2017-06-12', '456', '2017-06-12', 'b456');
+INSERT INTO egpt_property VALUES (1, 'default', '123', '123', '123', 'new property', '2017-05-30', '2017-05-16', 'test123', true, true, 'new property', '123', '2017-05-16', '123', '2017-05-16');
+INSERT INTO egpt_property VALUES (2, 'default', '456', '456', '456', 'old property', '2017-06-12', '2017-06-12', 'test456', true, true, 'old property', '456', '2017-06-12', '456', '2017-06-12');
 
 SELECT pg_catalog.setval('egpt_property_id_seq', 2, true);
 
@@ -61,12 +61,20 @@ SELECT pg_catalog.setval('egpt_vacantland_id_seq', 2, true);
 
 
 
-INSERT INTO egpt_property_user VALUES (1, 1, 1);
-INSERT INTO egpt_property_user VALUES (2, 2, 2);
+INSERT INTO egpt_property_user VALUES (1, 1, 1,true,true,10,'anil');
+INSERT INTO egpt_property_user VALUES (2, 2, 2,false,false,15,'kumar');
 
 
 SELECT pg_catalog.setval('egpt_property_user_id_seq', 2, true);
 
+
+
+
+INSERT INTO egpt_propertyboundary VALUES (1, 1, 1, 1, 'northtest1', 'easttest1', 'westtest1', 'southtest1', '456', '2017-06-12', '456', '2017-06-12', 1);
+INSERT INTO egpt_propertyboundary VALUES (2, 2, 2, 2, 'northtest2', 'easttest2', 'westtest2', 'southtest2', '456', '2017-06-12', '456', '2017-06-12', 2);
+
+
+SELECT pg_catalog.setval('egpt_propertyboundary_id_seq', 2, true);
 
 
 

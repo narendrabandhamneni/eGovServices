@@ -15,8 +15,7 @@ CREATE TABLE egpt_property (
     createdby character varying,
     createddate character varying,
     lastmodifiedby character varying,
-    lastmodifieddate character varying,
-    boundary_id character varying
+    lastmodifieddate character varying
 );
 
 
@@ -310,7 +309,11 @@ ALTER TABLE ONLY egpt_vacantland
 CREATE TABLE egpt_property_user (
     id integer NOT NULL,
     property_id integer NOT NULL,
-    user_id character varying
+    user_id character varying,
+    isPrimaryOwner boolean,
+    isSecondaryOwner boolean,
+    ownerShipPercentage integer,
+    ownerType String
 );
 
 
@@ -337,11 +340,42 @@ ALTER TABLE ONLY egpt_property_user
 
 
 
+CREATE TABLE egpt_propertyboundary (
+    id integer NOT NULL,
+    revenueboundary integer,
+    locationboundary integer,
+    adminboundary integer,
+    northboundedby character varying,
+    eastboundedby character varying,
+    westboundedby character varying,
+    southboundedby character varying,
+    createdby character varying,
+    createddate character varying,
+    lastmodifiedby character varying,
+    lastmodifieddate character varying,
+    property_id integer
+);
 
 
+CREATE SEQUENCE egpt_propertyboundary_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
+ALTER SEQUENCE egpt_propertyboundary_id_seq OWNED BY egpt_propertyboundary.id;
 
 
+ALTER TABLE ONLY egpt_propertyboundary ALTER COLUMN id SET DEFAULT nextval('egpt_propertyboundary_id_seq'::regclass);
+
+
+ALTER TABLE ONLY egpt_propertyboundary
+    ADD CONSTRAINT egpt_propertyboundary_pk PRIMARY KEY (id);
+
+
+ALTER TABLE ONLY egpt_propertyboundary
+    ADD CONSTRAINT egpt_propertyboundary_fk FOREIGN KEY (property_id) REFERENCES egpt_property(id) DEFERRABLE INITIALLY DEFERRED;
 
 
