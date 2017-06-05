@@ -10,7 +10,6 @@ import org.egov.models.Document;
 import org.egov.models.DocumentType;
 import org.egov.models.Floor;
 import org.egov.models.Property;
-import org.egov.models.PropertyBoundary;
 import org.egov.models.PropertyDetail;
 import org.egov.models.PropertyLocation;
 import org.egov.models.User;

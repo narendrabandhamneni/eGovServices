@@ -23,7 +23,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
-
+/*
+ * Property Controller have the api's related to property
+ * @author Narendra
+ */
 @RestController
 @RequestMapping(path="/properties/")
 public class PropertyController {
@@ -39,19 +42,25 @@ public class PropertyController {
 
 	@Autowired
 	RestTemplate restTemplate;
-	
+
 	@Autowired
 	ResponseInfoFactory responseInfoFactory;
 
+	/*
+	 * Description:cretae property api for creating property
+	 * path:/properties/_create
+	 * Body:PropertyRequest object
+	 * responseType:PropertyResponse object
+	 */
 
 	@RequestMapping(method=RequestMethod.POST,path="_create")
 	public PropertyResponse createProperty(@Valid @RequestBody PropertyRequest propertyRequest){
-        List<String> applicationList=new ArrayList<String>();
-       //Boundary validations for all properties
+		List<String> applicationList=new ArrayList<String>();
+		//Boundary validations for all properties
 		for(Property property :propertyRequest.getProperties()){
 			propertyValidator.validatePropertyBoundary(property);		
 		}
-		
+
 		//generating acknowledgement number for all properties
 		for(Property property:propertyRequest.getProperties()){
 			IdRequest idrequest=new IdRequest();
@@ -62,11 +71,11 @@ public class PropertyController {
 			idGeneration.setIdRequest(idrequest);
 			idGeneration.setRequestInfo(propertyRequest.getRequestInfo());
 			IdGenerationResponse idResponse=restTemplate.patchForObject(environment.getProperty("id.creation"), idGeneration, IdGenerationResponse.class);
-		if(idResponse.getResponseInfo().getStatus().equalsIgnoreCase(environment.getProperty("statusCode"))){
-			if(idResponse.getResponseInfo().getStatus().equalsIgnoreCase(environment.getProperty("badRequest"))){
-				throw new AttributeNotFoundException(environment.getProperty("attribute.notfound"),propertyRequest.getRequestInfo());
+			if(idResponse.getResponseInfo().getStatus().equalsIgnoreCase(environment.getProperty("statusCode"))){
+				if(idResponse.getResponseInfo().getStatus().equalsIgnoreCase(environment.getProperty("badRequest"))){
+					throw new AttributeNotFoundException(environment.getProperty("attribute.notfound"),propertyRequest.getRequestInfo());
+				}
 			}
-		}
 			property.getPropertydetails().setApplicationNo(idResponse.getIdResponse().getId());		
 			applicationList.add(idResponse.getIdResponse().getId());
 			PropertyRequest propertyRequestInfo=new PropertyRequest();
@@ -76,13 +85,13 @@ public class PropertyController {
 			propertyRequestInfo.setProperties(propertyList);
 			producer.send(environment.getProperty("property.create"), propertyRequestInfo);
 		}
-		
-	    ResponseInfo responseInfo=responseInfoFactory.createResponseInfoFromRequestInfo(propertyRequest.getRequestInfo(),true);
+
+		ResponseInfo responseInfo=responseInfoFactory.createResponseInfoFromRequestInfo(propertyRequest.getRequestInfo(),true);
 		PropertyResponse propertyResponse=new PropertyResponse();
 		propertyResponse.setResponseInfo(responseInfo);
 		propertyResponse.setProperties(propertyRequest.getProperties());	
 		return propertyResponse;
-		
+
 	}
 
 
