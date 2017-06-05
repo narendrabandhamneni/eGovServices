@@ -80,7 +80,7 @@ public class Property {
 	private Boolean isUnderWorkflow;
 
 	@Valid
-	private PropertyBoundary boundary;
+	private PropertyLocation boundary;
 
 	@Valid
 	private PropertyDetail propertydetails;
