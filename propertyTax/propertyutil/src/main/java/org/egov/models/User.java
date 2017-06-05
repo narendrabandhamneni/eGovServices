@@ -19,85 +19,67 @@ import lombok.ToString;
 @AllArgsConstructor
 public class User {
 
-	private String id;
-	
-	@Length(min=1, max=64)
-	private String userName;
-
-	private String password;
-	
-	@Length(min=1, max=5)
-	private String salutation;
-	
-	@Length(min=1, max= 100)
-	private String name;
-	
-	@Length(min=1, max=8)
-	private String gender;
-	
-	@Length(min=1, max= 10)
-	private String mobileNumber;
-	
-	@Length(min=1, max= 128)
-	private String emailId;
-
-	private String altContactNumber;
-	
-	@Length(min=10, max= 10)
-	private String pan;
-	
-	@Length(min=12, max= 12)
-	private String aadhaarNumber;
-
-	private String permanentAddress;
-
-	private String permanentPincode;
-
-	private String permanentCity;
-
-	private String correspondenceCity;
-
-	private String correspondencePincode;
-
-	private String correspondenceAddress;
-
-	private Boolean active;
-
-	private String dob;
-
-	private String locale;
-
-	private Boolean accountLocked;
-
-	private String signature;
-	
-	@Length(min=1, max= 16)
-	private String type;
-	
-	@Length(min=1, max=8)
-	private String title;
-	
-	@Length(min=1, max= 100)
-	private String guardian;
-	
-	@Length(min=1, max=32)
-	private String guardianRelation;
-
-	private String fatherOrHusbandName;
-
-	private String bloodGroup;
-
-	private String identificationMark;
-
-	private String photo;
-
-	private String otpReference;
-	
 	@NotNull
 	@Length(min=4, max= 128)
 	private String tenantId;
 
+	private Double id;
+
+	@NotNull
+	@Length(min=1, max=64)
+	private String userName;
+
+	private String authToken;
+
+	@Length(min=1, max=5)
+	private String salutation;
+
+	@NotNull
+	@Length(min=1, max= 100)
+	private String name;
+
+	@NotNull
+	@Length(min=1, max=8)
+	private String gender;
+
+	@NotNull
+	@Length(min=1, max= 10)
+	private String mobileNumber;
+
+	@Length(min=1, max= 128)
+	private String emailId;
+
+	@Length(min=12, max= 12)
+	private String aadhaarNumber;
+
+	@NotNull
+	private Boolean active;
+
+	private Long pwdExpiryDate;
+
+	@NotNull
+	private String locale;
+
+	@Length(min=1, max= 16)
+	@NotNull
+	private String type;
+
+	private Boolean accountLocked;
+
 	@Valid
 	private List<Role> roles;
+
+
+	private UserDetails userDetails;
+
+	private AuditDetails auditDetails;
+	
+	private Boolean isPrimaryOwner;
+
+	private Boolean isSecondaryOwner;
+
+	private Double ownerShipPercentage;
+
+	private String ownerType;
 
 }

@@ -92,13 +92,11 @@ public class PtUserValidatorApplicationTests {
 			User user = new User();
 			user.setTenantId("default");
 			user.setUserName("TestForUserNaren");
-			user.setPassword("12345");
 			user.setSalutation("Mr");
 			user.setName("TestNaren");
 			user.setGender("MALE");
 			user.setMobileNumber("9999999999");
 			user.setEmailId("pranav@egovernments.org");
-			user.setDob("01/03/2000");
 			user.setActive(true);
 			user.setLocale("en_US");
 			user.setType("CITIZEN");
