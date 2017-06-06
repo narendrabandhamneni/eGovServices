@@ -14,9 +14,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Error   {
 	@JsonProperty("code")
+	@NotNull
 	private String code = null;
 
 	@JsonProperty("message")
+	@NotNull
 	private String message = null;
 
 	@JsonProperty("description")
@@ -34,7 +36,7 @@ public class Error   {
 	 * Error Code will be module specific error label/code to identiffy the error. All modules should also publish the Error codes with their specific localized values in localization service to ensure clients can print locale specific error messages. Example for error code would be User.NotFound to indicate User Not Found by User/Authentication service. All services must declare their possible Error Codes with brief description in the error response section of their API path.
 	 * @return code
 	 **/
-	@NotNull
+
 	public String getCode() {
 		return code;
 	}
@@ -53,7 +55,7 @@ public class Error   {
 	 * @return message
 	 **/
 
-	@NotNull
+
 	public String getMessage() {
 		return message;
 	}

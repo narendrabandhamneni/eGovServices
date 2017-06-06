@@ -6,6 +6,7 @@ import java.util.Objects;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
@@ -51,15 +52,18 @@ public class PropertyDetail   {
 	}
 
 	@JsonProperty("source")
+	@Size(min=1,max=64)
 	private SourceEnum source = null;
 
 	@JsonProperty("regdDocNo")
+	@Size(min=1,max=64)
 	private String regdDocNo = null;
 
 	@JsonProperty("regdDocDate")
 	private String regdDocDate = null;
 
 	@JsonProperty("reason")
+	@Size(min=1,max=16)
 	private String reason = null;
 
 	/**
@@ -100,6 +104,7 @@ public class PropertyDetail   {
 	}
 
 	@JsonProperty("status")
+	@Size(min=1,max=8)
 	private StatusEnum status = null;
 
 	@JsonProperty("isVerified")
@@ -112,21 +117,28 @@ public class PropertyDetail   {
 	private Boolean isExempted = false;
 
 	@JsonProperty("exemptionReason")
+	@Size(min=1,max=32)
 	private String exemptionReason = null;
 
 	@JsonProperty("propertyType")
+	@NotNull
+	@Size(min=1,max=16)
 	private String propertyType = null;
 
 	@JsonProperty("category")
+	@Size(min=1,max=16)
 	private String category = null;
 
 	@JsonProperty("usage")
+	@Size(min=1,max=16)
 	private String usage = null;
 
 	@JsonProperty("department")
+	@Size(min=1,max=16)
 	private String department = null;
 
 	@JsonProperty("apartment")
+	@Size(min=1,max=16)
 	private String apartment = null;
 
 	@JsonProperty("siteLength")
@@ -136,6 +148,7 @@ public class PropertyDetail   {
 	private Double siteBreadth = null;
 
 	@JsonProperty("sitalArea")
+	@NotNull
 	private Double sitalArea = null;
 
 	@JsonProperty("totalBuiltupArea")
@@ -151,18 +164,23 @@ public class PropertyDetail   {
 	private Boolean isSuperStructure = false;
 
 	@JsonProperty("landOwner")
+	@Size(min=1,max=128)
 	private String landOwner = null;
 
 	@JsonProperty("floorType")
+	@Size(min=1,max=16)
 	private String floorType = null;
 
 	@JsonProperty("woodType")
+	@Size(min=1,max=16)
 	private String woodType = null;
 
 	@JsonProperty("roofType")
+	@Size(min=1,max=16)
 	private String roofType = null;
 
 	@JsonProperty("wallType")
+	@Size(min=1,max=16)
 	private String wallType = null;
 
 	@JsonProperty("floors")
@@ -175,6 +193,7 @@ public class PropertyDetail   {
 	private String stateId = null;
 
 	@JsonProperty("applicationNo")
+	@Size(min=1,max=64)
 	private String applicationNo = null;
 
 	@JsonProperty("workFlowDetails")
@@ -206,7 +225,6 @@ public class PropertyDetail   {
 	 * Source of a assessment data. The properties will be created in a system based on the data avaialble in their manual records or during field survey. There can be more from client to client.
 	 * @return source
 	 **/
-	@Size(min=1,max=64)
 	public SourceEnum getSource() {
 		return source;
 	}
@@ -224,7 +242,7 @@ public class PropertyDetail   {
 	 * Property registered no from Registration Department.
 	 * @return regdDocNo
 	 **/
-	@Size(min=1,max=64)
+
 	public String getRegdDocNo() {
 		return regdDocNo;
 	}
@@ -259,7 +277,6 @@ public class PropertyDetail   {
 	 * reason of the PropertyDetail
 	 * @return reason
 	 **/
-	@Size(min=1,max=16)
 	public String getReason() {
 		return reason;
 	}
@@ -277,7 +294,6 @@ public class PropertyDetail   {
 	 * status of the Property
 	 * @return status
 	 **/
-	@Size(min=1,max=8)
 	public StatusEnum getStatus() {
 		return status;
 	}
@@ -346,7 +362,6 @@ public class PropertyDetail   {
 	 * exemption reason for the property
 	 * @return exemptionReason
 	 **/
-	@Size(min=1,max=32)
 	public String getExemptionReason() {
 		return exemptionReason;
 	}
@@ -364,8 +379,6 @@ public class PropertyDetail   {
 	 * Type of a property like Private, Vacant Land, State Government, Central Government etc.
 	 * @return propertyType
 	 **/
-	@NotNull
-	@Size(min=1,max=16)
 	public String getPropertyType() {
 		return propertyType;
 	}
@@ -383,7 +396,6 @@ public class PropertyDetail   {
 	 * category of the property like Residential, Non-Residential, etc.
 	 * @return category
 	 **/
-	@Size(min=1,max=16)
 	public String getCategory() {
 		return category;
 	}
@@ -401,7 +413,6 @@ public class PropertyDetail   {
 	 * usage of the property
 	 * @return usage
 	 **/
-	@Size(min=1,max=16)
 	public String getUsage() {
 		return usage;
 	}
@@ -419,7 +430,6 @@ public class PropertyDetail   {
 	 * department of the property which belongs to. This is applicable when property type is State Govternment or Central Government.
 	 * @return department
 	 **/
-	@Size(min=1,max=16)
 	public String getDepartment() {
 		return department;
 	}
@@ -437,7 +447,6 @@ public class PropertyDetail   {
 	 * apartment of the PropertyDetail
 	 * @return apartment
 	 **/
-	@Size(min=1,max=16)
 	public String getApartment() {
 		return apartment;
 	}
@@ -489,7 +498,6 @@ public class PropertyDetail   {
 	 * sital area of the land
 	 * @return sitalArea
 	 **/
-	@NotNull
 	public Double getSitalArea() {
 		return sitalArea;
 	}
@@ -575,7 +583,6 @@ public class PropertyDetail   {
 	 * Name of the land owner in case property is Super structure
 	 * @return landOwner
 	 **/
-	@Size(min=1,max=128)
 	public String getLandOwner() {
 		return landOwner;
 	}
@@ -593,7 +600,6 @@ public class PropertyDetail   {
 	 * type of floor
 	 * @return floorType
 	 **/
-	@Size(min=1,max=16)
 	public String getFloorType() {
 		return floorType;
 	}
@@ -611,7 +617,6 @@ public class PropertyDetail   {
 	 * type of wood used in the property
 	 * @return woodType
 	 **/
-	@Size(min=1,max=16)
 	public String getWoodType() {
 		return woodType;
 	}
@@ -629,7 +634,6 @@ public class PropertyDetail   {
 	 * type of roof the property having
 	 * @return roofType
 	 **/
-	@Size(min=1,max=16)
 	public String getRoofType() {
 		return roofType;
 	}
@@ -647,7 +651,6 @@ public class PropertyDetail   {
 	 * type of walls the property having
 	 * @return wallType
 	 **/
-	@Size(min=1,max=16)
 	public String getWallType() {
 		return wallType;
 	}
@@ -726,7 +729,6 @@ public class PropertyDetail   {
 	 * Acknowldgement number given to citizen on submitting the application for creation or modification of the property.
 	 * @return applicationNo
 	 **/
-	@Size(min=1,max=64)
 	public String getApplicationNo() {
 		return applicationNo;
 	}

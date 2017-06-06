@@ -23,15 +23,19 @@ public class PropertyLocation   {
 	private Boundary adminBoundary = null;
 
 	@JsonProperty("northBoundedBy")
+	@Size(min=1,max=256)
 	private String northBoundedBy = null;
 
 	@JsonProperty("eastBoundedBy")
+	@Size(min=1,max=256)
 	private String eastBoundedBy = null;
 
 	@JsonProperty("westBoundedBy")
+	@Size(min=1,max=256)
 	private String westBoundedBy = null;
 
 	@JsonProperty("southBoundedBy")
+	@Size(min=1,max=256)
 	private String southBoundedBy = null;
 
 	public PropertyLocation revenueBoundary(Boundary revenueBoundary) {
@@ -94,7 +98,6 @@ public class PropertyLocation   {
 	 * property bounded by on north side
 	 * @return northBoundedBy
 	 **/
-	@Size(min=1,max=256)
 	public String getNorthBoundedBy() {
 		return northBoundedBy;
 	}
@@ -112,7 +115,6 @@ public class PropertyLocation   {
 	 * property bounded by on east side
 	 * @return eastBoundedBy
 	 **/
-	@Size(min=1,max=256)
 	public String getEastBoundedBy() {
 		return eastBoundedBy;
 	}
@@ -130,7 +132,6 @@ public class PropertyLocation   {
 	 * property bounded by on west side
 	 * @return westBoundedBy
 	 **/
-	@Size(min=1,max=256)
 	public String getWestBoundedBy() {
 		return westBoundedBy;
 	}
@@ -148,7 +149,6 @@ public class PropertyLocation   {
 	 * property bounded by on south side
 	 * @return southBoundedBy
 	 **/
-	@Size(min=1,max=256)
 	public String getSouthBoundedBy() {
 		return southBoundedBy;
 	}

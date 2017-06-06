@@ -73,25 +73,32 @@ public class Property   {
 	private CreationReasonEnum creationReason = null;
 
 	@JsonProperty("address")
+	@NotNull
 	private Address address = null;
 
 	@JsonProperty("owners")
 	@Valid
+	@NotNull
 	private List<OwnerInfo> owners = new ArrayList<OwnerInfo>();
 
 	@JsonProperty("propertyDetail")
+	@Valid
+	@NotNull
 	private PropertyDetail propertyDetail = null;
 
 	@JsonProperty("vacantLand")
+	@Valid
 	private VacantLandDetail vacantLand = null;
 
 	@JsonProperty("assessmentDate")
 	private String assessmentDate = null;
 
 	@JsonProperty("occupancyDate")
+	@NotNull
 	private String occupancyDate = null;
 
 	@JsonProperty("gisRefNo")
+	@Size(min=4,max=32)
 	private String gisRefNo = null;
 
 	@JsonProperty("isAuthorised")
@@ -101,6 +108,7 @@ public class Property   {
 	private Boolean isUnderWorkflow = false;
 
 	@JsonProperty("boundary")
+	@NotNull
 	private PropertyLocation boundary = null;
 
 	@JsonProperty("active")
@@ -140,6 +148,8 @@ public class Property   {
 	}
 
 	@JsonProperty("channel")
+	@NotNull
+	@Size(min=4,max=16)
 	private ChannelEnum channel = null;
 
 	@JsonProperty("auditDetails")
@@ -171,8 +181,7 @@ public class Property   {
 	 * tenant id of the Property
 	 * @return tenantId
 	 **/
-	@NotNull
-	@Size(min=4,max=128)
+	
 	public String getTenantId() {
 		return tenantId;
 	}
@@ -190,7 +199,6 @@ public class Property   {
 	 * UPIC (Unique Property Identification Code) of the Property. This is a unique in system. This is mandatory but always be generated on the final approval.
 	 * @return upicNumber
 	 **/
-	@Size(min=6,max=128)
 	public String getUpicNumber() {
 		return upicNumber;
 	}
@@ -208,7 +216,6 @@ public class Property   {
 	 * Old upic no of the Property. ULBs have the existing property in their system/manual records with their identification number, they want to continue the old reference number in this case the same identification number will be captured here.
 	 * @return oldUpicNumber
 	 **/
-	@Size(min=4,max=128)
 	public String getOldUpicNumber() {
 		return oldUpicNumber;
 	}
@@ -227,7 +234,6 @@ public class Property   {
 	 * @return vltUpicNumber
 	 **/
 
-	@Size(min=4,max=128)
 	public String getVltUpicNumber() {
 		return vltUpicNumber;
 	}
@@ -246,8 +252,6 @@ public class Property   {
 	 * @return creationReason
 	 **/
 
-	@NotNull
-	@Size(min=1,max=256)
 	public CreationReasonEnum getCreationReason() {
 		return creationReason;
 	}
@@ -265,7 +269,6 @@ public class Property   {
 	 * Get address
 	 * @return address
 	 **/
-	@NotNull
 	public Address getAddress() {
 		return address;
 	}
@@ -288,7 +291,6 @@ public class Property   {
 	 * Property owners, these will be citizen users in system.
 	 * @return owners
 	 **/
-	@NotNull
 	public List<OwnerInfo> getOwners() {
 		return owners;
 	}
@@ -306,7 +308,6 @@ public class Property   {
 	 * Get propertyDetail
 	 * @return propertyDetail
 	 **/
-	@NotNull
 	public PropertyDetail getPropertyDetail() {
 		return propertyDetail;
 	}
@@ -358,8 +359,6 @@ public class Property   {
 	 * Property is constructed but the tax will be applicable only from the occupation date. System capture that date here.
 	 * @return occupancyDate
 	 **/
-
-	@NotNull
 	public String getOccupancyDate() {
 		return occupancyDate;
 	}
@@ -377,8 +376,6 @@ public class Property   {
 	 * Property tax system will be integrated with GIS system. Here we capture the GIS ref. no.
 	 * @return gisRefNo
 	 **/
-
-	@Size(min=4,max=32)
 	public String getGisRefNo() {
 		return gisRefNo;
 	}
@@ -432,7 +429,6 @@ public class Property   {
 	 * Get boundary
 	 * @return boundary
 	 **/
-	@NotNull
 	public PropertyLocation getBoundary() {
 		return boundary;
 	}
@@ -468,8 +464,7 @@ public class Property   {
 	 * @return channel
 	 **/
 
-	@NotNull
-	@Size(min=4,max=16)
+	
 	public ChannelEnum getChannel() {
 		return channel;
 	}

@@ -21,6 +21,7 @@ public class OwnerInfo extends User  {
   private Double ownerShipPercentage = null;
 
   @JsonProperty("ownerType")
+  @Size(min=4,max=32)
   private String ownerType = null;
 
   public OwnerInfo isPrimaryOwner(Boolean isPrimaryOwner) {
@@ -83,7 +84,6 @@ public class OwnerInfo extends User  {
    * Type of owner, based on this option rebate will be calculated.
    * @return ownerType
   **/
-  @Size(min=4,max=32)
   public String getOwnerType() {
     return ownerType;
   }
