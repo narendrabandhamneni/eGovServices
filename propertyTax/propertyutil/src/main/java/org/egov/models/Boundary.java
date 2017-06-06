@@ -17,7 +17,7 @@ import lombok.ToString;
 @NoArgsConstructor
 public class Boundary {
 
-	private String id;
+	private Integer id;
 
 	private String name;
 

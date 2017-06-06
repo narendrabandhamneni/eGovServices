@@ -12,6 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * api's related to the IdGeneration Controller
+ * @author Pavan Kumar Kamma
+ */
 @RestController
 @RequestMapping(path = "/id/")
 public class IdGenerationController {
@@ -22,6 +26,12 @@ public class IdGenerationController {
 	@Autowired
 	private ResponseInfoFactory responseInfoFactory;
 
+	/**
+	 * description: generate unique ID for property
+	 * @param IdGenerationRequest
+	 * @return IdGenerationResponse
+	 * @throws Exception
+	 */
 	@RequestMapping(method = RequestMethod.POST, path = "_create")
 	public IdGenerationResponse generateIdResponse(@RequestBody IdGenerationRequest idGenReq) throws Exception {
 

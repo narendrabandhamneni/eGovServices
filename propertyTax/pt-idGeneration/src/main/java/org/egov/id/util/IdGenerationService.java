@@ -21,6 +21,10 @@ import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.stereotype.Service;
 
+/**
+ * Description : IdGenerationService have methods related to the IdGeneration
+ * @author Pavan Kumar Kamma
+ */
 @Service
 public class IdGenerationService {
 
@@ -30,6 +34,12 @@ public class IdGenerationService {
 	@Autowired
 	private Environment environment;
 
+	/**
+	 * Description : This method for generating Id for property
+	 * @param idGenReq
+	 * @throws Exception
+	 * @return generatedId
+	 */
 	public String generateId(IdGenerationRequest idGenReq) throws Exception {
 
 		IdRequest idRequest = idGenReq.getIdRequest();
@@ -46,7 +56,7 @@ public class IdGenerationService {
 			//select the id type from the id generation table 
 			StringBuffer idSelectQuery = new StringBuffer();
 			idSelectQuery.append( "SELECT * FROM ") .append( environment.getProperty("idTypeTable"))
-					.append(" WHERE (idtype=? and entity=? and tenentid=?) FOR UPDATE" );
+			.append(" WHERE (idtype=? and entity=? and tenentid=?) FOR UPDATE" );
 			pst = conn.prepareStatement(idSelectQuery.toString());
 			pst.setString(1,idRequest.getIdType());
 			pst.setString(2,idRequest.getEntity());
@@ -80,7 +90,12 @@ public class IdGenerationService {
 		return generatedId;
 	}
 
-	//method to check the attribute exists or not
+	/**
+	 * Description : This method to check the attribute exists or not
+	 * @param attributeList
+	 * @param key
+	 * @return true/false
+	 */
 	public boolean containsAttribute(List<IdAttribute> attributeList, String key) {
 
 		for (IdAttribute attribute : attributeList) {
@@ -92,7 +107,10 @@ public class IdGenerationService {
 
 	}
 
-	//method to generate random text
+	/**
+	 * Description : This method to generate random text
+	 * @return randomTxt
+	 */
 	public String generateRandomText(){
 
 		Random random = new Random();
@@ -103,7 +121,12 @@ public class IdGenerationService {
 
 	}
 
-	//method to validate the attributes and returns the generated id
+	/**
+	 * Description : This method to validate the attributes and returns the generated id
+	 * @param attributes
+	 * @param resultSet
+	 * @return regex
+	 */
 	public String ValidateAttributesAndGetId( List<IdAttribute> attributes, IdResultSet resultSet ){
 
 		String regex = resultSet.getRegex();
