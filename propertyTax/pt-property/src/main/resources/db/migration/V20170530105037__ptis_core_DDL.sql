@@ -2,20 +2,21 @@
 CREATE TABLE egpt_property (
     id integer NOT NULL,
     tenantid character varying NOT NULL,
-    upicno character varying NOT NULL,
-    oldupicno character varying,
-    vltupicno character varying,
+    upicnumber character varying NOT NULL,
+    oldUpicNumber character varying,
+    vltUpicNumber character varying,
     creationreason character varying NOT NULL,
-    assessmentdate character varying NOT NULL,
+    assessmentdate character varying,
     occupancydate character varying NOT NULL,
     gisrefno character varying,
     isauthorised boolean,
     isunderworkflow boolean,
+    active boolean default true,
     channel character varying NOT NULL,
     createdby character varying,
-    createddate character varying,
     lastmodifiedby character varying,
-    lastmodifieddate character varying
+    createdtime integer,
+    lastmodifiedtime integer
 );
 
 
@@ -43,23 +44,21 @@ ALTER TABLE ONLY egpt_property
 
 CREATE TABLE egpt_address (
     id integer NOT NULL,
-    tenantid character varying NOT NULL,
-    housenobldgapt character varying,
-    streetroadline character varying,
+    tenantid character varying,
+    latitude integer,
+    longitude integer,
+    addressId character varying,
+    addressNumber character varying,
+    addressLine1 character varying,
+    addressLine2 character varying,
     landmark character varying,
-    arealocalitysector character varying,
-    citytownvillage character varying,
-    district character varying,
-    subdistrict character varying,
-    postoffice character varying,
-    state character varying,
-    country character varying,
+    city character varying,
     pincode character varying,
-    type character varying,
+    detail character varying,
     createdby character varying,
-    createddate character varying,
     lastmodifiedby character varying,
-    lastmodifieddate character varying,
+    createdtime integer,
+    lastmodifiedtime integer,
     property_id integer
 );
 
@@ -90,24 +89,23 @@ ALTER TABLE ONLY egpt_address
 
 CREATE TABLE egpt_propertydetails (
     id integer NOT NULL,
-    tenantid character varying NOT NULL,
+    source character varying,
     regddocno character varying,
     regddocdate character varying,
-    occupancydate character varying,
     reason character varying,
     status character varying,
     isverified boolean,
     verificationdate character varying,
     isexempted boolean,
     exemptionreason character varying,
-    propertytype character varying,
+    propertytype character varying NOT NULL,
     category character varying,
     usage character varying,
     department character varying,
     apartment character varying,
-    length integer,
-    breadth integer,
-    sitalarea integer,
+    sitelength integer,
+    sitebreadth integer,
+    sitalarea integer NOT NULL,
     totalbuiltuparea integer,
     undividedshare integer,
     nooffloors integer,
@@ -117,11 +115,13 @@ CREATE TABLE egpt_propertydetails (
     woodtype character varying,
     rooftype character varying,
     walltype character varying,
-    property_id integer,
+    stateid character varying,
+    applicationno character varying,
     createdby character varying,
-    createddate character varying,
     lastmodifiedby character varying,
-    lastmodifieddate character varying
+    createdtime integer,
+    lastmodifiedtime integer,
+    property_id integer
 );
 
 
@@ -150,37 +150,11 @@ ALTER TABLE ONLY egpt_propertydetails
 
 CREATE TABLE egpt_floors (
     id integer NOT NULL,
-    tenantid character varying NOT NULL,
     floorno character varying NOT NULL,
-    unitno character varying,
-    type character varying,
-    length integer,
-    width integer,
-    builtuparea integer NOT NULL,
-    assessablearea integer,
-    bpabuiltuparea integer,
-    category character varying,
-    usage character varying NOT NULL,
-    occupancy character varying NOT NULL,
-    structure character varying NOT NULL,
-    depreciation character varying,
-    occupiername character varying,
-    firmname character varying,
-    rentcollected integer,
-    exemptionreason character varying,
-    isstructured boolean,
-    occupancydate character varying,
-    constcompletiondate character varying,
-    bpano character varying,
-    bpadate character varying,
-    manualarv integer,
-    arv integer,
-    electricmeterno character varying,
-    watermeterno character varying,
     createdby character varying,
-    createddate character varying,
     lastmodifiedby character varying,
-    lastmodifieddate character varying,
+    createdtime integer,
+    lastmodifiedtime integer,
     property_details_id integer
 );
 
@@ -206,11 +180,73 @@ ALTER TABLE ONLY egpt_floors
 ALTER TABLE ONLY egpt_floors
     ADD CONSTRAINT egpt_floors_property_details_id_fkey FOREIGN KEY (property_details_id) REFERENCES egpt_propertydetails(id) DEFERRABLE INITIALLY DEFERRED;
 
+ 
+ CREATE TABLE egpt_unit (
+    id integer NOT NULL,
+    unitno integer NOT NULL,
+    unittype character varying,
+    length integer,
+    width integer,
+    builtuparea integer NOT NULL,
+    assessablearea integer,
+    bpabuiltuparea integer,
+    bpano character varying,
+    bpadate character varying,
+    usage character varying NOT NULL,
+    occupancy character varying NOT NULL,
+    occupiername character varying,
+    firmname character varying,
+    rentcollected integer,
+    structure character varying NOT NULL,
+    age character varying,
+    exemptionreason character varying,
+    isstructured boolean,
+    occupancydate character varying,
+    constcompletiondate character varying,
+    manualarv integer,
+    arv integer,
+    electricmeterno character varying,
+    watermeterno character varying,
+    createdby character varying,
+    lastmodifiedby character varying,
+    createdtime integer,
+    lastmodifiedtime integer,
+    floor_id integer
+);
+
+
+
+CREATE SEQUENCE seq_egpt_unit
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE seq_egpt_unit OWNED BY egpt_unit.id;
+
+
+
+ALTER TABLE ONLY egpt_unit ALTER COLUMN id SET DEFAULT nextval('seq_egpt_unit'::regclass);
+
+
+
+ALTER TABLE ONLY egpt_unit
+    ADD CONSTRAINT egpt_unit_pk PRIMARY KEY (id);
+
+
+ALTER TABLE ONLY egpt_unit
+    ADD CONSTRAINT egpt_unit_fk FOREIGN KEY (floor_id) REFERENCES egpt_floors(id) DEFERRABLE INITIALLY DEFERRED;
 
 CREATE TABLE egpt_documenttype (
     id integer NOT NULL,
     name character varying,
-    application character varying
+    application character varying,
+    createdby character varying,
+    lastmodifiedby character varying,
+    createdtime character varying,
+    lastmodifiedtime character varying
 );
 
 
@@ -236,6 +272,10 @@ CREATE TABLE egpt_document (
     id integer NOT NULL,
     documenttype integer NOT NULL,
     filestore character varying,
+    createdby character varying,
+    lastmodifiedby character varying,
+    createdtime character varying,
+    lastmodifiedtime character varying,
     property_details_id integer
 );
 
@@ -267,7 +307,6 @@ ALTER TABLE ONLY egpt_document
 
 CREATE TABLE egpt_vacantland (
     id integer NOT NULL,
-    tenantid character varying NOT NULL,
     surveynumber character varying,
     pattanumber character varying,
     marketvalue integer,
@@ -278,10 +317,10 @@ CREATE TABLE egpt_vacantland (
     resdplotarea integer,
     nonresdplotarea integer,
     createdby character varying,
-    createddate character varying,
     lastmodifiedby character varying,
-    lastmodifieddate character varying,
-    property_details_id integer
+    createdtime character varying,
+    lastmodifiedtime character varying,
+    property_id integer
 );
 
 
@@ -303,7 +342,7 @@ ALTER TABLE ONLY egpt_vacantland
     ADD CONSTRAINT egpt_vacantland_pk PRIMARY KEY (id);
 
 ALTER TABLE ONLY egpt_vacantland
-    ADD CONSTRAINT egpt_vacantland_property_details_id_fkey FOREIGN KEY (property_details_id) REFERENCES egpt_propertydetails(id) DEFERRABLE INITIALLY DEFERRED;
+    ADD CONSTRAINT egpt_vacantland_property_id_fkey FOREIGN KEY (property_id) REFERENCES egpt_property(id) DEFERRABLE INITIALLY DEFERRED;
 
 
 CREATE TABLE egpt_property_user (
@@ -313,7 +352,11 @@ CREATE TABLE egpt_property_user (
     isPrimaryOwner boolean,
     isSecondaryOwner boolean,
     ownerShipPercentage integer,
-    ownerType character varying
+    ownerType character varying,
+    createdby character varying,
+    lastmodifiedby character varying,
+    createdtime character varying,
+    lastmodifiedtime character varying
 );
 
 
@@ -340,7 +383,7 @@ ALTER TABLE ONLY egpt_property_user
 
 
 
-CREATE TABLE egpt_propertyboundary (
+CREATE TABLE egpt_propertylocation (
     id integer NOT NULL,
     revenueboundary integer,
     locationboundary integer,
@@ -350,14 +393,14 @@ CREATE TABLE egpt_propertyboundary (
     westboundedby character varying,
     southboundedby character varying,
     createdby character varying,
-    createddate character varying,
     lastmodifiedby character varying,
-    lastmodifieddate character varying,
+    createdtime integer,
+    lastmodifiedtime integer,
     property_id integer
 );
 
 
-CREATE SEQUENCE seq_egpt_propertyboundary
+CREATE SEQUENCE seq_egpt_propertylocation
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -365,17 +408,17 @@ CREATE SEQUENCE seq_egpt_propertyboundary
     CACHE 1;
 
 
-ALTER SEQUENCE seq_egpt_propertyboundary OWNED BY egpt_propertyboundary.id;
+ALTER SEQUENCE seq_egpt_propertylocation OWNED BY egpt_propertylocation.id;
 
 
-ALTER TABLE ONLY egpt_propertyboundary ALTER COLUMN id SET DEFAULT nextval('seq_egpt_propertyboundary'::regclass);
+ALTER TABLE ONLY egpt_propertylocation ALTER COLUMN id SET DEFAULT nextval('seq_egpt_propertylocation'::regclass);
 
 
-ALTER TABLE ONLY egpt_propertyboundary
-    ADD CONSTRAINT egpt_propertyboundary_pk PRIMARY KEY (id);
+ALTER TABLE ONLY egpt_propertylocation
+    ADD CONSTRAINT egpt_propertylocation_pk PRIMARY KEY (id);
 
 
-ALTER TABLE ONLY egpt_propertyboundary
-    ADD CONSTRAINT egpt_propertyboundary_fk FOREIGN KEY (property_id) REFERENCES egpt_property(id) DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE ONLY egpt_propertylocation
+    ADD CONSTRAINT egpt_propertylocation_fk FOREIGN KEY (property_id) REFERENCES egpt_property(id) DEFERRABLE INITIALLY DEFERRED;
 
 

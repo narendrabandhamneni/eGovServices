@@ -23,84 +23,52 @@ public class Floor   {
   @Valid
   private List<Unit> units = new ArrayList<Unit>();
 
-  public Floor floorNo(String floorNo) {
-    this.floorNo = floorNo;
-    return this;
-  }
+  @JsonProperty("auditDetails")
+	private AuditDetails auditDetails = null;
 
-   /**
-   * floor no for the floor
-   * @return floorNo
-  **/
-  public String getFloorNo() {
-    return floorNo;
-  }
+public Floor(String floorNo, List<Unit> units, AuditDetails auditDetails) {
+	super();
+	this.floorNo = floorNo;
+	this.units = units;
+	this.auditDetails = auditDetails;
+}
 
-  public void setFloorNo(String floorNo) {
-    this.floorNo = floorNo;
-  }
+public Floor() {
+	super();
+	// TODO Auto-generated constructor stub
+}
 
-  public Floor units(List<Unit> units) {
-    this.units = units;
-    return this;
-  }
+public String getFloorNo() {
+	return floorNo;
+}
 
-  public Floor addUnitsItem(Unit unitsItem) {
-    this.units.add(unitsItem);
-    return this;
-  }
+public void setFloorNo(String floorNo) {
+	this.floorNo = floorNo;
+}
 
-   /**
-   * Flat(s) or Room(s) information on a floor or in a Flat respectively.
-   * @return units
-  **/
-   public List<Unit> getUnits() {
-    return units;
-  }
+public List<Unit> getUnits() {
+	return units;
+}
 
-  public void setUnits(List<Unit> units) {
-    this.units = units;
-  }
+public void setUnits(List<Unit> units) {
+	this.units = units;
+}
 
+public AuditDetails getAuditDetails() {
+	return auditDetails;
+}
 
-  @Override
-  public boolean equals(java.lang.Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-    Floor floor = (Floor) o;
-    return Objects.equals(this.floorNo, floor.floorNo) &&
-        Objects.equals(this.units, floor.units);
-  }
+public void setAuditDetails(AuditDetails auditDetails) {
+	this.auditDetails = auditDetails;
+}
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(floorNo, units);
-  }
-
-  @Override
-  public String toString() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("class Floor {\n");
-    
-    sb.append("    floorNo: ").append(toIndentedString(floorNo)).append("\n");
-    sb.append("    units: ").append(toIndentedString(units)).append("\n");
-    sb.append("}");
-    return sb.toString();
-  }
-
-  /**
-   * Convert the given object to string with each line indented by 4 spaces
-   * (except the first line).
-   */
-  private String toIndentedString(java.lang.Object o) {
-    if (o == null) {
-      return "null";
-    }
-    return o.toString().replace("\n", "\n    ");
-  }
+@Override
+public String toString() {
+	return "Floor [floorNo=" + floorNo + ", units=" + units + ", auditDetails=" + auditDetails + ", getFloorNo()="
+			+ getFloorNo() + ", getUnits()=" + getUnits() + ", getAuditDetails()=" + getAuditDetails() + ", getClass()="
+			+ getClass() + ", hashCode()=" + hashCode() + ", toString()=" + super.toString() + "]";
+}
+  
+  
 }
 

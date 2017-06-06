@@ -44,15 +44,38 @@ public class Address   {
 	@JsonProperty("detail")
 	private String detail = null;
 
-	public Address tenantId(String tenantId) {
+	@JsonProperty("auditDetails")
+	private AuditDetails auditDetails = null;
+
+
+
+	public Address(String tenantId, Double latitude, Double longitude, String addressId, String addressNumber,
+			String addressLine1, String addressLine2, String landmark, String city, String pincode, String detail,
+			AuditDetails auditDetails) {
+		super();
 		this.tenantId = tenantId;
-		return this;
+		this.latitude = latitude;
+		this.longitude = longitude;
+		this.addressId = addressId;
+		this.addressNumber = addressNumber;
+		this.addressLine1 = addressLine1;
+		this.addressLine2 = addressLine2;
+		this.landmark = landmark;
+		this.city = city;
+		this.pincode = pincode;
+		this.detail = detail;
+		this.auditDetails = auditDetails;
 	}
 
-	/**
-	 * Unique Identifier of the tenant to which user primarily belongs
-	 * @return tenantId
-	 **/
+
+
+	public Address() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+
+
 	public String getTenantId() {
 		return tenantId;
 	}
@@ -61,15 +84,6 @@ public class Address   {
 		this.tenantId = tenantId;
 	}
 
-	public Address latitude(Double latitude) {
-		this.latitude = latitude;
-		return this;
-	}
-
-	/**
-	 * latitude of the address
-	 * @return latitude
-	 **/
 	public Double getLatitude() {
 		return latitude;
 	}
@@ -78,15 +92,6 @@ public class Address   {
 		this.latitude = latitude;
 	}
 
-	public Address longitude(Double longitude) {
-		this.longitude = longitude;
-		return this;
-	}
-
-	/**
-	 * longitude of the address
-	 * @return longitude
-	 **/
 	public Double getLongitude() {
 		return longitude;
 	}
@@ -95,15 +100,6 @@ public class Address   {
 		this.longitude = longitude;
 	}
 
-	public Address addressId(String addressId) {
-		this.addressId = addressId;
-		return this;
-	}
-
-	/**
-	 * System generated id for the address
-	 * @return addressId
-	 **/
 	public String getAddressId() {
 		return addressId;
 	}
@@ -112,15 +108,6 @@ public class Address   {
 		this.addressId = addressId;
 	}
 
-	public Address addressNumber(String addressNumber) {
-		this.addressNumber = addressNumber;
-		return this;
-	}
-
-	/**
-	 * House, Door, Building number in the address
-	 * @return addressNumber
-	 **/
 	public String getAddressNumber() {
 		return addressNumber;
 	}
@@ -129,15 +116,6 @@ public class Address   {
 		this.addressNumber = addressNumber;
 	}
 
-	public Address addressLine1(String addressLine1) {
-		this.addressLine1 = addressLine1;
-		return this;
-	}
-
-	/**
-	 * Apartment, Block, Street of the address
-	 * @return addressLine1
-	 **/
 	public String getAddressLine1() {
 		return addressLine1;
 	}
@@ -146,15 +124,6 @@ public class Address   {
 		this.addressLine1 = addressLine1;
 	}
 
-	public Address addressLine2(String addressLine2) {
-		this.addressLine2 = addressLine2;
-		return this;
-	}
-
-	/**
-	 * Locality, Area, Zone, Ward of the address
-	 * @return addressLine2
-	 **/
 	public String getAddressLine2() {
 		return addressLine2;
 	}
@@ -163,15 +132,6 @@ public class Address   {
 		this.addressLine2 = addressLine2;
 	}
 
-	public Address landmark(String landmark) {
-		this.landmark = landmark;
-		return this;
-	}
-
-	/**
-	 * additional landmark to help locate the address
-	 * @return landmark
-	 **/
 	public String getLandmark() {
 		return landmark;
 	}
@@ -180,15 +140,6 @@ public class Address   {
 		this.landmark = landmark;
 	}
 
-	public Address city(String city) {
-		this.city = city;
-		return this;
-	}
-
-	/**
-	 * City of the address. Can be represented by the tenantid itself
-	 * @return city
-	 **/
 	public String getCity() {
 		return city;
 	}
@@ -197,15 +148,6 @@ public class Address   {
 		this.city = city;
 	}
 
-	public Address pincode(String pincode) {
-		this.pincode = pincode;
-		return this;
-	}
-
-	/**
-	 * PIN code of the address. Indian pincodes will usually be all numbers.
-	 * @return pincode
-	 **/
 	public String getPincode() {
 		return pincode;
 	}
@@ -214,15 +156,6 @@ public class Address   {
 		this.pincode = pincode;
 	}
 
-	public Address detail(String detail) {
-		this.detail = detail;
-		return this;
-	}
-
-	/**
-	 * more address detail as may be needed
-	 * @return detail
-	 **/
 	public String getDetail() {
 		return detail;
 	}
@@ -231,63 +164,28 @@ public class Address   {
 		this.detail = detail;
 	}
 
-
-	@Override
-	public boolean equals(java.lang.Object o) {
-		if (this == o) {
-			return true;
-		}
-		if (o == null || getClass() != o.getClass()) {
-			return false;
-		}
-		Address address = (Address) o;
-		return Objects.equals(this.tenantId, address.tenantId) &&
-				Objects.equals(this.latitude, address.latitude) &&
-				Objects.equals(this.longitude, address.longitude) &&
-				Objects.equals(this.addressId, address.addressId) &&
-				Objects.equals(this.addressNumber, address.addressNumber) &&
-				Objects.equals(this.addressLine1, address.addressLine1) &&
-				Objects.equals(this.addressLine2, address.addressLine2) &&
-				Objects.equals(this.landmark, address.landmark) &&
-				Objects.equals(this.city, address.city) &&
-				Objects.equals(this.pincode, address.pincode) &&
-				Objects.equals(this.detail, address.detail);
+	public AuditDetails getAuditDetails() {
+		return auditDetails;
 	}
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(tenantId, latitude, longitude, addressId, addressNumber, addressLine1, addressLine2, landmark, city, pincode, detail);
+	public void setAuditDetails(AuditDetails auditDetails) {
+		this.auditDetails = auditDetails;
 	}
 
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append("class Address {\n");
-
-		sb.append("    tenantId: ").append(toIndentedString(tenantId)).append("\n");
-		sb.append("    latitude: ").append(toIndentedString(latitude)).append("\n");
-		sb.append("    longitude: ").append(toIndentedString(longitude)).append("\n");
-		sb.append("    addressId: ").append(toIndentedString(addressId)).append("\n");
-		sb.append("    addressNumber: ").append(toIndentedString(addressNumber)).append("\n");
-		sb.append("    addressLine1: ").append(toIndentedString(addressLine1)).append("\n");
-		sb.append("    addressLine2: ").append(toIndentedString(addressLine2)).append("\n");
-		sb.append("    landmark: ").append(toIndentedString(landmark)).append("\n");
-		sb.append("    city: ").append(toIndentedString(city)).append("\n");
-		sb.append("    pincode: ").append(toIndentedString(pincode)).append("\n");
-		sb.append("    detail: ").append(toIndentedString(detail)).append("\n");
-		sb.append("}");
-		return sb.toString();
+		return "Address [tenantId=" + tenantId + ", latitude=" + latitude + ", longitude=" + longitude + ", addressId="
+				+ addressId + ", addressNumber=" + addressNumber + ", addressLine1=" + addressLine1 + ", addressLine2="
+				+ addressLine2 + ", landmark=" + landmark + ", city=" + city + ", pincode=" + pincode + ", detail="
+				+ detail + ", auditDetails=" + auditDetails + ", getTenantId()=" + getTenantId() + ", getLatitude()="
+				+ getLatitude() + ", getLongitude()=" + getLongitude() + ", getAddressId()=" + getAddressId()
+				+ ", getAddressNumber()=" + getAddressNumber() + ", getAddressLine1()=" + getAddressLine1()
+				+ ", getAddressLine2()=" + getAddressLine2() + ", getLandmark()=" + getLandmark() + ", getCity()="
+				+ getCity() + ", getPincode()=" + getPincode() + ", getDetail()=" + getDetail() + ", getAuditDetails()="
+				+ getAuditDetails() + ", getClass()=" + getClass() + ", hashCode()=" + hashCode() + ", toString()="
+				+ super.toString() + "]";
 	}
 
-	/**
-	 * Convert the given object to string with each line indented by 4 spaces
-	 * (except the first line).
-	 */
-	private String toIndentedString(java.lang.Object o) {
-		if (o == null) {
-			return "null";
-		}
-		return o.toString().replace("\n", "\n    ");
-	}
+
 }
 

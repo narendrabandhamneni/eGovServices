@@ -56,15 +56,22 @@ public class DocumentType   {
 	@JsonProperty("application")
 	private ApplicationEnum application = null;
 
-	public DocumentType id(Long id) {
+	@JsonProperty("auditDetails")
+	private AuditDetails auditDetails = null;
+
+	public DocumentType(Long id, String name, ApplicationEnum application, AuditDetails auditDetails) {
+		super();
 		this.id = id;
-		return this;
+		this.name = name;
+		this.application = application;
+		this.auditDetails = auditDetails;
 	}
 
-	/**
-	 * unique id of the ApplicationType.
-	 * @return id
-	 **/
+	public DocumentType() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -73,15 +80,6 @@ public class DocumentType   {
 		this.id = id;
 	}
 
-	public DocumentType name(String name) {
-		this.name = name;
-		return this;
-	}
-
-	/**
-	 * name of the document
-	 * @return name
-	 **/
 	public String getName() {
 		return name;
 	}
@@ -90,15 +88,6 @@ public class DocumentType   {
 		this.name = name;
 	}
 
-	public DocumentType application(ApplicationEnum application) {
-		this.application = application;
-		return this;
-	}
-
-	/**
-	 * Application type.
-	 * @return application
-	 **/
 	public ApplicationEnum getApplication() {
 		return application;
 	}
@@ -107,47 +96,22 @@ public class DocumentType   {
 		this.application = application;
 	}
 
-
-	@Override
-	public boolean equals(java.lang.Object o) {
-		if (this == o) {
-			return true;
-		}
-		if (o == null || getClass() != o.getClass()) {
-			return false;
-		}
-		DocumentType documentType = (DocumentType) o;
-		return Objects.equals(this.id, documentType.id) &&
-				Objects.equals(this.name, documentType.name) &&
-				Objects.equals(this.application, documentType.application);
+	public AuditDetails getAuditDetails() {
+		return auditDetails;
 	}
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(id, name, application);
+	public void setAuditDetails(AuditDetails auditDetails) {
+		this.auditDetails = auditDetails;
 	}
 
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append("class DocumentType {\n");
-
-		sb.append("    id: ").append(toIndentedString(id)).append("\n");
-		sb.append("    name: ").append(toIndentedString(name)).append("\n");
-		sb.append("    application: ").append(toIndentedString(application)).append("\n");
-		sb.append("}");
-		return sb.toString();
+		return "DocumentType [id=" + id + ", name=" + name + ", application=" + application + ", auditDetails="
+				+ auditDetails + ", getId()=" + getId() + ", getName()=" + getName() + ", getApplication()="
+				+ getApplication() + ", getAuditDetails()=" + getAuditDetails() + ", getClass()=" + getClass()
+				+ ", hashCode()=" + hashCode() + ", toString()=" + super.toString() + "]";
 	}
 
-	/**
-	 * Convert the given object to string with each line indented by 4 spaces
-	 * (except the first line).
-	 */
-	private String toIndentedString(java.lang.Object o) {
-		if (o == null) {
-			return "null";
-		}
-		return o.toString().replace("\n", "\n    ");
-	}
+
 }
 
