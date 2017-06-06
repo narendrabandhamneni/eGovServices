@@ -6,6 +6,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
+/**
+ * Description : This is initialization  class for  pt-property module
+ * @author narendra
+ *
+ */
 
 @SpringBootApplication
 @EnableWebMvc 

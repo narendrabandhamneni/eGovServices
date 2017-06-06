@@ -14,6 +14,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+/**
+ * Description : This class is logging utility for propertyWorkflow
+ * @author Debabrata
+ *
+ */
 
 
 @Aspect
@@ -22,17 +27,27 @@ public class PropertyWorkflowAspectJ {
 	
 	public static final Logger logger = LoggerFactory.getLogger(PropertyWorkflowAspectJ.class);
 
+	/**
+	 * point cut for rest controller
+	 */
 
 	@Pointcut("within(@org.springframework.web.bind.annotation.RestController *)")
 	public void controller() {
 	}
 
+	/**
+	 * point cut for all methods
+	 */
+	
 	@Pointcut("execution(* *.*(..))")
 	protected void allMethod() {
 	}
 
 
-	
+	/**
+	 * Description : This will log for any resource annotated with @Controller annotation
+	 * @param joinPoint
+	 */
 	
 	
 	/*before -> Any resource annotated with @Controller annotation */
@@ -47,10 +62,13 @@ public class PropertyWorkflowAspectJ {
 
 	}
 	
+
 	
+	/**
+	 * Description : This will log forAll method within resource annotated with @Controller annotation after method return and return a  value
+	 * @param joinPoint
+	 */
 	
-	
-	/*After -> All method within resource annotated with @Controller annotation and return a  value*/
 	
 	@AfterReturning(pointcut = "controller() && allMethod()", returning = "result")
 	public void logAfter(JoinPoint joinPoint, Object result) {
