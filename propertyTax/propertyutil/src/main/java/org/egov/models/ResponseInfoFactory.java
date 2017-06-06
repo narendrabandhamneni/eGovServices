@@ -1,5 +1,6 @@
 package org.egov.models;
 
+import org.egov.models.ResponseInfo.StatusEnum;
 import org.springframework.stereotype.Service;
 
 /**
@@ -18,7 +19,7 @@ public class ResponseInfoFactory {
 			ts = requestInfo.getTs().toString();
 		String resMsgId = "uief87324"; // FIXME : Hard-coded
 		String msgId = requestInfo.getMsgId();
-		String responseStatus = success ? "successful" : "failed";
-		return new ResponseInfo(apiId, ver, ts, resMsgId, msgId, responseStatus);
+		StatusEnum responseStatus = success ? StatusEnum.SUCCESSFUL : StatusEnum.FAILED;
+			return new ResponseInfo(apiId, ver, Long.valueOf(ts), resMsgId, msgId,responseStatus);
 	}
 }

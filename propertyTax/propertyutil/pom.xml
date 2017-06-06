@@ -29,7 +29,6 @@
 			<version>1.5.3.RELEASE
 			</version>
 		</dependency>
-
 	</dependencies>
 
 <!-- 	<distributionManagement>
