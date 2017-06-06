@@ -48,11 +48,10 @@ public class PersisterService {
 	}
 
 	/**
-	 * 
+	 * Description : This method will use for insert property related data in database
 	 * @param properties
 	 */
-	//creating property 
-	public void createProperty(List<Property> properties) {
+		public void createProperty(List<Property> properties) {
 
 		//iterating property from properties
 		for (Property property : properties) {
