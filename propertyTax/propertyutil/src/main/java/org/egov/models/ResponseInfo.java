@@ -58,7 +58,7 @@ public class ResponseInfo   {
 		SUCCESSFUL("SUCCESSFUL"),
 
 		FAILED("FAILED");
-
+	
 		private String value;
 
 		StatusEnum(String value) {

@@ -141,7 +141,7 @@ public class Consumer {
 					//search user
 					UserResponseInfo userResponse= restTemplate.postForObject(environment.getProperty("user.searchUrl"), userSearchRequestInfo, UserResponseInfo.class);
 
-					if(userResponse.getResponseInfo().getStatus().equalsIgnoreCase(environment.getProperty("statusCode"))){
+					if(userResponse.getResponseInfo()!=null){
 						if(userResponse.getUser()==null){
 							UserRequestInfo userRequestInfo=new UserRequestInfo();
 							userRequestInfo.setRequestInfo(propertyRequest.getRequestInfo());

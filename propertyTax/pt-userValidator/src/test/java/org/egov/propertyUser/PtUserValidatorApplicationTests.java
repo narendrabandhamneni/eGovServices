@@ -58,7 +58,7 @@ public class PtUserValidatorApplicationTests {
 	
 
 
-	@Test
+/*	@Test
 	public void testCreatingProperty() throws Exception {
 		try {
 			PropertyRequest propertyRequest = new PropertyRequest();
@@ -114,6 +114,6 @@ public class PtUserValidatorApplicationTests {
 			producer.send(environment.getProperty("validate.user"), propertyRequest);
 		} catch (Exception e) {
 		}
-	}
+	}*/
 
 }
