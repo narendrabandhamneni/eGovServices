@@ -25,6 +25,15 @@ public class ErrorRes   {
 		return this;
 	}
 
+	public ErrorRes(ResponseInfo responseInfo, List<Error> errors) {
+		super();
+		this.responseInfo = responseInfo;
+		this.errors = errors;
+	}
+
+
+
+
 	/**
 	 * Get responseInfo
 	 * @return responseInfo

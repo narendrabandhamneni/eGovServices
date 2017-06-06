@@ -8,7 +8,7 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.egov.models.Property;
 import org.egov.models.PropertyRequest;
-import org.egov.models.WorkflowDetails;
+import org.egov.models.WorkFlowDetails;
 import org.egov.propertyWorkflow.models.WorkflowDetailsRequestInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -70,7 +70,7 @@ public class WorkflowConsumer {
 			propertyRequest =record.value();
 			//propertyRequest=	objectMapper.readValue(propertyRequestData, PropertyRequest.class);
 			for(Property property:propertyRequest.getProperties()){
-				WorkflowDetails workflowDetails=property.getPropertydetails().getWorkFlowDetails();
+				WorkFlowDetails workflowDetails=property.getPropertyDetail().getWorkFlowDetails();
 				WorkflowDetailsRequestInfo workflowDetailsRequestInfo=new WorkflowDetailsRequestInfo();
 				workflowDetailsRequestInfo.setRequestInfo(propertyRequest.getRequestInfo());
 				workflowDetailsRequestInfo.setTenantId(property.getTenantId());
@@ -85,7 +85,7 @@ public class WorkflowConsumer {
 			//propertyRequest = objectMapper.readValue(record.value(), PropertyRequest.class);
 
 			for(Property property:propertyRequest.getProperties()){
-				WorkflowDetails workflowDetails=property.getPropertydetails().getWorkFlowDetails();
+				WorkFlowDetails workflowDetails=property.getPropertyDetail().getWorkFlowDetails();
 				WorkflowDetailsRequestInfo workflowDetailsRequestInfo=new WorkflowDetailsRequestInfo();
 				workflowDetailsRequestInfo.setTenantId(property.getTenantId());
 				workflowDetailsRequestInfo.setWorkflowDetails(workflowDetails);

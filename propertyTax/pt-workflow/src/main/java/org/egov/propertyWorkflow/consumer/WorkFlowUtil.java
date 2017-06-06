@@ -3,7 +3,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.egov.models.RequestInfo;
-import org.egov.models.WorkflowDetails;
+import org.egov.models.WorkFlowDetails;
 import org.egov.propertyWorkflow.models.Position;
 import org.egov.propertyWorkflow.models.ProcessInstance;
 import org.egov.propertyWorkflow.models.ProcessInstanceRequest;
@@ -62,12 +62,12 @@ public class WorkFlowUtil {
 	public TaskResponse updateWorkflow(WorkflowDetailsRequestInfo workflowDetailsRequestInfo) throws JsonProcessingException {
 
 		TaskRequest taskRequest = getTaskRequest(workflowDetailsRequestInfo);
-		WorkflowDetails workflowDetails=workflowDetailsRequestInfo.getWorkflowDetails();
+		WorkFlowDetails workflowDetails=workflowDetailsRequestInfo.getWorkflowDetails();
 		String url = environment.getProperty("workflow.updateUrl");
 
 		// URI parameters
 		Map<String, String> uriParams = new HashMap<String, String>();
-		uriParams.put("id", workflowDetails.getWorkFlowId().toString());
+		uriParams.put("id", workflowDetails.getAction());
 
 		// Query parameters
 		UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(url)
@@ -90,7 +90,7 @@ public class WorkFlowUtil {
 
 	private ProcessInstanceRequest getProcessInstanceRequest(WorkflowDetailsRequestInfo workflowDetailsRequest) {
 
-		WorkflowDetails workflowDetails = workflowDetailsRequest.getWorkflowDetails();
+		WorkFlowDetails workflowDetails = workflowDetailsRequest.getWorkflowDetails();
 		RequestInfo requestInfo = workflowDetailsRequest.getRequestInfo();
 		ProcessInstanceRequest processInstanceRequest = new ProcessInstanceRequest();
 		ProcessInstance processInstance = new ProcessInstance();
@@ -107,7 +107,7 @@ public class WorkFlowUtil {
 	}
 
 	private TaskRequest getTaskRequest(WorkflowDetailsRequestInfo workflowDetailsRequest) {
-		WorkflowDetails workflowDetails = workflowDetailsRequest.getWorkflowDetails();
+		WorkFlowDetails workflowDetails = workflowDetailsRequest.getWorkflowDetails();
 		RequestInfo requestInfo = workflowDetailsRequest.getRequestInfo();
 		TaskRequest taskRequest = new TaskRequest();
 		Task task = new Task();
@@ -115,7 +115,8 @@ public class WorkFlowUtil {
 		taskRequest.setRequestInfo(requestInfo);
 		task.setBusinessKey(environment.getProperty("businessKey"));
 		task.setType(environment.getProperty("businessKey"));
-		task.setId(workflowDetails.getWorkFlowId().toString());
+		//currently workflowId not available in model
+		task.setId(workflowDetails.getAction().toString());
 		task.setAction(workflowDetails.getAction());
 		task.setStatus(workflowDetails.getStatus());
 		assignee.setId((long)workflowDetails.getAssignee());

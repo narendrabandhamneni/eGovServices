@@ -89,8 +89,16 @@ public class Error   {
 		this.fileds = fileds;
 	}
 
+   
 
 
+	public Error(String code, String message, String description, Map<String, String> fileds) {
+		super();
+		this.code = code;
+		this.message = message;
+		this.description = description;
+		this.fileds = fileds;
+	}
 
 	@Override
 	public int hashCode() {

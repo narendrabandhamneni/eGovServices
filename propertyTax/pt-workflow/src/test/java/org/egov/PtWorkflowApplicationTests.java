@@ -1,15 +1,5 @@
 package org.egov;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.egov.models.Floor;
-import org.egov.models.Property;
-import org.egov.models.PropertyDetail;
-import org.egov.models.PropertyRequest;
-import org.egov.models.RequestInfo;
-import org.egov.models.User;
-import org.egov.models.WorkflowDetails;
 import org.egov.propertyWorkflow.PtWorkflowApplication;
 import org.egov.propertyWorkflow.consumer.WorkflowProducer;
 import org.junit.runner.RunWith;
@@ -30,7 +20,7 @@ public class PtWorkflowApplicationTests {
 	@Autowired
 	Environment environment;
 
-	//@Test
+	/*//@Test
 	public void testCreatingProperty() throws Exception {
 		try {
 			PropertyRequest propertyRequest = new PropertyRequest();
@@ -80,5 +70,5 @@ public class PtWorkflowApplicationTests {
 
 		}
 
-	}
+	}*/
 }

@@ -53,7 +53,7 @@ public class PropertyValidator {
 	public Boolean validateBoundaryFields(Property property, String field) throws InvalidPropertyBoundaryException{
 
 		PropertyLocation propertyLocation = property.getBoundary();
-		Integer id;
+		Long id;
 
 		if(field.equalsIgnoreCase("revenueBoundary")){
 			id = propertyLocation.getRevenueBoundary().getId();
@@ -69,7 +69,7 @@ public class PropertyValidator {
 
 		try {
 			BoundaryResponseInfo boundaryResponseInfo = restTemplate.getForObject(uri, BoundaryResponseInfo.class);
-			if(boundaryResponseInfo.getResponseInfo().getStatus().equalsIgnoreCase(env.getProperty("statusCode")) && boundaryResponseInfo.getBoundary().size()!=0){
+			if(boundaryResponseInfo.getResponseInfo().getStatus().toString().equalsIgnoreCase(env.getProperty("success")) && boundaryResponseInfo.getBoundary().size()!=0){
 				return true;
 			} else {
 				throw new InvalidPropertyBoundaryException();

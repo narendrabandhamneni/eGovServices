@@ -1,10 +1,13 @@
 package org.egov.id.exception;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import org.egov.models.AttributeNotFoundException;
 import org.egov.models.Error;
 import org.egov.models.ErrorRes;
 import org.egov.models.ResponseInfo;
+import org.egov.models.ResponseInfo.StatusEnum;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -18,13 +21,17 @@ public class GlobalExceptionHandler {
 		if(ex instanceof AttributeNotFoundException){
 			Error error=new Error(HttpStatus.BAD_REQUEST.toString(),((AttributeNotFoundException) ex).getCustomMsg(),null,new HashMap<String,String>());
 			ResponseInfo responseInfo=new ResponseInfo();
-			responseInfo.setStatus(HttpStatus.BAD_REQUEST.toString());
-			return new ErrorRes(responseInfo,error);
+			responseInfo.setStatus(StatusEnum.FAILED);
+			List<Error> errorList=new ArrayList<Error>();
+			errorList.add(error);
+			return new ErrorRes(responseInfo,errorList);
 		} else {
 			Error error=new Error(HttpStatus.BAD_REQUEST.toString(),ex.getMessage(),null,new HashMap<String,String>());
 			ResponseInfo responseInfo=new ResponseInfo();
-			responseInfo.setStatus(HttpStatus.BAD_REQUEST.toString());
-			return new ErrorRes(responseInfo,error);
+			responseInfo.setStatus(StatusEnum.SUCCESSFUL);
+			List<Error> errorList=new ArrayList<Error>();
+			errorList.add(error);
+			return new ErrorRes(responseInfo,errorList);
 		}
 	}
 

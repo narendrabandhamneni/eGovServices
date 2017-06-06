@@ -1,5 +1,8 @@
 package org.egov.models;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import javax.validation.constraints.Size;
@@ -207,5 +210,35 @@ public class PropertyLocation   {
 		}
 		return o.toString().replace("\n", "\n    ");
 	}
+	
+	/**
+	* Description : This is to get the searchType fields of the target class
+	* @author Narendra
+	* @param target
+	* @param searchType
+	* @return result
+	*/
+	public List<String> getFieldsOfType(Class<?> target, Class<?> searchType) {
+
+	Field[] fields  = target.getDeclaredFields();
+	List<String> result = new ArrayList<String>();
+
+	for(Field field:fields){
+	if(field.getType().equals(searchType)){
+	result.add(searchType.getName());
+	}
+	}
+	return result;
+	}
+
+	/**
+	* Description : This is to get the BoundaryType fields of the PropertyLocation class
+	* @author Narendra
+	* @return List<String>
+	*/
+	public List<String> getAllBoundaries(){
+	return getFieldsOfType(PropertyLocation.class, Boundary.class); 
+	}
+	
 }
 

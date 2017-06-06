@@ -1,8 +1,7 @@
 package org.egov.propertyWorkflow.models;
 
 import org.egov.models.RequestInfo;
-import org.egov.models.WorkflowDetails;
-
+import org.egov.models.WorkFlowDetails;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -23,6 +22,6 @@ public class WorkflowDetailsRequestInfo {
 
 	private RequestInfo requestInfo;
 
-	private WorkflowDetails workflowDetails;
+	private WorkFlowDetails workflowDetails;
 
 }

@@ -71,12 +71,12 @@ public class PropertyController {
 			idGeneration.setIdRequest(idrequest);
 			idGeneration.setRequestInfo(propertyRequest.getRequestInfo());
 			IdGenerationResponse idResponse=restTemplate.patchForObject(environment.getProperty("id.creation"), idGeneration, IdGenerationResponse.class);
-			if(idResponse.getResponseInfo().getStatus().equalsIgnoreCase(environment.getProperty("statusCode"))){
-				if(idResponse.getResponseInfo().getStatus().equalsIgnoreCase(environment.getProperty("badRequest"))){
+			if(idResponse.getResponseInfo().getStatus().toString().equalsIgnoreCase(environment.getProperty("success"))){
+				if(idResponse.getResponseInfo().getStatus().toString().equalsIgnoreCase(environment.getProperty("failed"))){
 					throw new AttributeNotFoundException(environment.getProperty("attribute.notfound"),propertyRequest.getRequestInfo());
 				}
 			}
-			property.getPropertydetails().setApplicationNo(idResponse.getIdResponse().getId());		
+			property.getPropertyDetail().setApplicationNo(idResponse.getIdResponse().getId());		
 			applicationList.add(idResponse.getIdResponse().getId());
 			PropertyRequest propertyRequestInfo=new PropertyRequest();
 			propertyRequestInfo.setRequestInfo(propertyRequest.getRequestInfo());

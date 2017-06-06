@@ -3,7 +3,7 @@ package org.egov.propertyWorkflow.models;
 import java.util.List;
 
 import org.egov.models.ResponseInfo;
-import org.egov.models.WorkflowDetails;
+import org.egov.models.WorkFlowDetails;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,6 +19,6 @@ public class WorkflowDetailsResponseInfo {
 
 	private ResponseInfo ResponseInfo;
 
-	private List<WorkflowDetails> WorkflowDetails;
+	private List<WorkFlowDetails> WorkflowDetails;
 
 }

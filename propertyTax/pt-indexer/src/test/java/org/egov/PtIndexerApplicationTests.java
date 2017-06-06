@@ -36,7 +36,7 @@ public class PtIndexerApplicationTests {
 	 * test case for inserting data into indexer in elastic search
 	 */
 	//@Test
-	public void testCreatingProperty() {
+	/*public void testCreatingProperty() {
 		try{
 			Property property=new Property();
 			property.setUpicNo("test123");
@@ -65,7 +65,7 @@ public class PtIndexerApplicationTests {
 		}catch(Exception e){
 
 		}
-	}
+	}*/
 
 
 }
