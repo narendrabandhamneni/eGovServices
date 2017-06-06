@@ -13,7 +13,9 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 /**
- * Property
+ * <h1>Property</h1>
+ * @author S Anilkumar
+ *
  */
 
 @Data

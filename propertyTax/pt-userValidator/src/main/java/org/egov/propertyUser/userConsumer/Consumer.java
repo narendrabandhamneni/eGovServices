@@ -31,6 +31,18 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+
+/**
+ * Consumer class will use for listing  property object from kafka server. 
+ * Authenticate the user
+ * Search the user
+ * Create the user
+ * If user exist update the user id 
+ * otherwise create the user
+ * 
+ * @author: S Anilkumar
+ */
+
 @RestController
 @SuppressWarnings("unused")
 public class Consumer {
@@ -45,13 +57,19 @@ public class Consumer {
 	private Producer producer;
 
 
-
+	/*
+	 * This method for creating rest template
+	 */
 	@Bean
 	public RestTemplate restTemplate(){
 		return new RestTemplate();
 	}
 
 
+
+	/**
+	 * This method for getting consumer configuration bean
+	 */
 	@Bean
 	public Map<String,Object> consumerConfig(){
 		Map<String,Object> consumerProperties=new HashMap<String,Object>();
@@ -63,6 +81,9 @@ public class Consumer {
 		return consumerProperties;
 	}
 
+	/**
+	 * This method will return the consumer factory bean based on consumer configuration
+	 */
 	@Bean
 	public ConsumerFactory<String, PropertyRequest> consumerFactory(){
 		return new DefaultKafkaConsumerFactory<>(consumerConfig(),new StringDeserializer(),
@@ -70,6 +91,9 @@ public class Consumer {
 
 	}
 
+	/**
+	 * This bean will return kafka listner object based on consumer factory
+	 */
 	@Bean
 	public ConcurrentKafkaListenerContainerFactory<String, PropertyRequest> kafkaListenerContainerFactory(){
 		ConcurrentKafkaListenerContainerFactory<String, PropertyRequest> factory=new ConcurrentKafkaListenerContainerFactory<String,PropertyRequest>();
@@ -78,6 +102,12 @@ public class Consumer {
 	}
 
 
+	/**
+	 * This method will listen property object from producer and check user authentication
+	 *  Updating auth token in UserAuthResponseInfo
+	 *  Search user
+	 *  Create user
+	 */
 	@KafkaListener(topics ="#{environment.getProperty('validate.user')}")
 	public void receive(PropertyRequest propertyRequest) {
 		HttpHeaders headers = new HttpHeaders();
@@ -94,7 +124,7 @@ public class Consumer {
 		HttpEntity<MultiValueMap<String, String>> requestEntity= 
 				new HttpEntity<MultiValueMap<String, String>>(map, headers);
 
-
+		// authentication verification
 		UserAuthResponseInfo userAuthResponseInfo=	restTemplate.postForObject(environment.getProperty("user.auth"), requestEntity, UserAuthResponseInfo.class);
 
 		propertyRequest.getRequestInfo().setAuthToken(userAuthResponseInfo.getAccess_token());
@@ -108,6 +138,7 @@ public class Consumer {
 					userSearchRequestInfo.put("tenantId",user.getTenantId());
 					userSearchRequestInfo.put("RequestInfo",propertyRequest.getRequestInfo());
 
+					//search user
 					UserResponseInfo userResponse= restTemplate.postForObject(environment.getProperty("user.searchUrl"), userSearchRequestInfo, UserResponseInfo.class);
 
 					if(userResponse.getResponseInfo().getStatus().equalsIgnoreCase(environment.getProperty("statusCode"))){
@@ -128,6 +159,7 @@ public class Consumer {
 					userRequestInfo.setRequestInfo(propertyRequest.getRequestInfo());
 					userRequestInfo.setUser(user);
 
+					//create user
 					UserResponseInfo userCreateResponse = restTemplate.postForObject(environment.getProperty("user.createUrl"),
 							userRequestInfo, UserResponseInfo.class);
 					user.setId(userCreateResponse.getUser().get(0).getId());

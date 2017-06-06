@@ -11,7 +11,9 @@ import lombok.NonNull;
 import lombok.ToString;
 
 /**
- * VacantLandProperty
+ * <h1>VacantLandProperty</h1>
+ * @author Narendra
+ *
  */
 
 @Data
@@ -24,20 +26,20 @@ public class VacantLandProperty {
 
 	@Size(min=4, max=64)
 	private String surveyNumber;
-	
+
 	@Size(min=4, max=64)
 	private String pattaNumber;
 
-	
+
 	private Double marketValue;
 
 	@Min(value=500)
 	private Double capitalValue;
-	
+
 	@Size(min=4, max=64)
 	@NotNull
 	private String layoutApprovedAuth;
-	
+
 	@Size(min=4, max=64)
 	private String layoutPermissionNo;
 
@@ -47,7 +49,7 @@ public class VacantLandProperty {
 	private Double resdPlotArea;
 
 	private Double nonResdPlotArea;
-	
+
 	private AuditDetails auditDetails;
 
 	@NonNull

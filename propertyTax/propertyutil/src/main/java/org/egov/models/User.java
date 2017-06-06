@@ -10,7 +10,9 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 /**
- * User
+ * <h1>ResponseInfoFactory</h1>
+ * @author S Anilkumar
+ *
  */
 
 @Data

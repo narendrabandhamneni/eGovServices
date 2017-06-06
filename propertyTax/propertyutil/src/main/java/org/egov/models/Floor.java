@@ -9,7 +9,9 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 /**
- * Floor
+ * <h1>Boundary</h1>
+ * @author S Anilkumar
+ *
  */
 @Data
 @AllArgsConstructor
@@ -17,16 +19,16 @@ import lombok.ToString;
 @ToString
 
 public class Floor {
-	
+
 	private Integer id;
 
 	@NotNull
 	@Size(min=1, max= 16)
 	private String floorNo;
-	
+
 	@Size(min=1, max= 8)
 	private String unitNo;
-	
+
 	@Size(min=1, max= 16)
 	private String type;
 
@@ -58,10 +60,10 @@ public class Floor {
 
 	@Size(min=1, max= 16)
 	private String depreciation;
-	
+
 	@Size(min=1, max= 128)
 	private String occupierName;
-	
+
 	@Size(min=1, max= 128)
 	private String firmName;
 
@@ -87,14 +89,14 @@ public class Floor {
 
 	@Size(min=1, max=64)
 	private String electricMeterNo;
-	
+
 	@Size(min=1, max= 64)
 	private String waterMeterNo;
 
 	private AuditDetails auditDetails;
-	
-    @NotNull
-    @Size(min=4, max= 128)
+
+	@NotNull
+	@Size(min=4, max= 128)
 	private String tenantId;
 
 }

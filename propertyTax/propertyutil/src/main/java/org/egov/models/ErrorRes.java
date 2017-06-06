@@ -7,7 +7,9 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * ErrorRes
+ * <h1>ErrorRes</h1>
+ * @author Narendra
+ *
  */
 @Getter
 @Setter

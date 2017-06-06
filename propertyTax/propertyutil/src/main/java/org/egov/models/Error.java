@@ -10,7 +10,9 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * Error
+ * <h1>Error</h1>
+ * @author Narendra
+ *
  */
 
 @Getter

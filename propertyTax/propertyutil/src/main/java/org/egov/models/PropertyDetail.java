@@ -12,7 +12,9 @@ import lombok.NonNull;
 import lombok.ToString;
 
 /**
- * PropertyDetail
+ * <h1>Property Detail</h1>
+ * @author Narendra
+ *
  */
 
 @Data
@@ -105,8 +107,8 @@ public class PropertyDetail {
 	private Boolean waterHarvesting;
 
 	private Boolean cableConnection;
-	
-    @Valid
+
+	@Valid
 	private VacantLandProperty vacantLand;
 
 	@NonNull
@@ -123,6 +125,6 @@ public class PropertyDetail {
 	private String tenantId;
 
 	private WorkflowDetails workFlowDetails;
-	
+
 	private List<Document> documents;
 }

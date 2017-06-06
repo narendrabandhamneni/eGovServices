@@ -5,6 +5,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+/**
+ * <h1>UserRequest</h1>
+ * @author S Anilkumar
+ *
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

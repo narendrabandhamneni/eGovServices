@@ -11,6 +11,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * <h1>UserRequestInfo</h1>
+ * This model have User, List of User and RequestInfo models
+ * This model class is used to send User request 
+ * 
+ * @author S Anilkumar
+ *
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

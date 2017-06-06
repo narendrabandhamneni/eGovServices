@@ -11,6 +11,7 @@ import lombok.ToString;
  * Contract class to send response. Array of Property items are used in case of
  * search results or response for create. Where as single Property item is used
  * for update
+ * @author S Anilkumar
  */
 
 @Data
