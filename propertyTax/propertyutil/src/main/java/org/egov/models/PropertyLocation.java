@@ -42,6 +42,13 @@ public class PropertyLocation {
 	@Size(min=1, max=256)
 	private String southBoundedBy;
 
+	/**
+	 * Description : This is to get the searchType fields of the target class
+	 * @author Narendra
+	 * @param target
+	 * @param searchType
+	 * @return result
+	 */
 	public List<String> getFieldsOfType(Class<?> target, Class<?> searchType) {
 
 		Field[] fields  = target.getDeclaredFields();
@@ -55,6 +62,11 @@ public class PropertyLocation {
 		return result;
 	}
 
+	/**
+	 * Description : This is to get the BoundaryType fields of the PropertyLocation class
+	 * @author Narendra
+	 * @return List<String>
+	 */
 	public List<String> getAllBoundaries(){
 		return getFieldsOfType(PropertyLocation.class, Boundary.class); 
 	}

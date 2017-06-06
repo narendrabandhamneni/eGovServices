@@ -14,6 +14,12 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+/**
+ * This Service to validate the property attributes
+ * @author Pavan Kumar Kamma
+ *
+ */
+
 @Service
 public class PropertyValidator {
 
@@ -23,6 +29,11 @@ public class PropertyValidator {
 	@Autowired
 	RestTemplate restTemplate;
 
+	/**
+	 * Description : This validates the property boundary
+	 * @param property
+	 * @throws InvalidPropertyBoundaryException
+	 */
 	public void validatePropertyBoundary(Property property) throws InvalidPropertyBoundaryException{
 
 		PropertyLocation propertyLocation = property.getBoundary();
@@ -31,11 +42,19 @@ public class PropertyValidator {
 			validateBoundaryFields(property, field);
 		}
 	}
-	
+
+	/**
+	 * Description : This validates the each boundary field of the property
+	 * @param property
+	 * @param field
+	 * @return true
+	 * @throws InvalidPropertyBoundaryException
+	 */
 	public Boolean validateBoundaryFields(Property property, String field) throws InvalidPropertyBoundaryException{
-		
+
 		PropertyLocation propertyLocation = property.getBoundary();
-		String id;
+		Integer id;
+
 		if(field.equalsIgnoreCase("revenueBoundary")){
 			id = propertyLocation.getRevenueBoundary().getId();
 		} else if(field.equalsIgnoreCase("locationBoundary")){
@@ -43,7 +62,7 @@ public class PropertyValidator {
 		} else {
 			id = propertyLocation.getAdminBoundary().getId();
 		}
-		
+
 		URI uri = UriComponentsBuilder.fromUriString(env.getProperty("boundary.boundaryUrl"))
 				.queryParam("Boundary.tenantId", property.getTenantId())
 				.queryParam("Boundary.id", id).build(true).encode().toUri();
