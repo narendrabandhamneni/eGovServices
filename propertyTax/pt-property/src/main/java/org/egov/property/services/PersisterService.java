@@ -14,7 +14,6 @@ import org.egov.models.Property;
 import org.egov.models.PropertyDetail;
 import org.egov.models.PropertyLocation;
 import org.egov.models.Unit;
-import org.egov.models.User;
 import org.egov.models.VacantLandDetail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;

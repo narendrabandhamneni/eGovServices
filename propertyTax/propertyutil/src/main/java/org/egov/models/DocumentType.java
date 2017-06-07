@@ -1,7 +1,5 @@
 package org.egov.models;
 
-import java.util.Objects;
-
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
@@ -110,6 +108,46 @@ public class DocumentType   {
 				+ auditDetails + ", getId()=" + getId() + ", getName()=" + getName() + ", getApplication()="
 				+ getApplication() + ", getAuditDetails()=" + getAuditDetails() + ", getClass()=" + getClass()
 				+ ", hashCode()=" + hashCode() + ", toString()=" + super.toString() + "]";
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((application == null) ? 0 : application.hashCode());
+		result = prime * result + ((auditDetails == null) ? 0 : auditDetails.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		DocumentType other = (DocumentType) obj;
+		if (application != other.application)
+			return false;
+		if (auditDetails == null) {
+			if (other.auditDetails != null)
+				return false;
+		} else if (!auditDetails.equals(other.auditDetails))
+			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		return true;
 	}
 
 

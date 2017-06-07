@@ -1,7 +1,5 @@
 package org.egov.models;
 
-import java.util.Objects;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -11,6 +9,99 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 
 public class Address   {
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((addressId == null) ? 0 : addressId.hashCode());
+		result = prime * result + ((addressLine1 == null) ? 0 : addressLine1.hashCode());
+		result = prime * result + ((addressLine2 == null) ? 0 : addressLine2.hashCode());
+		result = prime * result + ((addressNumber == null) ? 0 : addressNumber.hashCode());
+		result = prime * result + ((auditDetails == null) ? 0 : auditDetails.hashCode());
+		result = prime * result + ((city == null) ? 0 : city.hashCode());
+		result = prime * result + ((detail == null) ? 0 : detail.hashCode());
+		result = prime * result + ((landmark == null) ? 0 : landmark.hashCode());
+		result = prime * result + ((latitude == null) ? 0 : latitude.hashCode());
+		result = prime * result + ((longitude == null) ? 0 : longitude.hashCode());
+		result = prime * result + ((pincode == null) ? 0 : pincode.hashCode());
+		result = prime * result + ((tenantId == null) ? 0 : tenantId.hashCode());
+		return result;
+	}
+
+
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Address other = (Address) obj;
+		if (addressId == null) {
+			if (other.addressId != null)
+				return false;
+		} else if (!addressId.equals(other.addressId))
+			return false;
+		if (addressLine1 == null) {
+			if (other.addressLine1 != null)
+				return false;
+		} else if (!addressLine1.equals(other.addressLine1))
+			return false;
+		if (addressLine2 == null) {
+			if (other.addressLine2 != null)
+				return false;
+		} else if (!addressLine2.equals(other.addressLine2))
+			return false;
+		if (addressNumber == null) {
+			if (other.addressNumber != null)
+				return false;
+		} else if (!addressNumber.equals(other.addressNumber))
+			return false;
+		if (auditDetails == null) {
+			if (other.auditDetails != null)
+				return false;
+		} else if (!auditDetails.equals(other.auditDetails))
+			return false;
+		if (city == null) {
+			if (other.city != null)
+				return false;
+		} else if (!city.equals(other.city))
+			return false;
+		if (detail == null) {
+			if (other.detail != null)
+				return false;
+		} else if (!detail.equals(other.detail))
+			return false;
+		if (landmark == null) {
+			if (other.landmark != null)
+				return false;
+		} else if (!landmark.equals(other.landmark))
+			return false;
+		if (latitude == null) {
+			if (other.latitude != null)
+				return false;
+		} else if (!latitude.equals(other.latitude))
+			return false;
+		if (longitude == null) {
+			if (other.longitude != null)
+				return false;
+		} else if (!longitude.equals(other.longitude))
+			return false;
+		if (pincode == null) {
+			if (other.pincode != null)
+				return false;
+		} else if (!pincode.equals(other.pincode))
+			return false;
+		if (tenantId == null) {
+			if (other.tenantId != null)
+				return false;
+		} else if (!tenantId.equals(other.tenantId))
+			return false;
+		return true;
+	}
+
 	@JsonProperty("tenantId")
 	private String tenantId = null;
 

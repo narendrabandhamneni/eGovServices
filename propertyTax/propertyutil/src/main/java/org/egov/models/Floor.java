@@ -2,7 +2,6 @@ package org.egov.models;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -23,7 +22,44 @@ public class Floor   {
   @Valid
   private List<Unit> units = new ArrayList<Unit>();
 
-  @JsonProperty("auditDetails")
+  @Override
+public int hashCode() {
+	final int prime = 31;
+	int result = 1;
+	result = prime * result + ((auditDetails == null) ? 0 : auditDetails.hashCode());
+	result = prime * result + ((floorNo == null) ? 0 : floorNo.hashCode());
+	result = prime * result + ((units == null) ? 0 : units.hashCode());
+	return result;
+}
+
+@Override
+public boolean equals(Object obj) {
+	if (this == obj)
+		return true;
+	if (obj == null)
+		return false;
+	if (getClass() != obj.getClass())
+		return false;
+	Floor other = (Floor) obj;
+	if (auditDetails == null) {
+		if (other.auditDetails != null)
+			return false;
+	} else if (!auditDetails.equals(other.auditDetails))
+		return false;
+	if (floorNo == null) {
+		if (other.floorNo != null)
+			return false;
+	} else if (!floorNo.equals(other.floorNo))
+		return false;
+	if (units == null) {
+		if (other.units != null)
+			return false;
+	} else if (!units.equals(other.units))
+		return false;
+	return true;
+}
+
+@JsonProperty("auditDetails")
 	private AuditDetails auditDetails = null;
 
 public Floor(String floorNo, List<Unit> units, AuditDetails auditDetails) {

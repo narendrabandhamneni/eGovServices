@@ -1,7 +1,5 @@
 package org.egov.models;
 
-import java.util.Objects;
-
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -10,6 +8,85 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Author : Narendra
  */
 public class VacantLandDetail   {
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((auditDetails == null) ? 0 : auditDetails.hashCode());
+		result = prime * result + ((capitalValue == null) ? 0 : capitalValue.hashCode());
+		result = prime * result + ((layoutApprovedAuth == null) ? 0 : layoutApprovedAuth.hashCode());
+		result = prime * result + ((layoutPermissionDate == null) ? 0 : layoutPermissionDate.hashCode());
+		result = prime * result + ((layoutPermissionNo == null) ? 0 : layoutPermissionNo.hashCode());
+		result = prime * result + ((marketValue == null) ? 0 : marketValue.hashCode());
+		result = prime * result + ((nonResdPlotArea == null) ? 0 : nonResdPlotArea.hashCode());
+		result = prime * result + ((pattaNumber == null) ? 0 : pattaNumber.hashCode());
+		result = prime * result + ((resdPlotArea == null) ? 0 : resdPlotArea.hashCode());
+		result = prime * result + ((surveyNumber == null) ? 0 : surveyNumber.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		VacantLandDetail other = (VacantLandDetail) obj;
+		if (auditDetails == null) {
+			if (other.auditDetails != null)
+				return false;
+		} else if (!auditDetails.equals(other.auditDetails))
+			return false;
+		if (capitalValue == null) {
+			if (other.capitalValue != null)
+				return false;
+		} else if (!capitalValue.equals(other.capitalValue))
+			return false;
+		if (layoutApprovedAuth == null) {
+			if (other.layoutApprovedAuth != null)
+				return false;
+		} else if (!layoutApprovedAuth.equals(other.layoutApprovedAuth))
+			return false;
+		if (layoutPermissionDate == null) {
+			if (other.layoutPermissionDate != null)
+				return false;
+		} else if (!layoutPermissionDate.equals(other.layoutPermissionDate))
+			return false;
+		if (layoutPermissionNo == null) {
+			if (other.layoutPermissionNo != null)
+				return false;
+		} else if (!layoutPermissionNo.equals(other.layoutPermissionNo))
+			return false;
+		if (marketValue == null) {
+			if (other.marketValue != null)
+				return false;
+		} else if (!marketValue.equals(other.marketValue))
+			return false;
+		if (nonResdPlotArea == null) {
+			if (other.nonResdPlotArea != null)
+				return false;
+		} else if (!nonResdPlotArea.equals(other.nonResdPlotArea))
+			return false;
+		if (pattaNumber == null) {
+			if (other.pattaNumber != null)
+				return false;
+		} else if (!pattaNumber.equals(other.pattaNumber))
+			return false;
+		if (resdPlotArea == null) {
+			if (other.resdPlotArea != null)
+				return false;
+		} else if (!resdPlotArea.equals(other.resdPlotArea))
+			return false;
+		if (surveyNumber == null) {
+			if (other.surveyNumber != null)
+				return false;
+		} else if (!surveyNumber.equals(other.surveyNumber))
+			return false;
+		return true;
+	}
+
 	@JsonProperty("surveyNumber")
 	@Size(min=4,max=64)
 	private String surveyNumber = null;

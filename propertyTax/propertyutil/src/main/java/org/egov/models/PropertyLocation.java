@@ -3,7 +3,6 @@ package org.egov.models;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import javax.validation.constraints.Size;
 
@@ -16,6 +15,74 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 
 public class PropertyLocation   {
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((adminBoundary == null) ? 0 : adminBoundary.hashCode());
+		result = prime * result + ((auditDetails == null) ? 0 : auditDetails.hashCode());
+		result = prime * result + ((eastBoundedBy == null) ? 0 : eastBoundedBy.hashCode());
+		result = prime * result + ((locationBoundary == null) ? 0 : locationBoundary.hashCode());
+		result = prime * result + ((northBoundedBy == null) ? 0 : northBoundedBy.hashCode());
+		result = prime * result + ((revenueBoundary == null) ? 0 : revenueBoundary.hashCode());
+		result = prime * result + ((southBoundedBy == null) ? 0 : southBoundedBy.hashCode());
+		result = prime * result + ((westBoundedBy == null) ? 0 : westBoundedBy.hashCode());
+		return result;
+	}
+
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		PropertyLocation other = (PropertyLocation) obj;
+		if (adminBoundary == null) {
+			if (other.adminBoundary != null)
+				return false;
+		} else if (!adminBoundary.equals(other.adminBoundary))
+			return false;
+		if (auditDetails == null) {
+			if (other.auditDetails != null)
+				return false;
+		} else if (!auditDetails.equals(other.auditDetails))
+			return false;
+		if (eastBoundedBy == null) {
+			if (other.eastBoundedBy != null)
+				return false;
+		} else if (!eastBoundedBy.equals(other.eastBoundedBy))
+			return false;
+		if (locationBoundary == null) {
+			if (other.locationBoundary != null)
+				return false;
+		} else if (!locationBoundary.equals(other.locationBoundary))
+			return false;
+		if (northBoundedBy == null) {
+			if (other.northBoundedBy != null)
+				return false;
+		} else if (!northBoundedBy.equals(other.northBoundedBy))
+			return false;
+		if (revenueBoundary == null) {
+			if (other.revenueBoundary != null)
+				return false;
+		} else if (!revenueBoundary.equals(other.revenueBoundary))
+			return false;
+		if (southBoundedBy == null) {
+			if (other.southBoundedBy != null)
+				return false;
+		} else if (!southBoundedBy.equals(other.southBoundedBy))
+			return false;
+		if (westBoundedBy == null) {
+			if (other.westBoundedBy != null)
+				return false;
+		} else if (!westBoundedBy.equals(other.westBoundedBy))
+			return false;
+		return true;
+	}
+
 	@JsonProperty("revenueBoundary")
 	private Boundary revenueBoundary = null;
 

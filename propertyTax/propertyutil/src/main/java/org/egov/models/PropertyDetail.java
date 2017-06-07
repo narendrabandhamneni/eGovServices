@@ -2,7 +2,6 @@ package org.egov.models;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -17,6 +16,217 @@ import com.fasterxml.jackson.annotation.JsonValue;
  */
 
 public class PropertyDetail   {
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((apartment == null) ? 0 : apartment.hashCode());
+		result = prime * result + ((applicationNo == null) ? 0 : applicationNo.hashCode());
+		result = prime * result + ((auditDetails == null) ? 0 : auditDetails.hashCode());
+		result = prime * result + ((category == null) ? 0 : category.hashCode());
+		result = prime * result + ((department == null) ? 0 : department.hashCode());
+		result = prime * result + ((documents == null) ? 0 : documents.hashCode());
+		result = prime * result + ((exemptionReason == null) ? 0 : exemptionReason.hashCode());
+		result = prime * result + ((floorType == null) ? 0 : floorType.hashCode());
+		result = prime * result + ((floors == null) ? 0 : floors.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((isExempted == null) ? 0 : isExempted.hashCode());
+		result = prime * result + ((isSuperStructure == null) ? 0 : isSuperStructure.hashCode());
+		result = prime * result + ((isVerified == null) ? 0 : isVerified.hashCode());
+		result = prime * result + ((landOwner == null) ? 0 : landOwner.hashCode());
+		result = prime * result + ((noOfFloors == null) ? 0 : noOfFloors.hashCode());
+		result = prime * result + ((propertyType == null) ? 0 : propertyType.hashCode());
+		result = prime * result + ((reason == null) ? 0 : reason.hashCode());
+		result = prime * result + ((regdDocDate == null) ? 0 : regdDocDate.hashCode());
+		result = prime * result + ((regdDocNo == null) ? 0 : regdDocNo.hashCode());
+		result = prime * result + ((roofType == null) ? 0 : roofType.hashCode());
+		result = prime * result + ((sitalArea == null) ? 0 : sitalArea.hashCode());
+		result = prime * result + ((siteBreadth == null) ? 0 : siteBreadth.hashCode());
+		result = prime * result + ((siteLength == null) ? 0 : siteLength.hashCode());
+		result = prime * result + ((source == null) ? 0 : source.hashCode());
+		result = prime * result + ((stateId == null) ? 0 : stateId.hashCode());
+		result = prime * result + ((status == null) ? 0 : status.hashCode());
+		result = prime * result + ((totalBuiltupArea == null) ? 0 : totalBuiltupArea.hashCode());
+		result = prime * result + ((undividedShare == null) ? 0 : undividedShare.hashCode());
+		result = prime * result + ((usage == null) ? 0 : usage.hashCode());
+		result = prime * result + ((verificationDate == null) ? 0 : verificationDate.hashCode());
+		result = prime * result + ((wallType == null) ? 0 : wallType.hashCode());
+		result = prime * result + ((woodType == null) ? 0 : woodType.hashCode());
+		result = prime * result + ((workFlowDetails == null) ? 0 : workFlowDetails.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		PropertyDetail other = (PropertyDetail) obj;
+		if (apartment == null) {
+			if (other.apartment != null)
+				return false;
+		} else if (!apartment.equals(other.apartment))
+			return false;
+		if (applicationNo == null) {
+			if (other.applicationNo != null)
+				return false;
+		} else if (!applicationNo.equals(other.applicationNo))
+			return false;
+		if (auditDetails == null) {
+			if (other.auditDetails != null)
+				return false;
+		} else if (!auditDetails.equals(other.auditDetails))
+			return false;
+		if (category == null) {
+			if (other.category != null)
+				return false;
+		} else if (!category.equals(other.category))
+			return false;
+		if (department == null) {
+			if (other.department != null)
+				return false;
+		} else if (!department.equals(other.department))
+			return false;
+		if (documents == null) {
+			if (other.documents != null)
+				return false;
+		} else if (!documents.equals(other.documents))
+			return false;
+		if (exemptionReason == null) {
+			if (other.exemptionReason != null)
+				return false;
+		} else if (!exemptionReason.equals(other.exemptionReason))
+			return false;
+		if (floorType == null) {
+			if (other.floorType != null)
+				return false;
+		} else if (!floorType.equals(other.floorType))
+			return false;
+		if (floors == null) {
+			if (other.floors != null)
+				return false;
+		} else if (!floors.equals(other.floors))
+			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (isExempted == null) {
+			if (other.isExempted != null)
+				return false;
+		} else if (!isExempted.equals(other.isExempted))
+			return false;
+		if (isSuperStructure == null) {
+			if (other.isSuperStructure != null)
+				return false;
+		} else if (!isSuperStructure.equals(other.isSuperStructure))
+			return false;
+		if (isVerified == null) {
+			if (other.isVerified != null)
+				return false;
+		} else if (!isVerified.equals(other.isVerified))
+			return false;
+		if (landOwner == null) {
+			if (other.landOwner != null)
+				return false;
+		} else if (!landOwner.equals(other.landOwner))
+			return false;
+		if (noOfFloors == null) {
+			if (other.noOfFloors != null)
+				return false;
+		} else if (!noOfFloors.equals(other.noOfFloors))
+			return false;
+		if (propertyType == null) {
+			if (other.propertyType != null)
+				return false;
+		} else if (!propertyType.equals(other.propertyType))
+			return false;
+		if (reason == null) {
+			if (other.reason != null)
+				return false;
+		} else if (!reason.equals(other.reason))
+			return false;
+		if (regdDocDate == null) {
+			if (other.regdDocDate != null)
+				return false;
+		} else if (!regdDocDate.equals(other.regdDocDate))
+			return false;
+		if (regdDocNo == null) {
+			if (other.regdDocNo != null)
+				return false;
+		} else if (!regdDocNo.equals(other.regdDocNo))
+			return false;
+		if (roofType == null) {
+			if (other.roofType != null)
+				return false;
+		} else if (!roofType.equals(other.roofType))
+			return false;
+		if (sitalArea == null) {
+			if (other.sitalArea != null)
+				return false;
+		} else if (!sitalArea.equals(other.sitalArea))
+			return false;
+		if (siteBreadth == null) {
+			if (other.siteBreadth != null)
+				return false;
+		} else if (!siteBreadth.equals(other.siteBreadth))
+			return false;
+		if (siteLength == null) {
+			if (other.siteLength != null)
+				return false;
+		} else if (!siteLength.equals(other.siteLength))
+			return false;
+		if (source != other.source)
+			return false;
+		if (stateId == null) {
+			if (other.stateId != null)
+				return false;
+		} else if (!stateId.equals(other.stateId))
+			return false;
+		if (status != other.status)
+			return false;
+		if (totalBuiltupArea == null) {
+			if (other.totalBuiltupArea != null)
+				return false;
+		} else if (!totalBuiltupArea.equals(other.totalBuiltupArea))
+			return false;
+		if (undividedShare == null) {
+			if (other.undividedShare != null)
+				return false;
+		} else if (!undividedShare.equals(other.undividedShare))
+			return false;
+		if (usage == null) {
+			if (other.usage != null)
+				return false;
+		} else if (!usage.equals(other.usage))
+			return false;
+		if (verificationDate == null) {
+			if (other.verificationDate != null)
+				return false;
+		} else if (!verificationDate.equals(other.verificationDate))
+			return false;
+		if (wallType == null) {
+			if (other.wallType != null)
+				return false;
+		} else if (!wallType.equals(other.wallType))
+			return false;
+		if (woodType == null) {
+			if (other.woodType != null)
+				return false;
+		} else if (!woodType.equals(other.woodType))
+			return false;
+		if (workFlowDetails == null) {
+			if (other.workFlowDetails != null)
+				return false;
+		} else if (!workFlowDetails.equals(other.workFlowDetails))
+			return false;
+		return true;
+	}
+
 	@JsonProperty("id")
 	private Long id = null;
 
