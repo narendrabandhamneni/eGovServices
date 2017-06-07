@@ -41,204 +41,158 @@ public class PropertyLocation   {
 	@Size(min=1,max=256)
 	private String southBoundedBy = null;
 
-	public PropertyLocation revenueBoundary(Boundary revenueBoundary) {
+	@JsonProperty("auditDetails")
+	private AuditDetails auditDetails = null;
+
+
+
+	public PropertyLocation(Boundary revenueBoundary, Boundary locationBoundary, Boundary adminBoundary,
+			String northBoundedBy, String eastBoundedBy, String westBoundedBy, String southBoundedBy,
+			AuditDetails auditDetails) {
+		super();
 		this.revenueBoundary = revenueBoundary;
-		return this;
+		this.locationBoundary = locationBoundary;
+		this.adminBoundary = adminBoundary;
+		this.northBoundedBy = northBoundedBy;
+		this.eastBoundedBy = eastBoundedBy;
+		this.westBoundedBy = westBoundedBy;
+		this.southBoundedBy = southBoundedBy;
+		this.auditDetails = auditDetails;
 	}
 
-	/**
-	 * Get revenueBoundary
-	 * @return revenueBoundary
-	 **/
+
+	public PropertyLocation() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+
+
 	public Boundary getRevenueBoundary() {
 		return revenueBoundary;
 	}
+
 
 	public void setRevenueBoundary(Boundary revenueBoundary) {
 		this.revenueBoundary = revenueBoundary;
 	}
 
-	public PropertyLocation locationBoundary(Boundary locationBoundary) {
-		this.locationBoundary = locationBoundary;
-		return this;
-	}
 
-	/**
-	 * Get locationBoundary
-	 * @return locationBoundary
-	 **/
 	public Boundary getLocationBoundary() {
 		return locationBoundary;
 	}
+
 
 	public void setLocationBoundary(Boundary locationBoundary) {
 		this.locationBoundary = locationBoundary;
 	}
 
-	public PropertyLocation adminBoundary(Boundary adminBoundary) {
-		this.adminBoundary = adminBoundary;
-		return this;
-	}
 
-	/**
-	 * Get adminBoundary
-	 * @return adminBoundary
-	 **/
 	public Boundary getAdminBoundary() {
 		return adminBoundary;
 	}
+
 
 	public void setAdminBoundary(Boundary adminBoundary) {
 		this.adminBoundary = adminBoundary;
 	}
 
-	public PropertyLocation northBoundedBy(String northBoundedBy) {
-		this.northBoundedBy = northBoundedBy;
-		return this;
-	}
 
-	/**
-	 * property bounded by on north side
-	 * @return northBoundedBy
-	 **/
 	public String getNorthBoundedBy() {
 		return northBoundedBy;
 	}
+
 
 	public void setNorthBoundedBy(String northBoundedBy) {
 		this.northBoundedBy = northBoundedBy;
 	}
 
-	public PropertyLocation eastBoundedBy(String eastBoundedBy) {
-		this.eastBoundedBy = eastBoundedBy;
-		return this;
-	}
 
-	/**
-	 * property bounded by on east side
-	 * @return eastBoundedBy
-	 **/
 	public String getEastBoundedBy() {
 		return eastBoundedBy;
 	}
+
 
 	public void setEastBoundedBy(String eastBoundedBy) {
 		this.eastBoundedBy = eastBoundedBy;
 	}
 
-	public PropertyLocation westBoundedBy(String westBoundedBy) {
-		this.westBoundedBy = westBoundedBy;
-		return this;
-	}
 
-	/**
-	 * property bounded by on west side
-	 * @return westBoundedBy
-	 **/
 	public String getWestBoundedBy() {
 		return westBoundedBy;
 	}
+
 
 	public void setWestBoundedBy(String westBoundedBy) {
 		this.westBoundedBy = westBoundedBy;
 	}
 
-	public PropertyLocation southBoundedBy(String southBoundedBy) {
-		this.southBoundedBy = southBoundedBy;
-		return this;
-	}
 
-	/**
-	 * property bounded by on south side
-	 * @return southBoundedBy
-	 **/
 	public String getSouthBoundedBy() {
 		return southBoundedBy;
 	}
+
 
 	public void setSouthBoundedBy(String southBoundedBy) {
 		this.southBoundedBy = southBoundedBy;
 	}
 
 
-	@Override
-	public boolean equals(java.lang.Object o) {
-		if (this == o) {
-			return true;
-		}
-		if (o == null || getClass() != o.getClass()) {
-			return false;
-		}
-		PropertyLocation propertyLocation = (PropertyLocation) o;
-		return Objects.equals(this.revenueBoundary, propertyLocation.revenueBoundary) &&
-				Objects.equals(this.locationBoundary, propertyLocation.locationBoundary) &&
-				Objects.equals(this.adminBoundary, propertyLocation.adminBoundary) &&
-				Objects.equals(this.northBoundedBy, propertyLocation.northBoundedBy) &&
-				Objects.equals(this.eastBoundedBy, propertyLocation.eastBoundedBy) &&
-				Objects.equals(this.westBoundedBy, propertyLocation.westBoundedBy) &&
-				Objects.equals(this.southBoundedBy, propertyLocation.southBoundedBy);
+	public AuditDetails getAuditDetails() {
+		return auditDetails;
 	}
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(revenueBoundary, locationBoundary, adminBoundary, northBoundedBy, eastBoundedBy, westBoundedBy, southBoundedBy);
+
+	public void setAuditDetails(AuditDetails auditDetails) {
+		this.auditDetails = auditDetails;
 	}
+
+
+
 
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append("class PropertyLocation {\n");
-
-		sb.append("    revenueBoundary: ").append(toIndentedString(revenueBoundary)).append("\n");
-		sb.append("    locationBoundary: ").append(toIndentedString(locationBoundary)).append("\n");
-		sb.append("    adminBoundary: ").append(toIndentedString(adminBoundary)).append("\n");
-		sb.append("    northBoundedBy: ").append(toIndentedString(northBoundedBy)).append("\n");
-		sb.append("    eastBoundedBy: ").append(toIndentedString(eastBoundedBy)).append("\n");
-		sb.append("    westBoundedBy: ").append(toIndentedString(westBoundedBy)).append("\n");
-		sb.append("    southBoundedBy: ").append(toIndentedString(southBoundedBy)).append("\n");
-		sb.append("}");
-		return sb.toString();
+		return "PropertyLocation [revenueBoundary=" + revenueBoundary + ", locationBoundary=" + locationBoundary
+				+ ", adminBoundary=" + adminBoundary + ", northBoundedBy=" + northBoundedBy + ", eastBoundedBy="
+				+ eastBoundedBy + ", westBoundedBy=" + westBoundedBy + ", southBoundedBy=" + southBoundedBy
+				+ ", auditDetails=" + auditDetails + ", getRevenueBoundary()=" + getRevenueBoundary()
+				+ ", getLocationBoundary()=" + getLocationBoundary() + ", getAdminBoundary()=" + getAdminBoundary()
+				+ ", getNorthBoundedBy()=" + getNorthBoundedBy() + ", getEastBoundedBy()=" + getEastBoundedBy()
+				+ ", getWestBoundedBy()=" + getWestBoundedBy() + ", getSouthBoundedBy()=" + getSouthBoundedBy()
+				+ ", getAuditDetails()=" + getAuditDetails() + ", getAllBoundaries()=" + getAllBoundaries()
+				+ ", getClass()=" + getClass() + ", hashCode()=" + hashCode() + ", toString()=" + super.toString()
+				+ "]";
 	}
 
+
 	/**
-	 * Convert the given object to string with each line indented by 4 spaces
-	 * (except the first line).
+	 * Description : This is to get the searchType fields of the target class
+	 * @author Narendra
+	 * @param target
+	 * @param searchType
+	 * @return result
 	 */
-	private String toIndentedString(java.lang.Object o) {
-		if (o == null) {
-			return "null";
-		}
-		return o.toString().replace("\n", "\n    ");
-	}
-	
-	/**
-	* Description : This is to get the searchType fields of the target class
-	* @author Narendra
-	* @param target
-	* @param searchType
-	* @return result
-	*/
 	public List<String> getFieldsOfType(Class<?> target, Class<?> searchType) {
 
-	Field[] fields  = target.getDeclaredFields();
-	List<String> result = new ArrayList<String>();
+		Field[] fields  = target.getDeclaredFields();
+		List<String> result = new ArrayList<String>();
 
-	for(Field field:fields){
-	if(field.getType().equals(searchType)){
-	result.add(searchType.getName());
-	}
-	}
-	return result;
+		for(Field field:fields){
+			if(field.getType().equals(searchType)){
+				result.add(searchType.getName());
+			}
+		}
+		return result;
 	}
 
 	/**
-	* Description : This is to get the BoundaryType fields of the PropertyLocation class
-	* @author Narendra
-	* @return List<String>
-	*/
+	 * Description : This is to get the BoundaryType fields of the PropertyLocation class
+	 * @author Narendra
+	 * @return List<String>
+	 */
 	public List<String> getAllBoundaries(){
-	return getFieldsOfType(PropertyLocation.class, Boundary.class); 
+		return getFieldsOfType(PropertyLocation.class, Boundary.class); 
 	}
-	
+
 }
 

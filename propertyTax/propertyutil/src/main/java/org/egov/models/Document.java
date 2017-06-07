@@ -19,15 +19,22 @@ public class Document   {
 	@JsonProperty("fileStore")
 	private String fileStore = null;
 
-	public Document id(Long id) {
+	@JsonProperty("auditDetails")
+	private AuditDetails auditDetails = null;
+
+	public Document(Long id, DocumentType documentType, String fileStore, AuditDetails auditDetails) {
+		super();
 		this.id = id;
-		return this;
+		this.documentType = documentType;
+		this.fileStore = fileStore;
+		this.auditDetails = auditDetails;
 	}
 
-	/**
-	 * unique id of the ApplicationType.
-	 * @return id
-	 **/
+	public Document() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -36,15 +43,6 @@ public class Document   {
 		this.id = id;
 	}
 
-	public Document documentType(DocumentType documentType) {
-		this.documentType = documentType;
-		return this;
-	}
-
-	/**
-	 * Get documentType
-	 * @return documentType
-	 **/
 	public DocumentType getDocumentType() {
 		return documentType;
 	}
@@ -53,15 +51,6 @@ public class Document   {
 		this.documentType = documentType;
 	}
 
-	public Document fileStore(String fileStore) {
-		this.fileStore = fileStore;
-		return this;
-	}
-
-	/**
-	 * File store reference key.
-	 * @return fileStore
-	 **/
 	public String getFileStore() {
 		return fileStore;
 	}
@@ -70,47 +59,22 @@ public class Document   {
 		this.fileStore = fileStore;
 	}
 
-
-	@Override
-	public boolean equals(java.lang.Object o) {
-		if (this == o) {
-			return true;
-		}
-		if (o == null || getClass() != o.getClass()) {
-			return false;
-		}
-		Document document = (Document) o;
-		return Objects.equals(this.id, document.id) &&
-				Objects.equals(this.documentType, document.documentType) &&
-				Objects.equals(this.fileStore, document.fileStore);
+	public AuditDetails getAuditDetails() {
+		return auditDetails;
 	}
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(id, documentType, fileStore);
+	public void setAuditDetails(AuditDetails auditDetails) {
+		this.auditDetails = auditDetails;
 	}
 
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append("class Document {\n");
-
-		sb.append("    id: ").append(toIndentedString(id)).append("\n");
-		sb.append("    documentType: ").append(toIndentedString(documentType)).append("\n");
-		sb.append("    fileStore: ").append(toIndentedString(fileStore)).append("\n");
-		sb.append("}");
-		return sb.toString();
+		return "Document [id=" + id + ", documentType=" + documentType + ", fileStore=" + fileStore + ", auditDetails="
+				+ auditDetails + ", getId()=" + getId() + ", getDocumentType()=" + getDocumentType()
+				+ ", getFileStore()=" + getFileStore() + ", getAuditDetails()=" + getAuditDetails() + ", getClass()="
+				+ getClass() + ", hashCode()=" + hashCode() + ", toString()=" + super.toString() + "]";
 	}
 
-	/**
-	 * Convert the given object to string with each line indented by 4 spaces
-	 * (except the first line).
-	 */
-	private String toIndentedString(java.lang.Object o) {
-		if (o == null) {
-			return "null";
-		}
-		return o.toString().replace("\n", "\n    ");
-	}
+
 }
 

@@ -10,243 +10,155 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Author : Narendra
  */
 public class VacantLandDetail   {
-  @JsonProperty("surveyNumber")
-  @Size(min=4,max=64)
-  private String surveyNumber = null;
+	@JsonProperty("surveyNumber")
+	@Size(min=4,max=64)
+	private String surveyNumber = null;
 
-  @JsonProperty("pattaNumber")
-  @Size(min=4,max=64)
-  private String pattaNumber = null;
+	@JsonProperty("pattaNumber")
+	@Size(min=4,max=64)
+	private String pattaNumber = null;
 
-  @JsonProperty("marketValue")
-  private Double marketValue = null;
+	@JsonProperty("marketValue")
+	private Double marketValue = null;
 
-  @JsonProperty("capitalValue")
-  private Double capitalValue = null;
+	@JsonProperty("capitalValue")
+	private Double capitalValue = null;
 
-  @JsonProperty("layoutApprovedAuth")
-  @Size(min=4,max=64)
-  private String layoutApprovedAuth = null;
+	@JsonProperty("layoutApprovedAuth")
+	@Size(min=4,max=64)
+	private String layoutApprovedAuth = null;
 
-  @JsonProperty("layoutPermissionNo")
-  @Size(min=4,max=64)
-  private String layoutPermissionNo = null;
+	@JsonProperty("layoutPermissionNo")
+	@Size(min=4,max=64)
+	private String layoutPermissionNo = null;
 
-  @JsonProperty("layoutPermissionDate")
-  private String layoutPermissionDate = null;
+	@JsonProperty("layoutPermissionDate")
+	private String layoutPermissionDate = null;
 
-  @JsonProperty("resdPlotArea")
-  private Double resdPlotArea = null;
+	@JsonProperty("resdPlotArea")
+	private Double resdPlotArea = null;
 
-  @JsonProperty("nonResdPlotArea")
-  private Double nonResdPlotArea = null;
+	@JsonProperty("nonResdPlotArea")
+	private Double nonResdPlotArea = null;
 
-  public VacantLandDetail surveyNumber(String surveyNumber) {
-    this.surveyNumber = surveyNumber;
-    return this;
-  }
+	@JsonProperty("auditDetails")
+	private AuditDetails auditDetails = null;
 
-   /**
-   * survey number of the Land
-   * @return surveyNumber
-  **/
-  public String getSurveyNumber() {
-    return surveyNumber;
-  }
+	public VacantLandDetail(String surveyNumber, String pattaNumber, Double marketValue, Double capitalValue,
+			String layoutApprovedAuth, String layoutPermissionNo, String layoutPermissionDate, Double resdPlotArea,
+			Double nonResdPlotArea, AuditDetails auditDetails) {
+		super();
+		this.surveyNumber = surveyNumber;
+		this.pattaNumber = pattaNumber;
+		this.marketValue = marketValue;
+		this.capitalValue = capitalValue;
+		this.layoutApprovedAuth = layoutApprovedAuth;
+		this.layoutPermissionNo = layoutPermissionNo;
+		this.layoutPermissionDate = layoutPermissionDate;
+		this.resdPlotArea = resdPlotArea;
+		this.nonResdPlotArea = nonResdPlotArea;
+		this.auditDetails = auditDetails;
+	}
 
-  public void setSurveyNumber(String surveyNumber) {
-    this.surveyNumber = surveyNumber;
-  }
+	public VacantLandDetail() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 
-  public VacantLandDetail pattaNumber(String pattaNumber) {
-    this.pattaNumber = pattaNumber;
-    return this;
-  }
+	public String getSurveyNumber() {
+		return surveyNumber;
+	}
 
-   /**
-   * patta number of the Land
-   * @return pattaNumber
-  **/
-  public String getPattaNumber() {
-    return pattaNumber;
-  }
+	public void setSurveyNumber(String surveyNumber) {
+		this.surveyNumber = surveyNumber;
+	}
 
-  public void setPattaNumber(String pattaNumber) {
-    this.pattaNumber = pattaNumber;
-  }
+	public String getPattaNumber() {
+		return pattaNumber;
+	}
 
-  public VacantLandDetail marketValue(Double marketValue) {
-    this.marketValue = marketValue;
-    return this;
-  }
+	public void setPattaNumber(String pattaNumber) {
+		this.pattaNumber = pattaNumber;
+	}
 
-   /**
-   * market value of the Land
-   * @return marketValue
-  **/
-  public Double getMarketValue() {
-    return marketValue;
-  }
+	public Double getMarketValue() {
+		return marketValue;
+	}
 
-  public void setMarketValue(Double marketValue) {
-    this.marketValue = marketValue;
-  }
+	public void setMarketValue(Double marketValue) {
+		this.marketValue = marketValue;
+	}
 
-  public VacantLandDetail capitalValue(Double capitalValue) {
-    this.capitalValue = capitalValue;
-    return this;
-  }
+	public Double getCapitalValue() {
+		return capitalValue;
+	}
 
-   /**
-   * capital value of the Land
-   * @return capitalValue
-  **/
-  public Double getCapitalValue() {
-    return capitalValue;
-  }
+	public void setCapitalValue(Double capitalValue) {
+		this.capitalValue = capitalValue;
+	}
 
-  public void setCapitalValue(Double capitalValue) {
-    this.capitalValue = capitalValue;
-  }
+	public String getLayoutApprovedAuth() {
+		return layoutApprovedAuth;
+	}
 
-  public VacantLandDetail layoutApprovedAuth(String layoutApprovedAuth) {
-    this.layoutApprovedAuth = layoutApprovedAuth;
-    return this;
-  }
+	public void setLayoutApprovedAuth(String layoutApprovedAuth) {
+		this.layoutApprovedAuth = layoutApprovedAuth;
+	}
 
-   /**
-   * layout approved authority of the Land
-   * @return layoutApprovedAuth
-  **/
-  public String getLayoutApprovedAuth() {
-    return layoutApprovedAuth;
-  }
+	public String getLayoutPermissionNo() {
+		return layoutPermissionNo;
+	}
 
-  public void setLayoutApprovedAuth(String layoutApprovedAuth) {
-    this.layoutApprovedAuth = layoutApprovedAuth;
-  }
+	public void setLayoutPermissionNo(String layoutPermissionNo) {
+		this.layoutPermissionNo = layoutPermissionNo;
+	}
 
-  public VacantLandDetail layoutPermissionNo(String layoutPermissionNo) {
-    this.layoutPermissionNo = layoutPermissionNo;
-    return this;
-  }
+	public String getLayoutPermissionDate() {
+		return layoutPermissionDate;
+	}
 
-   /**
-   * layout permission no by approved authority for the Land
-   * @return layoutPermissionNo
-  **/
-  public String getLayoutPermissionNo() {
-    return layoutPermissionNo;
-  }
+	public void setLayoutPermissionDate(String layoutPermissionDate) {
+		this.layoutPermissionDate = layoutPermissionDate;
+	}
 
-  public void setLayoutPermissionNo(String layoutPermissionNo) {
-    this.layoutPermissionNo = layoutPermissionNo;
-  }
+	public Double getResdPlotArea() {
+		return resdPlotArea;
+	}
 
-  public VacantLandDetail layoutPermissionDate(String layoutPermissionDate) {
-    this.layoutPermissionDate = layoutPermissionDate;
-    return this;
-  }
+	public void setResdPlotArea(Double resdPlotArea) {
+		this.resdPlotArea = resdPlotArea;
+	}
 
-   /**
-   * layout permission date by approved authority for the Land
-   * @return layoutPermissionDate
-  **/
-   public String getLayoutPermissionDate() {
-    return layoutPermissionDate;
-  }
+	public Double getNonResdPlotArea() {
+		return nonResdPlotArea;
+	}
 
-  public void setLayoutPermissionDate(String layoutPermissionDate) {
-    this.layoutPermissionDate = layoutPermissionDate;
-  }
+	public void setNonResdPlotArea(Double nonResdPlotArea) {
+		this.nonResdPlotArea = nonResdPlotArea;
+	}
 
-  public VacantLandDetail resdPlotArea(Double resdPlotArea) {
-    this.resdPlotArea = resdPlotArea;
-    return this;
-  }
+	public AuditDetails getAuditDetails() {
+		return auditDetails;
+	}
 
-   /**
-   * resd plot area of the land
-   * @return resdPlotArea
-  **/
-   public Double getResdPlotArea() {
-    return resdPlotArea;
-  }
+	public void setAuditDetails(AuditDetails auditDetails) {
+		this.auditDetails = auditDetails;
+	}
 
-  public void setResdPlotArea(Double resdPlotArea) {
-    this.resdPlotArea = resdPlotArea;
-  }
+	@Override
+	public String toString() {
+		return "VacantLandDetail [surveyNumber=" + surveyNumber + ", pattaNumber=" + pattaNumber + ", marketValue="
+				+ marketValue + ", capitalValue=" + capitalValue + ", layoutApprovedAuth=" + layoutApprovedAuth
+				+ ", layoutPermissionNo=" + layoutPermissionNo + ", layoutPermissionDate=" + layoutPermissionDate
+				+ ", resdPlotArea=" + resdPlotArea + ", nonResdPlotArea=" + nonResdPlotArea + ", auditDetails="
+				+ auditDetails + ", getSurveyNumber()=" + getSurveyNumber() + ", getPattaNumber()=" + getPattaNumber()
+				+ ", getMarketValue()=" + getMarketValue() + ", getCapitalValue()=" + getCapitalValue()
+				+ ", getLayoutApprovedAuth()=" + getLayoutApprovedAuth() + ", getLayoutPermissionNo()="
+				+ getLayoutPermissionNo() + ", getLayoutPermissionDate()=" + getLayoutPermissionDate()
+				+ ", getResdPlotArea()=" + getResdPlotArea() + ", getNonResdPlotArea()=" + getNonResdPlotArea()
+				+ ", getAuditDetails()=" + getAuditDetails() + ", getClass()=" + getClass() + ", hashCode()=" + hashCode()
+				+ ", toString()=" + super.toString() + "]";
+	}
 
-  public VacantLandDetail nonResdPlotArea(Double nonResdPlotArea) {
-    this.nonResdPlotArea = nonResdPlotArea;
-    return this;
-  }
-
-   /**
-   * non resd plot area of the land
-   * @return nonResdPlotArea
-  **/
-  public Double getNonResdPlotArea() {
-    return nonResdPlotArea;
-  }
-
-  public void setNonResdPlotArea(Double nonResdPlotArea) {
-    this.nonResdPlotArea = nonResdPlotArea;
-  }
-
-
-  @Override
-  public boolean equals(java.lang.Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-    VacantLandDetail vacantLandDetail = (VacantLandDetail) o;
-    return Objects.equals(this.surveyNumber, vacantLandDetail.surveyNumber) &&
-        Objects.equals(this.pattaNumber, vacantLandDetail.pattaNumber) &&
-        Objects.equals(this.marketValue, vacantLandDetail.marketValue) &&
-        Objects.equals(this.capitalValue, vacantLandDetail.capitalValue) &&
-        Objects.equals(this.layoutApprovedAuth, vacantLandDetail.layoutApprovedAuth) &&
-        Objects.equals(this.layoutPermissionNo, vacantLandDetail.layoutPermissionNo) &&
-        Objects.equals(this.layoutPermissionDate, vacantLandDetail.layoutPermissionDate) &&
-        Objects.equals(this.resdPlotArea, vacantLandDetail.resdPlotArea) &&
-        Objects.equals(this.nonResdPlotArea, vacantLandDetail.nonResdPlotArea);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(surveyNumber, pattaNumber, marketValue, capitalValue, layoutApprovedAuth, layoutPermissionNo, layoutPermissionDate, resdPlotArea, nonResdPlotArea);
-  }
-
-  @Override
-  public String toString() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("class VacantLandDetail {\n");
-    
-    sb.append("    surveyNumber: ").append(toIndentedString(surveyNumber)).append("\n");
-    sb.append("    pattaNumber: ").append(toIndentedString(pattaNumber)).append("\n");
-    sb.append("    marketValue: ").append(toIndentedString(marketValue)).append("\n");
-    sb.append("    capitalValue: ").append(toIndentedString(capitalValue)).append("\n");
-    sb.append("    layoutApprovedAuth: ").append(toIndentedString(layoutApprovedAuth)).append("\n");
-    sb.append("    layoutPermissionNo: ").append(toIndentedString(layoutPermissionNo)).append("\n");
-    sb.append("    layoutPermissionDate: ").append(toIndentedString(layoutPermissionDate)).append("\n");
-    sb.append("    resdPlotArea: ").append(toIndentedString(resdPlotArea)).append("\n");
-    sb.append("    nonResdPlotArea: ").append(toIndentedString(nonResdPlotArea)).append("\n");
-    sb.append("}");
-    return sb.toString();
-  }
-
-  /**
-   * Convert the given object to string with each line indented by 4 spaces
-   * (except the first line).
-   */
-  private String toIndentedString(java.lang.Object o) {
-    if (o == null) {
-      return "null";
-    }
-    return o.toString().replace("\n", "\n    ");
-  }
 }
 
