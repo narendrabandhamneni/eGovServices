@@ -13,6 +13,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 
 public class Floor   {
+	
+	@JsonProperty("id")
+	private Long id = null;
+	
 	@JsonProperty("floorNo")
 	@NotNull
 	@Size(min=1,max=16)
@@ -27,8 +31,9 @@ public class Floor   {
 	private AuditDetails auditDetails = null;
 
 
-	public Floor(String floorNo, List<Unit> units, AuditDetails auditDetails) {
+	public Floor(Long id, String floorNo, List<Unit> units, AuditDetails auditDetails) {
 		super();
+		this.id = id;
 		this.floorNo = floorNo;
 		this.units = units;
 		this.auditDetails = auditDetails;
@@ -38,6 +43,16 @@ public class Floor   {
 	public Floor() {
 		super();
 		// TODO Auto-generated constructor stub
+	}
+
+
+	public Long getId() {
+		return id;
+	}
+
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 
@@ -77,6 +92,7 @@ public class Floor   {
 		int result = 1;
 		result = prime * result + ((auditDetails == null) ? 0 : auditDetails.hashCode());
 		result = prime * result + ((floorNo == null) ? 0 : floorNo.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((units == null) ? 0 : units.hashCode());
 		return result;
 	}
@@ -101,6 +117,11 @@ public class Floor   {
 				return false;
 		} else if (!floorNo.equals(other.floorNo))
 			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
 		if (units == null) {
 			if (other.units != null)
 				return false;
@@ -112,10 +133,10 @@ public class Floor   {
 
 	@Override
 	public String toString() {
-		return "Floor [floorNo=" + floorNo + ", units=" + units + ", auditDetails=" + auditDetails + ", getFloorNo()="
-				+ getFloorNo() + ", getUnits()=" + getUnits() + ", getAuditDetails()=" + getAuditDetails()
-				+ ", hashCode()=" + hashCode() + ", getClass()=" + getClass() + ", toString()=" + super.toString()
-				+ "]";
+		return "Floor [id=" + id + ", floorNo=" + floorNo + ", units=" + units + ", auditDetails=" + auditDetails
+				+ ", getId()=" + getId() + ", getFloorNo()=" + getFloorNo() + ", getUnits()=" + getUnits()
+				+ ", getAuditDetails()=" + getAuditDetails() + ", hashCode()=" + hashCode() + ", getClass()="
+				+ getClass() + ", toString()=" + super.toString() + "]";
 	}
 
 
