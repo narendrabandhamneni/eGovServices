@@ -13,6 +13,10 @@ import com.fasterxml.jackson.annotation.JsonValue;
  */
 
 public class Unit   {
+
+	@JsonProperty("id")
+	private Long id = null;
+
 	@JsonProperty("unitNo")
 	@NotNull
 	private Integer unitNo = null;
@@ -135,17 +139,13 @@ public class Unit   {
 	@JsonProperty("auditDetails")
 	private AuditDetails auditDetails = null;
 
-	public Unit() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-
-	public Unit(Integer unitNo, UnitTypeEnum unitType, Double length, Double width, Double builtupArea,
+	public Unit(Long id, Integer unitNo, UnitTypeEnum unitType, Double length, Double width, Double builtupArea,
 			Double assessableArea, Double bpaBuiltupArea, String bpaNo, String bpaDate, String usage, String occupancy,
 			String occupierName, String firmName, Double rentCollected, String structure, String age,
 			String exemptionReason, Boolean isStructured, String occupancyDate, String constCompletionDate,
 			Double manualArv, Double arv, String electricMeterNo, String waterMeterNo, AuditDetails auditDetails) {
 		super();
+		this.id = id;
 		this.unitNo = unitNo;
 		this.unitType = unitType;
 		this.length = length;
@@ -171,6 +171,19 @@ public class Unit   {
 		this.electricMeterNo = electricMeterNo;
 		this.waterMeterNo = waterMeterNo;
 		this.auditDetails = auditDetails;
+	}
+
+	public Unit() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public Integer getUnitNo() {
@@ -374,30 +387,6 @@ public class Unit   {
 	}
 
 	@Override
-	public String toString() {
-		return "Unit [unitNo=" + unitNo + ", unitType=" + unitType + ", length=" + length + ", width=" + width
-				+ ", builtupArea=" + builtupArea + ", assessableArea=" + assessableArea + ", bpaBuiltupArea="
-				+ bpaBuiltupArea + ", bpaNo=" + bpaNo + ", bpaDate=" + bpaDate + ", usage=" + usage + ", occupancy="
-				+ occupancy + ", occupierName=" + occupierName + ", firmName=" + firmName + ", rentCollected="
-				+ rentCollected + ", structure=" + structure + ", age=" + age + ", exemptionReason=" + exemptionReason
-				+ ", isStructured=" + isStructured + ", occupancyDate=" + occupancyDate + ", constCompletionDate="
-				+ constCompletionDate + ", manualArv=" + manualArv + ", arv=" + arv + ", electricMeterNo="
-				+ electricMeterNo + ", waterMeterNo=" + waterMeterNo + ", auditDetails=" + auditDetails
-				+ ", getUnitNo()=" + getUnitNo() + ", getUnitType()=" + getUnitType() + ", getLength()=" + getLength()
-				+ ", getWidth()=" + getWidth() + ", getBuiltupArea()=" + getBuiltupArea() + ", getAssessableArea()="
-				+ getAssessableArea() + ", getBpaBuiltupArea()=" + getBpaBuiltupArea() + ", getBpaNo()=" + getBpaNo()
-				+ ", getBpaDate()=" + getBpaDate() + ", getUsage()=" + getUsage() + ", getOccupancy()=" + getOccupancy()
-				+ ", getOccupierName()=" + getOccupierName() + ", getFirmName()=" + getFirmName()
-				+ ", getRentCollected()=" + getRentCollected() + ", getStructure()=" + getStructure() + ", getAge()="
-				+ getAge() + ", getExemptionReason()=" + getExemptionReason() + ", getIsStructured()="
-				+ getIsStructured() + ", getOccupancyDate()=" + getOccupancyDate() + ", getConstCompletionDate()="
-				+ getConstCompletionDate() + ", getManualArv()=" + getManualArv() + ", getArv()=" + getArv()
-				+ ", getElectricMeterNo()=" + getElectricMeterNo() + ", getWaterMeterNo()=" + getWaterMeterNo()
-				+ ", getAuditDetails()=" + getAuditDetails() + ", getClass()=" + getClass() + ", hashCode()="
-				+ hashCode() + ", toString()=" + super.toString() + "]";
-	}
-
-	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
@@ -413,6 +402,7 @@ public class Unit   {
 		result = prime * result + ((electricMeterNo == null) ? 0 : electricMeterNo.hashCode());
 		result = prime * result + ((exemptionReason == null) ? 0 : exemptionReason.hashCode());
 		result = prime * result + ((firmName == null) ? 0 : firmName.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((isStructured == null) ? 0 : isStructured.hashCode());
 		result = prime * result + ((length == null) ? 0 : length.hashCode());
 		result = prime * result + ((manualArv == null) ? 0 : manualArv.hashCode());
@@ -498,6 +488,11 @@ public class Unit   {
 				return false;
 		} else if (!firmName.equals(other.firmName))
 			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
 		if (isStructured == null) {
 			if (other.isStructured != null)
 				return false;
@@ -562,6 +557,19 @@ public class Unit   {
 			return false;
 		return true;
 	}
+
+	@Override
+	public String toString() {
+		return "Unit [id=" + id + ", unitNo=" + unitNo + ", unitType=" + unitType + ", length=" + length + ", width="
+				+ width + ", builtupArea=" + builtupArea + ", assessableArea=" + assessableArea + ", bpaBuiltupArea="
+				+ bpaBuiltupArea + ", bpaNo=" + bpaNo + ", bpaDate=" + bpaDate + ", usage=" + usage + ", occupancy="
+				+ occupancy + ", occupierName=" + occupierName + ", firmName=" + firmName + ", rentCollected="
+				+ rentCollected + ", structure=" + structure + ", age=" + age + ", exemptionReason=" + exemptionReason
+				+ ", isStructured=" + isStructured + ", occupancyDate=" + occupancyDate + ", constCompletionDate="
+				+ constCompletionDate + ", manualArv=" + manualArv + ", arv=" + arv + ", electricMeterNo="
+				+ electricMeterNo + ", waterMeterNo=" + waterMeterNo + ", auditDetails=" + auditDetails + "]";
+	}
+
 
 
 }

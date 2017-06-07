@@ -131,6 +131,7 @@ public class Consumer {
 
 		for(Property property:propertyRequest.getProperties()){
 			for(User user: property.getOwners()){
+				user.setUserName(user.getMobileNumber());
 				if(user.getId() !=null){
 
 					Map<String,Object> userSearchRequestInfo=new HashMap<String,Object >();

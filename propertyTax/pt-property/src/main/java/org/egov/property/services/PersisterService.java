@@ -3,6 +3,7 @@ package org.egov.property.services;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 
 import org.egov.models.Address;
@@ -56,14 +57,17 @@ public class PersisterService {
 
 		//iterating property from properties
 		for (Property property : properties) {
+			
+			Long createdTime = new Date().getTime();
+			
 
 			// property insertion
 			StringBuffer propertySql=new StringBuffer();
 
 			propertySql.append("INSERT INTO egpt_Property(tenantId, upicNumber, oldUpicNumber, vltUpicNumber,")
 			.append("creationReason, assessmentDate, occupancyDate, gisRefNo,")
-			.append("isAuthorised, isUnderWorkflow, channel, createdBy,lastModifiedBy, createdTime ")
-			.append("lastModifiedTime) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+			.append("isAuthorised, isUnderWorkflow, channel, createdBy,lastModifiedBy, createdTime, ")
+			.append("lastModifiedTime) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);");
 
 
 			final PreparedStatementCreator psc = new PreparedStatementCreator() {
@@ -83,8 +87,8 @@ public class PersisterService {
 					ps.setString(11, property.getChannel().toString());
 					ps.setString(12, property.getAuditDetails().getCreatedBy());
 					ps.setString(13, property.getAuditDetails().getLastModifiedBy());
-					ps.setBigDecimal(14, property.getAuditDetails().getCreatedTime());
-					ps.setBigDecimal(15, property.getAuditDetails().getLastModifiedTime());
+					ps.setLong(14, createdTime);
+					ps.setLong(15, createdTime);
 					return ps;
 				}
 			};
@@ -107,11 +111,20 @@ public class PersisterService {
 
 
 			Object[] addressArgs = { address.getTenantId(), address.getLatitude(), address.getLongitude(),
-					address.getAddressId(), address.getAddressNumber(), address.getAddressLine1(),
-					address.getAddressLine2(), address.getLandmark(), address.getCity(), address.getPincode(),
-					address.getDetail(),address.getAuditDetails().getCreatedBy(), address.getAuditDetails().getLastModifiedBy(),
-					address.getAuditDetails().getCreatedTime(), address.getAuditDetails().getLastModifiedTime(),
-					propertyId };
+					address.getAddressId(),
+					address.getAddressNumber(),
+					address.getAddressLine1(),
+					address.getAddressLine2(),
+					address.getLandmark(),
+					address.getCity(),
+					address.getPincode(),
+					address.getDetail(),
+					address.getAuditDetails().getCreatedBy(),
+					address.getAuditDetails().getLastModifiedBy(),
+					createdTime,
+					createdTime,
+					propertyId
+					};
 
 			jdbcTemplate.update(addressSql.toString(), addressArgs);
 
@@ -125,7 +138,7 @@ public class PersisterService {
 			.append("propertyType, category, usage, department, apartment, siteLength, siteBreadth, sitalArea,")
 			.append(" totalBuiltupArea, undividedShare, noOfFloors, isSuperStructure, landOwner, floorType,")
 			.append(" woodType, roofType, wallType, stateId, applicationNo, createdBy, lastModifiedBy, ")
-			.append("createdDate, lastModifiedDate, property_id) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+			.append("createdTime, lastModifiedTime, property_id) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
 
 
@@ -163,8 +176,8 @@ public class PersisterService {
 					ps.setString(28, propertyDetails.getApplicationNo());
 					ps.setString(29, propertyDetails.getAuditDetails().getCreatedBy());
 					ps.setString(30, propertyDetails.getAuditDetails().getLastModifiedBy());
-					ps.setBigDecimal(31, propertyDetails.getAuditDetails().getCreatedTime());					
-					ps.setBigDecimal(32, propertyDetails.getAuditDetails().getLastModifiedTime());
+					ps.setLong(31, createdTime);					
+					ps.setLong(32, createdTime);
 					ps.setInt(33, propertyId);
 					return ps;
 				}
@@ -181,7 +194,7 @@ public class PersisterService {
 			for (Floor floor : property.getPropertyDetail().getFloors()) {
 
 				//floor insertion
-				String floorSql="INSERT INTO egpt_floors(floorNo,createdBy, lastModifiedBy, createdTime, lastModifiedTime, property_details_id) values (?,?)";
+				String floorSql="INSERT INTO egpt_floors(floorNo,createdBy, lastModifiedBy, createdTime, lastModifiedTime, property_details_id) values (?,?,?,?,?,?)";
 
 				final PreparedStatementCreator pscFloor = new PreparedStatementCreator() {
 					@Override
@@ -190,8 +203,8 @@ public class PersisterService {
 						ps.setString(1, floor.getFloorNo());
 						ps.setString(2, floor.getAuditDetails().getCreatedBy());						
 						ps.setString(3, floor.getAuditDetails().getLastModifiedBy());
-						ps.setBigDecimal(4, floor.getAuditDetails().getCreatedTime());
-						ps.setBigDecimal(5, floor.getAuditDetails().getLastModifiedTime());
+						ps.setLong(4, createdTime);
+						ps.setLong(5, createdTime);
 						ps.setInt(6, propertyDetailsId);
 						return ps;
 					}
@@ -209,21 +222,21 @@ public class PersisterService {
 
 					StringBuffer unitSql=new StringBuffer();
 
-					unitSql.append("INSERT INTO egpt_unit(unitNo,unitType,length,width,builtupArea,assessableArea,")
+					unitSql.append("INSERT INTO egpt_unit(unitNo, unitType, length,width,builtupArea,assessableArea,")
 					.append("bpaBuiltupArea,bpaNo,bpaDate,usage,occupancy,occupierName,firmName,rentCollected, structure, age,")
 					.append("exemptionReason, isStructured, occupancyDate, constCompletionDate, manualArv, arv,")
 					.append(" electricMeterNo, waterMeterNo, createdBy, lastModifiedBy, createdTime, lastModifiedTime,")
 					.append("floor_id) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);");
 
 
-					Object[] unitArgs = { unit.getUnitNo(), unit.getUnitType(), unit.getLength(), unit.getWidth(),
+					Object[] unitArgs = {unit.getUnitNo(), unit.getUnitType().toString(), unit.getLength(), unit.getWidth(),
 							unit.getBuiltupArea(), unit.getAssessableArea(), unit.getBpaBuiltupArea(), unit.getBpaNo(),
 							unit.getBpaDate(),unit.getUsage(),unit.getOccupancy(),unit.getOccupierName(), unit.getFirmName(),
 							unit.getRentCollected(),unit.getStructure(), unit.getAge(), unit.getExemptionReason(),
 							unit.getIsStructured(), unit.getOccupancyDate(), unit.getConstCompletionDate(), unit.getManualArv(),
-							unit.getAge(), unit.getElectricMeterNo(), unit.getWaterMeterNo(),
+							unit.getArv(), unit.getElectricMeterNo(), unit.getWaterMeterNo(),
 							unit.getAuditDetails().getCreatedBy(), unit.getAuditDetails().getLastModifiedBy(),
-							unit.getAuditDetails().getCreatedTime(), unit.getAuditDetails().getLastModifiedTime(),
+							createdTime, createdTime,
 							floorId};
 
 					jdbcTemplate.update(unitSql.toString(), unitArgs);
@@ -251,8 +264,8 @@ public class PersisterService {
 						ps.setString(2, documentType.getApplication().toString());
 						ps.setString(3, documentType.getAuditDetails().getCreatedBy());
 						ps.setString(4, documentType.getAuditDetails().getLastModifiedBy());
-						ps.setBigDecimal(5, documentType.getAuditDetails().getCreatedTime());
-						ps.setBigDecimal(6, documentType.getAuditDetails().getLastModifiedTime());
+						ps.setLong(5, createdTime);
+						ps.setLong(6, createdTime);
 						return ps;
 					}
 				};
@@ -271,8 +284,8 @@ public class PersisterService {
 				Object[] documentArgs = { documentTypeId, document.getFileStore(),
 						document.getAuditDetails().getCreatedBy(),
 						document.getAuditDetails().getLastModifiedBy(),
-						document.getAuditDetails().getCreatedTime(),
-						document.getAuditDetails().getLastModifiedTime(),
+						createdTime,
+						createdTime,
 						propertyDetailsId };
 
 				jdbcTemplate.update(documentSql, documentArgs);
@@ -293,25 +306,24 @@ public class PersisterService {
 					vacantLand.getLayoutPermissionDate(), vacantLand.getResdPlotArea(), vacantLand.getNonResdPlotArea(),
 					vacantLand.getAuditDetails().getCreatedBy(), 
 					vacantLand.getAuditDetails().getLastModifiedBy(),
-					vacantLand.getAuditDetails().getCreatedTime(),
-					vacantLand.getAuditDetails().getLastModifiedTime(), propertyId };
+					createdTime,createdTime, propertyId };
 
 			jdbcTemplate.update(vaccantLandSql.toString(), vaccantLandArgs);
 
 			//boundary insertion
 			PropertyLocation boundary = property.getBoundary();
 			StringBuffer boundarySql=new StringBuffer();
-			boundarySql.append("insert into propertylocation(revenueBoundary, locationBoundary,")
+			boundarySql.append("insert into egpt_propertylocation(revenueBoundary, locationBoundary,")
 			.append(" adminBoundary, northBoundedBy,eastBoundedBy, westBoundedBy,")
-			.append("southBoundedBy,createdBy, lastModifiedBy, createdTime,lastModifiedTime, property_id) values (?,?,?,?,?,?,?,?,?,?,?,?);");
+			.append("southBoundedBy,createdBy, lastModifiedBy, createdTime,lastModifiedTime, property_id) values (?,?,?,?,?,?,?,?,?,?,?,?)");
 
-			Object[] boundaryArgs = { boundary.getRevenueBoundary(),boundary.getLocationBoundary(),boundary.getAdminBoundary(),
+			Object[] boundaryArgs = { boundary.getRevenueBoundary().getId(),boundary.getLocationBoundary().getId(),boundary.getAdminBoundary().getId(),
 					boundary.getNorthBoundedBy(),boundary.getEastBoundedBy(),boundary.getWestBoundedBy(),
 					boundary.getSouthBoundedBy(),
 					boundary.getAuditDetails().getCreatedBy(), 
 					boundary.getAuditDetails().getLastModifiedBy(),
-					boundary.getAuditDetails().getCreatedTime(),
-					boundary.getAuditDetails().getLastModifiedTime(),
+					createdTime,
+					createdTime,
 					propertyId};
 
 			jdbcTemplate.update(boundarySql.toString(), boundaryArgs);
@@ -324,14 +336,15 @@ public class PersisterService {
 				.append("isSecondaryOwner,ownerShipPercentage, ownerType, createdBy, lastModifiedBy, createdTime,lastModifiedTime)")
 				.append("values (?,?,?,?,?,?,?,?,?,?);");
 				Object[] userPropertyArgs = { propertyId, owner.getId(),
-						owner.getIsPrimaryOwner(),
-						owner.getAuditDetails().getCreatedBy(),
-						owner.getAuditDetails().getLastModifiedBy(),
-						owner.getAuditDetails().getCreatedTime(),
-						owner.getAuditDetails().getLastModifiedTime(),
+						owner.getIsPrimaryOwner(),						
 						owner.getIsSecondaryOwner(),
 						owner.getOwnerShipPercentage(),
-						owner.getOwnerType() };
+						owner.getOwnerType(),
+						owner.getAuditDetails().getCreatedBy(),
+						owner.getAuditDetails().getLastModifiedBy(),
+						createdTime,
+						createdTime,
+				};
 
 				jdbcTemplate.update(userPropertySql.toString(), userPropertyArgs);
 

@@ -25,8 +25,6 @@ public class User   {
 	private Long id = null;
 
 	@JsonProperty("userName")
-	@NotNull
-	@Size(min=4,max=64)
 	private String userName = null;
 
 	@JsonProperty("authToken")

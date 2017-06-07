@@ -9,6 +9,76 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 
 public class Address   {
+
+	@JsonProperty("id")
+	private Long id = null;
+
+	@JsonProperty("tenantId")
+	private String tenantId = null;
+
+	@JsonProperty("latitude")
+	private Double latitude = null;
+
+	@JsonProperty("longitude")
+	private Double longitude = null;
+
+	@JsonProperty("addressId")
+	private String addressId = null;
+
+	@JsonProperty("addressNumber")
+	private String addressNumber = null;
+
+	@JsonProperty("addressLine1")
+	private String addressLine1 = null;
+
+	@JsonProperty("addressLine2")
+	private String addressLine2 = null;
+
+	@JsonProperty("landmark")
+	private String landmark = null;
+
+	@JsonProperty("city")
+	private String city = null;
+
+	@JsonProperty("pincode")
+	private String pincode = null;
+
+	@JsonProperty("detail")
+	private String detail = null;
+
+	@JsonProperty("auditDetails")
+	private AuditDetails auditDetails = null;
+
+
+
+	public Address(Long id, String tenantId, Double latitude, Double longitude, String addressId, String addressNumber,
+			String addressLine1, String addressLine2, String landmark, String city, String pincode, String detail,
+			AuditDetails auditDetails) {
+		super();
+		this.id = id;
+		this.tenantId = tenantId;
+		this.latitude = latitude;
+		this.longitude = longitude;
+		this.addressId = addressId;
+		this.addressNumber = addressNumber;
+		this.addressLine1 = addressLine1;
+		this.addressLine2 = addressLine2;
+		this.landmark = landmark;
+		this.city = city;
+		this.pincode = pincode;
+		this.detail = detail;
+		this.auditDetails = auditDetails;
+	}
+
+
+
+	public Address() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -20,6 +90,7 @@ public class Address   {
 		result = prime * result + ((auditDetails == null) ? 0 : auditDetails.hashCode());
 		result = prime * result + ((city == null) ? 0 : city.hashCode());
 		result = prime * result + ((detail == null) ? 0 : detail.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((landmark == null) ? 0 : landmark.hashCode());
 		result = prime * result + ((latitude == null) ? 0 : latitude.hashCode());
 		result = prime * result + ((longitude == null) ? 0 : longitude.hashCode());
@@ -27,8 +98,6 @@ public class Address   {
 		result = prime * result + ((tenantId == null) ? 0 : tenantId.hashCode());
 		return result;
 	}
-
-
 
 	@Override
 	public boolean equals(Object obj) {
@@ -74,6 +143,11 @@ public class Address   {
 				return false;
 		} else if (!detail.equals(other.detail))
 			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
 		if (landmark == null) {
 			if (other.landmark != null)
 				return false;
@@ -102,70 +176,13 @@ public class Address   {
 		return true;
 	}
 
-	@JsonProperty("tenantId")
-	private String tenantId = null;
-
-	@JsonProperty("latitude")
-	private Double latitude = null;
-
-	@JsonProperty("longitude")
-	private Double longitude = null;
-
-	@JsonProperty("addressId")
-	private String addressId = null;
-
-	@JsonProperty("addressNumber")
-	private String addressNumber = null;
-
-	@JsonProperty("addressLine1")
-	private String addressLine1 = null;
-
-	@JsonProperty("addressLine2")
-	private String addressLine2 = null;
-
-	@JsonProperty("landmark")
-	private String landmark = null;
-
-	@JsonProperty("city")
-	private String city = null;
-
-	@JsonProperty("pincode")
-	private String pincode = null;
-
-	@JsonProperty("detail")
-	private String detail = null;
-
-	@JsonProperty("auditDetails")
-	private AuditDetails auditDetails = null;
-
-
-
-	public Address(String tenantId, Double latitude, Double longitude, String addressId, String addressNumber,
-			String addressLine1, String addressLine2, String landmark, String city, String pincode, String detail,
-			AuditDetails auditDetails) {
-		super();
-		this.tenantId = tenantId;
-		this.latitude = latitude;
-		this.longitude = longitude;
-		this.addressId = addressId;
-		this.addressNumber = addressNumber;
-		this.addressLine1 = addressLine1;
-		this.addressLine2 = addressLine2;
-		this.landmark = landmark;
-		this.city = city;
-		this.pincode = pincode;
-		this.detail = detail;
-		this.auditDetails = auditDetails;
+	public Long getId() {
+		return id;
 	}
 
-
-
-	public Address() {
-		super();
-		// TODO Auto-generated constructor stub
+	public void setId(Long id) {
+		this.id = id;
 	}
-
-
 
 	public String getTenantId() {
 		return tenantId;
@@ -265,17 +282,12 @@ public class Address   {
 
 	@Override
 	public String toString() {
-		return "Address [tenantId=" + tenantId + ", latitude=" + latitude + ", longitude=" + longitude + ", addressId="
-				+ addressId + ", addressNumber=" + addressNumber + ", addressLine1=" + addressLine1 + ", addressLine2="
-				+ addressLine2 + ", landmark=" + landmark + ", city=" + city + ", pincode=" + pincode + ", detail="
-				+ detail + ", auditDetails=" + auditDetails + ", getTenantId()=" + getTenantId() + ", getLatitude()="
-				+ getLatitude() + ", getLongitude()=" + getLongitude() + ", getAddressId()=" + getAddressId()
-				+ ", getAddressNumber()=" + getAddressNumber() + ", getAddressLine1()=" + getAddressLine1()
-				+ ", getAddressLine2()=" + getAddressLine2() + ", getLandmark()=" + getLandmark() + ", getCity()="
-				+ getCity() + ", getPincode()=" + getPincode() + ", getDetail()=" + getDetail() + ", getAuditDetails()="
-				+ getAuditDetails() + ", getClass()=" + getClass() + ", hashCode()=" + hashCode() + ", toString()="
-				+ super.toString() + "]";
+		return "Address [id=" + id + ", tenantId=" + tenantId + ", latitude=" + latitude + ", longitude=" + longitude
+				+ ", addressId=" + addressId + ", addressNumber=" + addressNumber + ", addressLine1=" + addressLine1
+				+ ", addressLine2=" + addressLine2 + ", landmark=" + landmark + ", city=" + city + ", pincode="
+				+ pincode + ", detail=" + detail + ", auditDetails=" + auditDetails + "]";
 	}
+
 
 
 }

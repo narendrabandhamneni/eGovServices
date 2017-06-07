@@ -8,12 +8,73 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Author : Narendra
  */
 public class VacantLandDetail   {
+	
+	@JsonProperty("id")
+	private Long id = null;
+
+	@JsonProperty("surveyNumber")
+	@Size(min=4,max=64)
+	private String surveyNumber = null;
+
+	@JsonProperty("pattaNumber")
+	@Size(min=4,max=64)
+	private String pattaNumber = null;
+
+	@JsonProperty("marketValue")
+	private Double marketValue = null;
+
+	@JsonProperty("capitalValue")
+	private Double capitalValue = null;
+
+	@JsonProperty("layoutApprovedAuth")
+	@Size(min=4,max=64)
+	private String layoutApprovedAuth = null;
+
+	@JsonProperty("layoutPermissionNo")
+	@Size(min=4,max=64)
+	private String layoutPermissionNo = null;
+
+	@JsonProperty("layoutPermissionDate")
+	private String layoutPermissionDate = null;
+
+	@JsonProperty("resdPlotArea")
+	private Double resdPlotArea = null;
+
+	@JsonProperty("nonResdPlotArea")
+	private Double nonResdPlotArea = null;
+
+	@JsonProperty("auditDetails")
+	private AuditDetails auditDetails = null;
+
+	public VacantLandDetail(Long id, String surveyNumber, String pattaNumber, Double marketValue, Double capitalValue,
+			String layoutApprovedAuth, String layoutPermissionNo, String layoutPermissionDate, Double resdPlotArea,
+			Double nonResdPlotArea, AuditDetails auditDetails) {
+		super();
+		this.id = id;
+		this.surveyNumber = surveyNumber;
+		this.pattaNumber = pattaNumber;
+		this.marketValue = marketValue;
+		this.capitalValue = capitalValue;
+		this.layoutApprovedAuth = layoutApprovedAuth;
+		this.layoutPermissionNo = layoutPermissionNo;
+		this.layoutPermissionDate = layoutPermissionDate;
+		this.resdPlotArea = resdPlotArea;
+		this.nonResdPlotArea = nonResdPlotArea;
+		this.auditDetails = auditDetails;
+	}
+
+	public VacantLandDetail() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((auditDetails == null) ? 0 : auditDetails.hashCode());
 		result = prime * result + ((capitalValue == null) ? 0 : capitalValue.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((layoutApprovedAuth == null) ? 0 : layoutApprovedAuth.hashCode());
 		result = prime * result + ((layoutPermissionDate == null) ? 0 : layoutPermissionDate.hashCode());
 		result = prime * result + ((layoutPermissionNo == null) ? 0 : layoutPermissionNo.hashCode());
@@ -43,6 +104,11 @@ public class VacantLandDetail   {
 			if (other.capitalValue != null)
 				return false;
 		} else if (!capitalValue.equals(other.capitalValue))
+			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
 			return false;
 		if (layoutApprovedAuth == null) {
 			if (other.layoutApprovedAuth != null)
@@ -87,59 +153,12 @@ public class VacantLandDetail   {
 		return true;
 	}
 
-	@JsonProperty("surveyNumber")
-	@Size(min=4,max=64)
-	private String surveyNumber = null;
-
-	@JsonProperty("pattaNumber")
-	@Size(min=4,max=64)
-	private String pattaNumber = null;
-
-	@JsonProperty("marketValue")
-	private Double marketValue = null;
-
-	@JsonProperty("capitalValue")
-	private Double capitalValue = null;
-
-	@JsonProperty("layoutApprovedAuth")
-	@Size(min=4,max=64)
-	private String layoutApprovedAuth = null;
-
-	@JsonProperty("layoutPermissionNo")
-	@Size(min=4,max=64)
-	private String layoutPermissionNo = null;
-
-	@JsonProperty("layoutPermissionDate")
-	private String layoutPermissionDate = null;
-
-	@JsonProperty("resdPlotArea")
-	private Double resdPlotArea = null;
-
-	@JsonProperty("nonResdPlotArea")
-	private Double nonResdPlotArea = null;
-
-	@JsonProperty("auditDetails")
-	private AuditDetails auditDetails = null;
-
-	public VacantLandDetail(String surveyNumber, String pattaNumber, Double marketValue, Double capitalValue,
-			String layoutApprovedAuth, String layoutPermissionNo, String layoutPermissionDate, Double resdPlotArea,
-			Double nonResdPlotArea, AuditDetails auditDetails) {
-		super();
-		this.surveyNumber = surveyNumber;
-		this.pattaNumber = pattaNumber;
-		this.marketValue = marketValue;
-		this.capitalValue = capitalValue;
-		this.layoutApprovedAuth = layoutApprovedAuth;
-		this.layoutPermissionNo = layoutPermissionNo;
-		this.layoutPermissionDate = layoutPermissionDate;
-		this.resdPlotArea = resdPlotArea;
-		this.nonResdPlotArea = nonResdPlotArea;
-		this.auditDetails = auditDetails;
+	public Long getId() {
+		return id;
 	}
 
-	public VacantLandDetail() {
-		super();
-		// TODO Auto-generated constructor stub
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getSurveyNumber() {
@@ -224,18 +243,13 @@ public class VacantLandDetail   {
 
 	@Override
 	public String toString() {
-		return "VacantLandDetail [surveyNumber=" + surveyNumber + ", pattaNumber=" + pattaNumber + ", marketValue="
-				+ marketValue + ", capitalValue=" + capitalValue + ", layoutApprovedAuth=" + layoutApprovedAuth
-				+ ", layoutPermissionNo=" + layoutPermissionNo + ", layoutPermissionDate=" + layoutPermissionDate
-				+ ", resdPlotArea=" + resdPlotArea + ", nonResdPlotArea=" + nonResdPlotArea + ", auditDetails="
-				+ auditDetails + ", getSurveyNumber()=" + getSurveyNumber() + ", getPattaNumber()=" + getPattaNumber()
-				+ ", getMarketValue()=" + getMarketValue() + ", getCapitalValue()=" + getCapitalValue()
-				+ ", getLayoutApprovedAuth()=" + getLayoutApprovedAuth() + ", getLayoutPermissionNo()="
-				+ getLayoutPermissionNo() + ", getLayoutPermissionDate()=" + getLayoutPermissionDate()
-				+ ", getResdPlotArea()=" + getResdPlotArea() + ", getNonResdPlotArea()=" + getNonResdPlotArea()
-				+ ", getAuditDetails()=" + getAuditDetails() + ", getClass()=" + getClass() + ", hashCode()=" + hashCode()
-				+ ", toString()=" + super.toString() + "]";
+		return "VacantLandDetail [id=" + id + ", surveyNumber=" + surveyNumber + ", pattaNumber=" + pattaNumber
+				+ ", marketValue=" + marketValue + ", capitalValue=" + capitalValue + ", layoutApprovedAuth="
+				+ layoutApprovedAuth + ", layoutPermissionNo=" + layoutPermissionNo + ", layoutPermissionDate="
+				+ layoutPermissionDate + ", resdPlotArea=" + resdPlotArea + ", nonResdPlotArea=" + nonResdPlotArea
+				+ ", auditDetails=" + auditDetails + "]";
 	}
+
 
 }
 
