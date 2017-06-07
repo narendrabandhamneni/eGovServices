@@ -39,8 +39,8 @@ INSERT INTO egpt_property VALUES (2, 'default', 'un1', 'oun1', 'vun1', 'NEWPROPE
 SELECT pg_catalog.setval('seq_egpt_property', 2, true);
 
 
-INSERT INTO egpt_property_user VALUES (1, 1, '2', true, true, 0, 'anilkumarsandrapati', 'kumar', 'kumar', 1496835742464, 1496835742464);
-INSERT INTO egpt_property_user VALUES (2, 2, '1', true, true, 0, 'sandrapatianilkumar', 'anil', 'anil', 1496835749070, 1496835749070);
+INSERT INTO egpt_property_user VALUES (1, 1, 2, true, true, 0, 'anilkumarsandrapati', 'kumar', 'kumar', 1496835742464, 1496835742464);
+INSERT INTO egpt_property_user VALUES (2, 2, 1, true, true, 0, 'sandrapatianilkumar', 'anil', 'anil', 1496835749070, 1496835749070);
 
 
 

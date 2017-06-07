@@ -348,7 +348,7 @@ ALTER TABLE ONLY egpt_vacantland
 CREATE TABLE egpt_property_user (
     id integer NOT NULL,
     property_id integer NOT NULL,
-    user_id character varying,
+    user_id integer,
     isPrimaryOwner boolean,
     isSecondaryOwner boolean,
     ownerShipPercentage integer,
