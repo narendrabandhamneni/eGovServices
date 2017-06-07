@@ -23,6 +23,12 @@ import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+/**
+ * 
+ * @author Debabrata
+ *
+ */
+
 @EnableKafka
 @Service
 public class WorkflowConsumer {
@@ -59,15 +65,12 @@ public class WorkflowConsumer {
 		 return factory;
 	}
 
-	@KafkaListener(containerFactory = "kafkaListenerContainerFactory", topics = "#{environment.getProperty('property.start.workflow')}")
+	@KafkaListener( topics = {"#{environment.getProperty('property.start.workflow')}","#{environment.getProperty('property.update.workflow')}"})
 	public void listen(ConsumerRecord<String, PropertyRequest> record) throws Exception {
 
-		ObjectMapper objectMapper = new ObjectMapper();
-
+		PropertyRequest propertyRequest =record.value();
+		
 		if (record.topic().equalsIgnoreCase(environment.getProperty("property.start.workflow"))) {
-
-			PropertyRequest propertyRequest = null;
-			propertyRequest =record.value();
 			//propertyRequest=	objectMapper.readValue(propertyRequestData, PropertyRequest.class);
 			for(Property property:propertyRequest.getProperties()){
 				WorkFlowDetails workflowDetails=property.getPropertyDetail().getWorkFlowDetails();
@@ -79,11 +82,6 @@ public class WorkflowConsumer {
 			}
 		}
 		else if(record.topic().equals(environment.getProperty("property.update.workflow"))) {
-
-			PropertyRequest propertyRequest = null;
-
-			//propertyRequest = objectMapper.readValue(record.value(), PropertyRequest.class);
-
 			for(Property property:propertyRequest.getProperties()){
 				WorkFlowDetails workflowDetails=property.getPropertyDetail().getWorkFlowDetails();
 				WorkflowDetailsRequestInfo workflowDetailsRequestInfo=new WorkflowDetailsRequestInfo();

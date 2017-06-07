@@ -164,7 +164,16 @@ public class MasterServiceImpl  implements Masterservice{
 	 */
 
 	public MasterModel getMaster(List<MasterModel> masterData,String tenantId,String code,RequestInfo requestInfo){
-		List<MasterModel> modelList= masterData.stream().filter(m->m.getTenantId().equalsIgnoreCase(tenantId)&& m.getCode().equalsIgnoreCase(code)).collect(Collectors.toList());
+		List<MasterModel> modelList = null;
+		if(tenantId!=null && code!=null){
+		 modelList= masterData.stream().filter(m->m.getTenantId().equalsIgnoreCase(tenantId)&& m.getCode().equalsIgnoreCase(code)).collect(Collectors.toList());
+		}
+		else if(tenantId==null || tenantId.isEmpty()){
+			 modelList= masterData.stream().filter(m->m.getCode().equalsIgnoreCase(code)).collect(Collectors.toList());
+		}
+		else if(code==null || code.isEmpty()){
+			 modelList= masterData.stream().filter(m->m.getTenantId().equalsIgnoreCase(tenantId)).collect(Collectors.toList());
+		}
 		if(modelList.size()==0)
 			throw new InvalidInputException(requestInfo);
 		return modelList.get(0);
