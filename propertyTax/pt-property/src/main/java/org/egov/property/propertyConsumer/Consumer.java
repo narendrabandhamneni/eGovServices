@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;
+import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.egov.models.PropertyRequest;
 import org.egov.property.services.PersisterService;
@@ -84,12 +85,19 @@ public class Consumer {
 	}
 
 	/**
-	 * This method will listen when ever we insert property to postgres
+	 * receive method
+	 * @param PropertyRequest
+	 * This method is listened whenever property is created and updated
 	 */
-	@KafkaListener(topics = "#{environment.getProperty('validate.user')}")
-	public void receive(PropertyRequest propertyRequest) throws SQLException {
+	@KafkaListener(topics= {"#{environment.getProperty('property.create')}","#{environment.getProperty('property.update')}"})
+	public void receive(ConsumerRecord<String, PropertyRequest> consumerRecord) throws SQLException {
 
-		persisterService.addProperty(propertyRequest.getProperties());
+		if (consumerRecord.topic().equalsIgnoreCase(env.getProperty("property.create"))) {
+			persisterService.addProperty(consumerRecord.value().getProperties());
+		} 
 
+		else if (consumerRecord.topic().equalsIgnoreCase(env.getProperty("property.update"))) {
+			persisterService.updateProperty(consumerRecord.value().getProperties());
+		}
 	}
 }

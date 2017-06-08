@@ -115,7 +115,7 @@ public class Consumer {
 			client.execute(
 					new Index.Builder(propertyData)
 					.index(environment.getProperty("property.index"))
-					.type(environment.getProperty("property.indexType"))
+					.type(environment.getProperty("property.index.type"))
 					.build()
 					);
 		}

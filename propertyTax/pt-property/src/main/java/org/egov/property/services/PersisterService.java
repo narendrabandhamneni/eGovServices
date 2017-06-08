@@ -57,9 +57,9 @@ public class PersisterService {
 
 		//iterating property from properties
 		for (Property property : properties) {
-			
+
 			Long createdTime = new Date().getTime();
-			
+
 
 			// property insertion
 			StringBuffer propertySql=new StringBuffer();
@@ -124,7 +124,7 @@ public class PersisterService {
 					createdTime,
 					createdTime,
 					propertyId
-					};
+			};
 
 			jdbcTemplate.update(addressSql.toString(), addressArgs);
 
@@ -349,6 +349,315 @@ public class PersisterService {
 				jdbcTemplate.update(userPropertySql.toString(), userPropertyArgs);
 
 			}
+
+		}
+	}
+
+	/**
+	 * update method
+	 * @param: List of properties
+	 * This method updates:
+	 * 1. Property
+	 * 2. Address
+	 * 3. Property Details
+	 * 4. Vacant Land
+	 * 5. Floor
+	 * 6. Document and Document type
+	 * 7. User
+	 * 8. Boundary
+	 **/
+
+	@Transactional
+	public void updateProperty(List<Property> properties) throws SQLException {
+
+		for (Property property : properties) {
+
+			//Property updated time
+			Long updatedTime = new Date().getTime();
+
+			//Update Property Query
+			StringBuffer propertyUpdateSQL=new StringBuffer();
+
+			propertyUpdateSQL.append("UPDATE egpt_Property")
+			.append(" SET tenantId = ? , upicNumber = ?, oldUpicNumber = ?, vltUpicNumber = ?,")
+			.append("creationReason = ?, assessmentDate = ?, occupancyDate = ?, gisRefNo = ?,")
+			.append(" isAuthorised = ?, isUnderWorkflow = ?, channel = ?,")
+			.append(" lastModifiedBy = ?, lastModifiedTime = ?")
+			.append(" WHERE id = " + property.getId());
+
+			final PreparedStatementCreator property_psc = new PreparedStatementCreator() {
+				@Override
+				public PreparedStatement createPreparedStatement(final Connection connection) throws SQLException {
+					final PreparedStatement ps = connection.prepareStatement(propertyUpdateSQL.toString());
+					ps.setString(1, property.getTenantId());
+					ps.setString(2, property.getUpicNumber());
+					ps.setString(3, property.getOldUpicNumber());
+					ps.setString(4, property.getVltUpicNumber());
+					ps.setString(5, property.getCreationReason().name());
+					ps.setString(6, property.getAssessmentDate());
+					ps.setString(7, property.getOccupancyDate());
+					ps.setString(8, property.getGisRefNo());
+					ps.setBoolean(9, property.getIsAuthorised());
+					ps.setBoolean(10, property.getIsUnderWorkflow());
+					ps.setString(11, property.getChannel().name());
+					ps.setString(12, property.getAuditDetails().getLastModifiedBy());
+					ps.setLong(13, updatedTime);
+					return ps;
+				}
+			};
+
+			jdbcTemplate.update(property_psc);
+
+			//2.Address address
+			Address address = property.getAddress();
+			Long address_id = property.getAddress().getId();
+
+			//Update Address Query
+			StringBuffer addressUpdateSQL=new StringBuffer();
+
+			addressUpdateSQL.append("UPDATE egpt_Address")
+			.append(" SET tenantId = ?, latitude = ?, longitude = ?, addressId = ?,")
+			.append(" addressNumber = ?, addressLine1 = ?, addressLine2 = ?,")
+			.append(" landmark = ?, city = ?, pincode = ?, detail = ?, lastModifiedBy = ?,")
+			.append(" lastModifiedTime = ?, property_id = ?" )
+			.append(" WHERE id = " + address_id);
+
+			Object[] addressArgs = {
+					address.getTenantId(), address.getLatitude(), 
+					address.getLongitude(),address.getAddressId(), 
+					address.getAddressNumber(), address.getAddressLine1(),
+					address.getAddressLine2(), address.getLandmark(), 
+					address.getCity(), address.getPincode(),
+					address.getDetail(), address.getAuditDetails().getLastModifiedBy(), 
+					updatedTime,property.getId()
+			};
+
+			jdbcTemplate.update(addressUpdateSQL.toString(), addressArgs);
+
+
+			//3.Property Details
+			PropertyDetail propertyDetails = property.getPropertyDetail();
+			//Update Address Query and Conditions
+			StringBuffer propertyDetailUpdateSQL=new StringBuffer();
+
+			propertyDetailUpdateSQL.append("UPDATE egpt_propertydetails")
+			.append(" SET source = ?, regdDocNo = ?, regdDocDate = ?, reason = ?,")
+			.append(" status = ?, isVerified = ?, verificationDate = ?, isExempted = ?,")
+			.append(" exemptionReason = ?, propertyType = ?, category = ?, usage = ?, department = ?,")
+			.append(" apartment = ?, siteLength = ?, siteBreadth = ?, sitalArea = ?, totalBuiltupArea = ?,")
+			.append(" undividedShare = ?, noOfFloors = ?, isSuperStructure = ?, landOwner = ?,")
+			.append(" floorType = ?, woodType = ?, roofType = ?, wallType = ?, stateId = ?,")
+			.append(" applicationNo = ?, lastModifiedBy = ?, lastmodifiedtime = ?, property_id = ?")
+			.append(" WHERE id = " + propertyDetails.getId().intValue());
+
+			final PreparedStatementCreator details_psc = new PreparedStatementCreator() {
+				@Override
+				public PreparedStatement createPreparedStatement(final Connection connection) throws SQLException {
+					final PreparedStatement ps = connection.prepareStatement(propertyDetailUpdateSQL.toString());
+					ps.setString(1, propertyDetails.getSource().toString());
+					ps.setString(2, propertyDetails.getRegdDocNo());
+					ps.setString(3, propertyDetails.getRegdDocDate());
+					ps.setString(4, propertyDetails.getReason());
+					ps.setString(5, propertyDetails.getStatus().toString());
+					ps.setBoolean(6, propertyDetails.getIsVerified());
+					ps.setString(7, propertyDetails.getVerificationDate());
+					ps.setBoolean(8, propertyDetails.getIsExempted());
+					ps.setString(9, propertyDetails.getExemptionReason());
+					ps.setString(10, propertyDetails.getPropertyType());
+					ps.setString(11, propertyDetails.getCategory());
+					ps.setString(12, propertyDetails.getUsage());
+					ps.setString(13, propertyDetails.getDepartment());
+					ps.setString(14, propertyDetails.getApartment());
+					ps.setDouble(15, propertyDetails.getSiteLength());
+					ps.setDouble(16, propertyDetails.getSiteBreadth());
+					ps.setDouble(17, propertyDetails.getSitalArea());
+					ps.setDouble(18, propertyDetails.getTotalBuiltupArea());
+					ps.setDouble(19, propertyDetails.getUndividedShare());
+					ps.setLong(20, propertyDetails.getNoOfFloors());
+					ps.setBoolean(21, propertyDetails.getIsSuperStructure());
+					ps.setString(22, propertyDetails.getLandOwner());
+					ps.setString(23, propertyDetails.getFloorType());
+					ps.setString(24, propertyDetails.getWoodType());
+					ps.setString(25, propertyDetails.getRoofType());
+					ps.setString(26, propertyDetails.getWallType());
+					ps.setString(27, propertyDetails.getStateId());
+					ps.setString(28, propertyDetails.getApplicationNo());
+					ps.setString(29, propertyDetails.getAuditDetails().getLastModifiedBy());
+					ps.setLong(30, updatedTime);
+					ps.setLong(31, property.getId());
+					return ps;
+				}
+			};
+
+			jdbcTemplate.update(details_psc);
+
+			//4.Vacant Land
+			VacantLandDetail vacantLand = property.getVacantLand();
+
+			Long vacantland_id = vacantLand.getId();
+
+			//Update Vacant land Query
+			StringBuffer vacantlandUpdateSQL=new StringBuffer();
+
+			vacantlandUpdateSQL.append("UPDATE egpt_vacantland")
+			.append(" SET surveyNumber = ?, pattaNumber = ?, marketValue = ?, capitalValue = ?, layoutApprovedAuth = ?,")
+			.append(" layoutPermissionNo = ?, layoutPermissionDate = ?, resdPlotArea = ?, ")
+			.append(" nonResdPlotArea = ?, lastModifiedBy = ?, lastModifiedTime = ?, property_id = ?")
+			.append(" WHERE id = " + vacantland_id);
+
+			Object[] vaccantLandArgs = {
+					vacantLand.getSurveyNumber(), vacantLand.getPattaNumber(), vacantLand.getMarketValue(), 
+					vacantLand.getCapitalValue(),vacantLand.getLayoutApprovedAuth(), vacantLand.getLayoutPermissionNo(),
+					vacantLand.getLayoutPermissionDate(), vacantLand.getResdPlotArea(), vacantLand.getNonResdPlotArea(),
+					vacantLand.getAuditDetails().getLastModifiedBy(),updatedTime,property.getId() 
+			};
+
+			jdbcTemplate.update(vacantlandUpdateSQL.toString(), vaccantLandArgs);
+
+
+			//5.Floor
+			for (Floor floor : property.getPropertyDetail().getFloors()) {
+
+				Long floor_id = floor.getId();
+				//Floor Query
+				StringBuffer floorUpdateSQL=new StringBuffer();
+
+				//details_id
+				floorUpdateSQL.append("UPDATE egpt_floors")
+				.append(" SET floorNo = ?, lastModifiedBy = ?, lastModifiedTime = ?, property_details_id = ? ")
+				.append(" WHERE id = " + floor_id);
+
+				Object[] floorArgs = { 
+						floor.getFloorNo(), floor.getAuditDetails().getLastModifiedBy(), 
+						updatedTime, propertyDetails.getId().intValue()
+				};
+
+				jdbcTemplate.update(floorUpdateSQL.toString(), floorArgs);
+
+				//unit insertion
+				for(Unit unit : floor.getUnits()){
+
+					StringBuffer unitSql=new StringBuffer();
+					Long unit_id = unit.getId();
+
+					unitSql.append("UPDATE egpt_unit")
+					.append(" SET unitNo = ?, unitType = ?, length = ?, width = ?,")
+					.append(" builtupArea = ?, assessableArea = ?, bpaBuiltupArea = ?,")
+					.append(" bpaNo = ?, bpaDate = ?, usage = ?, occupancy = ?, occupierName = ?,")
+					.append(" firmName = ?, rentCollected = ?, structure = ?, age = ?,")
+					.append(" exemptionReason = ?, isStructured = ?, occupancyDate = ?,")
+					.append(" constCompletionDate = ?, manualArv = ?, arv = ?,")
+					.append(" electricMeterNo = ?, waterMeterNo = ?, lastModifiedBy = ?, lastModifiedTime = ?")
+					.append(" WHERE id = " + unit_id);
+
+
+					Object[] unitArgs = {
+							unit.getUnitNo(), unit.getUnitType().toString(), 
+							unit.getLength(), unit.getWidth(),
+							unit.getBuiltupArea(), unit.getAssessableArea(),
+							unit.getBpaBuiltupArea(), unit.getBpaNo(),
+							unit.getBpaDate(),unit.getUsage(),
+							unit.getOccupancy(),unit.getOccupierName(), 
+							unit.getFirmName(),unit.getRentCollected(),
+							unit.getStructure(), unit.getAge(), unit.getExemptionReason(),
+							unit.getIsStructured(), unit.getOccupancyDate(), unit.getConstCompletionDate(), unit.getManualArv(),
+							unit.getArv(), unit.getElectricMeterNo(), unit.getWaterMeterNo(),
+							unit.getAuditDetails().getLastModifiedBy(),
+							updatedTime
+					};
+
+					jdbcTemplate.update(unitSql.toString(), unitArgs);
+
+				}
+			}
+			//6.Document
+			for (Document document : property.getPropertyDetail().getDocuments()) {
+
+				DocumentType documentType = document.getDocumentType();
+
+				//Document Type Query
+				Long documenttype_id = document.getDocumentType().getId();
+				StringBuffer documentTypeUpdateSQL=new StringBuffer();
+
+				documentTypeUpdateSQL.append("UPDATE egpt_documenttype")
+				.append(" SET name = ?, application = ?, lastModifiedBy = ?, lastModifiedTime = ?")
+				.append(" WHERE id = " + documenttype_id);
+
+				Object[] documentTypeArgs = { 
+						documentType.getName(), documentType.getApplication().name(),
+						documentType.getAuditDetails().getLastModifiedBy(), updatedTime
+				};
+
+				jdbcTemplate.update(documentTypeUpdateSQL.toString(),documentTypeArgs);
+
+				//Document Query
+				Long document_id = document.getId();
+				StringBuffer documentUpdateSQL=new StringBuffer();
+
+				documentUpdateSQL.append("UPDATE egpt_document")
+				.append(" SET documentType = ?, fileStore = ?, lastModifiedBy = ?, lastModifiedTime = ?, property_details_id = ? ")
+				.append(" WHERE id = "+ document_id);
+
+				Object[] documentArgs = { 
+						document.getDocumentType().getId().intValue(), document.getFileStore(),
+						document.getAuditDetails().getLastModifiedBy(),updatedTime, propertyDetails.getId().intValue()
+				};
+
+				jdbcTemplate.update(documentUpdateSQL.toString(), documentArgs);
+			}
+
+			//7.User
+			for (OwnerInfo owner : property.getOwners()) {
+
+				Long user_id = owner.getId();
+
+				//User Query
+				StringBuffer userUpdateSQL=new StringBuffer();
+
+				userUpdateSQL.append("UPDATE egpt_Property_user")
+				.append(" SET property_Id = ?, user_Id = ?, isPrimaryOwner = ?,")
+				.append(" isSecondaryOwner = ?, ownerShipPercentage = ?, ownerType = ?,")
+				.append(" lastModifiedBy = ?, lastModifiedTime = ?")
+				.append(" WHERE id = " + user_id);
+
+				Object[] userPropertyArgs = { 
+						property.getId().intValue(), user_id.intValue(), owner.getIsPrimaryOwner().booleanValue(),
+						owner.getIsSecondaryOwner().booleanValue(), owner.getOwnerShipPercentage(), 
+						owner.getOwnerType(),owner.getAuditDetails().getLastModifiedBy(), 
+						updatedTime
+				}; 
+
+				jdbcTemplate.update(userUpdateSQL.toString(), userPropertyArgs);
+
+			}
+
+			//8.Boundary
+			PropertyLocation boundary = property.getBoundary();
+
+			Long boundary_id = boundary.getId();
+
+			StringBuffer boundaryUpdateSQL = new StringBuffer();
+
+			//Boundary query
+			boundaryUpdateSQL.append("UPDATE egpt_propertylocation")
+			.append(" SET revenueBoundary = ?, locationBoundary = ?, adminBoundary = ?,")
+			.append(" northBoundedBy = ?, eastBoundedBy = ?, westBoundedBy = ?, southBoundedBy = ?,")
+			.append(" lastModifiedBy = ?, lastModifiedTime = ?, property_id = ?")
+			.append(" WHERE id = " + boundary_id);
+
+			Object[] boundaryArgs = { 
+					boundary.getRevenueBoundary().getId(),
+					boundary.getLocationBoundary().getId(),
+					boundary.getAdminBoundary().getId(),
+					boundary.getNorthBoundedBy().toString(),
+					boundary.getEastBoundedBy().toString(),
+					boundary.getWestBoundedBy().toString(),
+					boundary.getSouthBoundedBy().toString(),
+					boundary.getAuditDetails().getLastModifiedBy(),
+					updatedTime,property.getId().intValue()
+			};
+
+			jdbcTemplate.update(boundaryUpdateSQL.toString(), boundaryArgs);
 
 		}
 	}

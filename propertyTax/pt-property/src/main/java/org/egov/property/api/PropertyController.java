@@ -14,6 +14,8 @@ import org.egov.models.PropertyRequest;
 import org.egov.models.PropertyResponse;
 import org.egov.models.ResponseInfo;
 import org.egov.models.ResponseInfoFactory;
+import org.egov.models.WorkFlowDetails;
+import org.egov.property.exception.InvalidUpdatePropertyException;
 import org.egov.property.propertyConsumer.Producer;
 import org.egov.property.util.PropertyValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,7 +67,7 @@ public class PropertyController {
 		idGenerationUrl.append(environment.getProperty("egov.services.id_service.hostname"));
 		idGenerationUrl.append(environment.getProperty("egov.services.id_service.basepath"));
 		idGenerationUrl.append(environment.getProperty("egov.services.id_service.createpath"));
-		
+
 		//generating acknowledgement number for all properties
 		for(Property property:propertyRequest.getProperties()){
 			IdRequest idrequest=new IdRequest();
@@ -98,6 +100,69 @@ public class PropertyController {
 		return propertyResponse;
 
 	}
+
+	/**
+	 * updateProperty method validate each property before update
+	 * @param PropertyRequest
+	 * For each property, it checks and validate
+	 * 	1.PropertyBoundary
+	 * 	2.acknowledgementNo
+	 *  3.workflowDetails Action
+	 *  4.workflowDetails Assignee
+	 *  5.workflowDetails Department
+	 *  6.workflowDetails Designation
+	 *  7.workflowDetails Status
+	 * */
+	@RequestMapping(method=RequestMethod.POST,path="_update")
+	public PropertyResponse updateProperty(@Valid @RequestBody PropertyRequest propertyRequest) {
+
+		//Boundary validations for all properties
+		for(Property property :propertyRequest.getProperties()){
+
+			propertyValidator.validatePropertyBoundary(property);
+
+			String acknowledgementNo = property.getPropertyDetail().getApplicationNo();
+
+			//Check Acknowledgement no. is null or not
+			if (acknowledgementNo == null) {
+
+				throw new AttributeNotFoundException(environment.getProperty("acknowledgement.message"), propertyRequest.getRequestInfo());
+
+			} else {
+
+				WorkFlowDetails workflowDetails = property.getPropertyDetail().getWorkFlowDetails();
+
+				if (workflowDetails.getAction() == null) {
+
+					throw new InvalidUpdatePropertyException(environment.getProperty("workflow.action.message"), propertyRequest.getRequestInfo());
+
+				} else if (workflowDetails.getAssignee() == null) {
+
+					throw new InvalidUpdatePropertyException(environment.getProperty("workflow.assignee.message"), propertyRequest.getRequestInfo());
+
+				} else if (workflowDetails.getDepartment() == null) {
+
+					throw new InvalidUpdatePropertyException(environment.getProperty("workflow.department.message"), propertyRequest.getRequestInfo());
+
+				} else if (workflowDetails.getDesignation() == null) {
+
+					throw new InvalidUpdatePropertyException(environment.getProperty("workflow.designation.message"), propertyRequest.getRequestInfo());
+
+				} else if (workflowDetails.getStatus() == null) {
+
+					throw new InvalidUpdatePropertyException(environment.getProperty("workflow.status.message"), propertyRequest.getRequestInfo());
+
+				} 
+			}
+			producer.send(environment.getProperty("property.update"), propertyRequest);
+		}
+		ResponseInfo responseInfo=responseInfoFactory.createResponseInfoFromRequestInfo(propertyRequest.getRequestInfo(),true);
+		PropertyResponse propertyResponse=new PropertyResponse();
+		propertyResponse.setResponseInfo(responseInfo);
+		propertyResponse.setProperties(propertyRequest.getProperties());
+		return propertyResponse;
+	}
+
 
 
 }
