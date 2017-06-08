@@ -1,18 +1,8 @@
 package org.egov;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.egov.models.Floor;
-import org.egov.models.Property;
-import org.egov.models.PropertyDetail;
-import org.egov.models.PropertyRequest;
 import org.egov.propertyIndexer.PtIndexerApplication;
-import org.egov.propertyIndexer.indexerConsumer.Producer;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.core.env.Environment;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -25,12 +15,12 @@ import org.springframework.test.context.junit4.SpringRunner;
 @ContextConfiguration(classes={PtIndexerApplication.class})
 public class PtIndexerApplicationTests {
 
-	@Autowired
+	/*@Autowired
 	Environment environment;
 
 	@Autowired
 	private Producer producer;
-
+*/
 
 	/*
 	 * test case for inserting data into indexer in elastic search

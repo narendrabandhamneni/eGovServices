@@ -108,7 +108,7 @@ public class Consumer {
 	 * This method will listen when ever data pushed to indexer topic and insert data in elastic search
 	 */
 
-	@KafkaListener(topics="#{environment.getProperty('propertyIndexer.create')}")
+	@KafkaListener(topics="#{environment.getProperty('property.indexer.create')}")
 	public void receive(PropertyRequest propertyRequest) throws IOException{
 		for(Property property : propertyRequest.getProperties()){
 			String propertyData=	new ObjectMapper().writeValueAsString(property);

@@ -63,7 +63,7 @@ public class PropertyValidator {
 			id = propertyLocation.getAdminBoundary().getId();
 		}
 
-		URI uri = UriComponentsBuilder.fromUriString(env.getProperty("boundary.boundaryUrl"))
+		URI uri = UriComponentsBuilder.fromUriString(env.getProperty("egov.services.boundary_service.hostname")+env.getProperty("egov.services.boundary_service.searchpath"))
 				.queryParam("Boundary.tenantId", property.getTenantId())
 				.queryParam("Boundary.id", id).build(true).encode().toUri();
 

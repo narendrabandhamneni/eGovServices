@@ -74,7 +74,7 @@ public class GlobalExceptionHandler {
 			errorList.add(error);
 			return new ErrorRes(responseInfo,errorList);		}
 		else if(ex instanceof InvalidPropertyBoundaryException){
-			Error error=new Error(HttpStatus.BAD_REQUEST.toString(),environment.getProperty("invalidPropertyBoundary"),null,new HashMap<String,String>());
+			Error error=new Error(HttpStatus.BAD_REQUEST.toString(),environment.getProperty("invalid.property.boundary"),null,new HashMap<String,String>());
 			ResponseInfo responseInfo=new ResponseInfo();
 			List<Error> errorList=new ArrayList<Error>();
 			errorList.add(error);

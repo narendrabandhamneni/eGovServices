@@ -61,6 +61,11 @@ public class PropertyController {
 			propertyValidator.validatePropertyBoundary(property);		
 		}
 
+		StringBuffer idGenerationUrl=new StringBuffer();
+		idGenerationUrl.append(environment.getProperty("egov.services.id_service.hostname"));
+		idGenerationUrl.append(environment.getProperty("egov.services.id_service.basepath"));
+		idGenerationUrl.append(environment.getProperty("egov.services.id_service.createpath"));
+		
 		//generating acknowledgement number for all properties
 		for(Property property:propertyRequest.getProperties()){
 			IdRequest idrequest=new IdRequest();
@@ -70,7 +75,7 @@ public class PropertyController {
 			IdGenerationRequest idGeneration=new IdGenerationRequest();
 			idGeneration.setIdRequest(idrequest);
 			idGeneration.setRequestInfo(propertyRequest.getRequestInfo());
-			IdGenerationResponse idResponse=restTemplate.patchForObject(environment.getProperty("id.creation"), idGeneration, IdGenerationResponse.class);
+			IdGenerationResponse idResponse=restTemplate.patchForObject(idGenerationUrl.toString(), idGeneration, IdGenerationResponse.class);
 			if(idResponse.getResponseInfo().getStatus().toString().equalsIgnoreCase(environment.getProperty("success"))){
 				if(idResponse.getResponseInfo().getStatus().toString().equalsIgnoreCase(environment.getProperty("failed"))){
 					throw new AttributeNotFoundException(environment.getProperty("attribute.notfound"),propertyRequest.getRequestInfo());

@@ -24,22 +24,8 @@
 
 package org.egov.propertyUser;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.egov.models.Floor;
-import org.egov.models.Property;
-import org.egov.models.PropertyDetail;
-import org.egov.models.PropertyRequest;
-import org.egov.models.RequestInfo;
-import org.egov.models.Role;
-import org.egov.models.User;
-import org.egov.propertyUser.userConsumer.Producer;
-import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.core.env.Environment;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -49,12 +35,12 @@ import org.springframework.test.context.junit4.SpringRunner;
 @ContextConfiguration(classes = { PtUserValidatorApplication.class })
 
 public class PtUserValidatorApplicationTests {
-
+/*
 	@Autowired
 	Environment environment;
 	
 	@Autowired
-	Producer producer;
+	Producer producer;*/
 	
 
 
