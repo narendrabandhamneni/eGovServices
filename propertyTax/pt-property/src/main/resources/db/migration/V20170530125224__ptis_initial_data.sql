@@ -6,16 +6,16 @@ INSERT INTO egpt_address VALUES(2, 'default', 10, 10, NULL, 'acgaurd', 'khiratha
 SELECT pg_catalog.setval('seq_egpt_address', 2, true);
 
 
-INSERT INTO egpt_document VALUES(1, 1, 'testing', 'kumar', 'kumar', 1496835742464, 1496835742464, 1);
-INSERT INTO egpt_document VALUES(2, 2, 'test', 'anil', 'anil', 1496835749070, 1496835749070, 2);
+INSERT INTO egpt_document VALUES(1, 'testing', 'kumar', 'kumar', 1496835742464, 1496835742464,1);
+INSERT INTO egpt_document VALUES(2, 'test', 'anil',  'anil', 1496835749070, 1496835749070, 2);
 
 
 
 SELECT pg_catalog.setval('seq_egpt_document', 2, true);
 
 
-INSERT INTO egpt_documenttype VALUES(1, 'anilkumar', 'CREATE', 'kumar', 'kumar', 1496835742464, 1496835742464);
-INSERT INTO egpt_documenttype VALUES(2, 'sanil', 'CREATE', 'anil', 'anil', 1496835749070, 1496835749070);
+INSERT INTO egpt_documenttype VALUES(1, 'anilkumar', 'CREATE', 1, 'kumar', 'kumar', 1496835742464, 1496835742464);
+INSERT INTO egpt_documenttype VALUES(2, 'sanil', 'CREATE', 2, 'anil', 'anil', 1496835749070, 1496835749070);
 
 
 SELECT pg_catalog.setval('seq_egpt_documenttype', 2, true);

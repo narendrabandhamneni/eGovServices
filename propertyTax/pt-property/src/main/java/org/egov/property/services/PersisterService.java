@@ -249,11 +249,37 @@ public class PersisterService {
 			//iterating document from property
 			for (Document document : property.getPropertyDetail().getDocuments()) {
 
+				// document insertion
+
+				String documentSql = "INSERT INTO  egpt_document(fileStore, createdBy, lastModifiedBy, createdTime, lastModifiedTime, property_details_id) values (?,?,?,?,?,?)";
+
+				final PreparedStatementCreator pscDocument = new PreparedStatementCreator() {
+					@Override
+					public PreparedStatement createPreparedStatement(final Connection connection) throws SQLException {
+						final PreparedStatement ps = connection.prepareStatement(documentSql,
+								new String[] { "id" });
+						ps.setString(1, document.getFileStore());
+						ps.setString(2, document.getAuditDetails().getCreatedBy());
+						ps.setString(3, document.getAuditDetails().getLastModifiedBy());
+						ps.setLong(4, createdTime);
+						ps.setLong(5, createdTime);
+						ps.setLong(6, propertyDetailsId);
+						return ps;
+					}
+				};
+
+				final KeyHolder holderDocument = new GeneratedKeyHolder();
+
+				jdbcTemplate.update(pscDocument, holderDocument);
+
+				Integer documentId = holderDocument.getKey().intValue();
+
+
 				//document type insertion
 
 				DocumentType documentType = document.getDocumentType();
 
-				String documentTypeSql = "INSERT INTO egpt_documenttype(name,application,createdBy, lastModifiedBy, createdTime, lastModifiedTime) values (?,?,?,?,?,?)";
+				String documentTypeSql = "INSERT INTO egpt_documenttype(name,application,createdBy,document_id,lastModifiedBy, createdTime, lastModifiedTime) values (?,?,?,?,?,?,?)";
 
 				final PreparedStatementCreator pscDocumentType = new PreparedStatementCreator() {
 					@Override
@@ -263,9 +289,10 @@ public class PersisterService {
 						ps.setString(1, documentType.getName());
 						ps.setString(2, documentType.getApplication().toString());
 						ps.setString(3, documentType.getAuditDetails().getCreatedBy());
-						ps.setString(4, documentType.getAuditDetails().getLastModifiedBy());
-						ps.setLong(5, createdTime);
+						ps.setLong(4, documentId);
+						ps.setString(5, documentType.getAuditDetails().getLastModifiedBy());
 						ps.setLong(6, createdTime);
+						ps.setLong(7, createdTime);
 						return ps;
 					}
 				};
@@ -275,20 +302,6 @@ public class PersisterService {
 
 				jdbcTemplate.update(pscDocumentType, holderDocumentType);
 
-				Integer documentTypeId = holderDocumentType.getKey().intValue();
-
-				// document insertion
-
-				String documentSql = "INSERT INTO  egpt_document(documentType,fileStore, createdBy, lastModifiedBy, createdTime, lastModifiedTime, property_details_id) values (?,?,?,?,?,?,?)";
-
-				Object[] documentArgs = { documentTypeId, document.getFileStore(),
-						document.getAuditDetails().getCreatedBy(),
-						document.getAuditDetails().getLastModifiedBy(),
-						createdTime,
-						createdTime,
-						propertyDetailsId };
-
-				jdbcTemplate.update(documentSql, documentArgs);
 
 			}
 
@@ -448,7 +461,7 @@ public class PersisterService {
 			.append(" undividedShare = ?, noOfFloors = ?, isSuperStructure = ?, landOwner = ?,")
 			.append(" floorType = ?, woodType = ?, roofType = ?, wallType = ?, stateId = ?,")
 			.append(" applicationNo = ?, lastModifiedBy = ?, lastmodifiedtime = ?, property_id = ?")
-			.append(" WHERE id = " + propertyDetails.getId().intValue());
+			.append(" WHERE id = " + propertyDetails.getId());
 
 			final PreparedStatementCreator details_psc = new PreparedStatementCreator() {
 				@Override
@@ -529,7 +542,7 @@ public class PersisterService {
 
 				Object[] floorArgs = { 
 						floor.getFloorNo(), floor.getAuditDetails().getLastModifiedBy(), 
-						updatedTime, propertyDetails.getId().intValue()
+						updatedTime, propertyDetails.getId()
 				};
 
 				jdbcTemplate.update(floorUpdateSQL.toString(), floorArgs);
@@ -573,6 +586,22 @@ public class PersisterService {
 			//6.Document
 			for (Document document : property.getPropertyDetail().getDocuments()) {
 
+
+				//Document Query
+				Long document_id = document.getId();
+				StringBuffer documentUpdateSQL=new StringBuffer();
+
+				documentUpdateSQL.append("UPDATE egpt_document")
+				.append(" SET  fileStore = ?, lastModifiedBy = ?, lastModifiedTime = ?, property_details_id = ? ")
+				.append(" WHERE id = "+ document_id);
+
+				Object[] documentArgs = { 
+						document.getFileStore(),
+						document.getAuditDetails().getLastModifiedBy(),updatedTime, propertyDetails.getId()
+				};
+
+				jdbcTemplate.update(documentUpdateSQL.toString(), documentArgs);
+
 				DocumentType documentType = document.getDocumentType();
 
 				//Document Type Query
@@ -580,30 +609,17 @@ public class PersisterService {
 				StringBuffer documentTypeUpdateSQL=new StringBuffer();
 
 				documentTypeUpdateSQL.append("UPDATE egpt_documenttype")
-				.append(" SET name = ?, application = ?, lastModifiedBy = ?, lastModifiedTime = ?")
+				.append(" SET name = ?, application = ?, document_id = ?, lastModifiedBy = ?, lastModifiedTime = ?")
 				.append(" WHERE id = " + documenttype_id);
 
 				Object[] documentTypeArgs = { 
 						documentType.getName(), documentType.getApplication().name(),
+						document_id,
 						documentType.getAuditDetails().getLastModifiedBy(), updatedTime
 				};
 
 				jdbcTemplate.update(documentTypeUpdateSQL.toString(),documentTypeArgs);
 
-				//Document Query
-				Long document_id = document.getId();
-				StringBuffer documentUpdateSQL=new StringBuffer();
-
-				documentUpdateSQL.append("UPDATE egpt_document")
-				.append(" SET documentType = ?, fileStore = ?, lastModifiedBy = ?, lastModifiedTime = ?, property_details_id = ? ")
-				.append(" WHERE id = "+ document_id);
-
-				Object[] documentArgs = { 
-						document.getDocumentType().getId().intValue(), document.getFileStore(),
-						document.getAuditDetails().getLastModifiedBy(),updatedTime, propertyDetails.getId().intValue()
-				};
-
-				jdbcTemplate.update(documentUpdateSQL.toString(), documentArgs);
 			}
 
 			//7.User
@@ -621,7 +637,7 @@ public class PersisterService {
 				.append(" WHERE id = " + user_id);
 
 				Object[] userPropertyArgs = { 
-						property.getId().intValue(), user_id.intValue(), owner.getIsPrimaryOwner().booleanValue(),
+						property.getId(), user_id, owner.getIsPrimaryOwner().booleanValue(),
 						owner.getIsSecondaryOwner().booleanValue(), owner.getOwnerShipPercentage(), 
 						owner.getOwnerType(),owner.getAuditDetails().getLastModifiedBy(), 
 						updatedTime
@@ -654,7 +670,7 @@ public class PersisterService {
 					boundary.getWestBoundedBy().toString(),
 					boundary.getSouthBoundedBy().toString(),
 					boundary.getAuditDetails().getLastModifiedBy(),
-					updatedTime,property.getId().intValue()
+					updatedTime,property.getId()
 			};
 
 			jdbcTemplate.update(boundaryUpdateSQL.toString(), boundaryArgs);

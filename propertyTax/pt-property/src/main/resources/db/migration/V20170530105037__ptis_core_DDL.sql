@@ -238,38 +238,8 @@ ADD CONSTRAINT egpt_unit_pk PRIMARY KEY(id);
 ALTER TABLE ONLY egpt_unit
 ADD CONSTRAINT egpt_unit_fk FOREIGN KEY(floor_id) REFERENCES egpt_floors(id) DEFERRABLE INITIALLY DEFERRED;
 
-CREATE TABLE egpt_documenttype(
-    id bigint NOT NULL,
-    name character varying,
-    application character varying,
-    createdby character varying,
-    lastmodifiedby character varying,
-    createdtime bigint,
-    lastmodifiedtime bigint
-);
-
-
-CREATE SEQUENCE seq_egpt_documenttype
-START WITH 1
-INCREMENT BY 1
-NO MINVALUE
-NO MAXVALUE
-CACHE 1;
-
-
-ALTER SEQUENCE seq_egpt_documenttype OWNED BY egpt_documenttype.id;
-
-
-ALTER TABLE ONLY egpt_documenttype ALTER COLUMN id SET DEFAULT nextval('seq_egpt_documenttype'::regclass);
-
-
-ALTER TABLE ONLY egpt_documenttype
-ADD CONSTRAINT egpt_documenttype_pk PRIMARY KEY(id);
-
-
 CREATE TABLE egpt_document(
     id bigint NOT NULL,
-    documenttype integer NOT NULL,
     filestore character varying,
     createdby character varying,
     lastmodifiedby character varying,
@@ -300,8 +270,40 @@ ALTER TABLE ONLY egpt_document
 ADD CONSTRAINT egpt_document_property_details_id_fkey FOREIGN KEY(property_details_id) REFERENCES egpt_propertydetails(id) DEFERRABLE INITIALLY DEFERRED;
 
 
-ALTER TABLE ONLY egpt_document
-ADD CONSTRAINT egpt_documenttype_fk FOREIGN KEY(documenttype) REFERENCES egpt_documenttype(id) DEFERRABLE INITIALLY DEFERRED;
+CREATE TABLE egpt_documenttype(
+    id bigint NOT NULL,
+    name character varying,
+    application character varying,
+    document_id bigint,
+    createdby character varying,
+    lastmodifiedby character varying,
+    createdtime bigint,
+    lastmodifiedtime bigint
+);
+
+
+CREATE SEQUENCE seq_egpt_documenttype
+START WITH 1
+INCREMENT BY 1
+NO MINVALUE
+NO MAXVALUE
+CACHE 1;
+
+
+ALTER SEQUENCE seq_egpt_documenttype OWNED BY egpt_documenttype.id;
+
+
+ALTER TABLE ONLY egpt_documenttype ALTER COLUMN id SET DEFAULT nextval('seq_egpt_documenttype'::regclass);
+
+
+ALTER TABLE ONLY egpt_documenttype
+ADD CONSTRAINT egpt_documenttype_pk PRIMARY KEY(id);
+
+ALTER TABLE ONLY egpt_documenttype
+ADD CONSTRAINT egpt_documenttype_document_id_fk FOREIGN KEY(document_id) REFERENCES egpt_document(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+
 
 
 CREATE TABLE egpt_vacantland(
