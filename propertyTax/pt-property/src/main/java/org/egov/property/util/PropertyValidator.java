@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.egov.models.Property;
 import org.egov.models.PropertyLocation;
+import org.egov.models.RequestInfo;
 import org.egov.property.exception.InvalidPropertyBoundaryException;
 import org.egov.property.model.BoundaryResponseInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,12 +35,12 @@ public class PropertyValidator {
 	 * @param property
 	 * @throws InvalidPropertyBoundaryException
 	 */
-	public void validatePropertyBoundary(Property property) throws InvalidPropertyBoundaryException{
+	public void validatePropertyBoundary(Property property,RequestInfo requestInfo) throws InvalidPropertyBoundaryException{
 
 		PropertyLocation propertyLocation = property.getBoundary();
 		List<String> fields = propertyLocation.getAllBoundaries();
 		for(String field:fields){
-			validateBoundaryFields(property, field);
+			validateBoundaryFields(property, field,requestInfo);
 		}
 	}
 
@@ -50,7 +51,7 @@ public class PropertyValidator {
 	 * @return true
 	 * @throws InvalidPropertyBoundaryException
 	 */
-	public Boolean validateBoundaryFields(Property property, String field) throws InvalidPropertyBoundaryException{
+	public Boolean validateBoundaryFields(Property property, String field,RequestInfo requestInfo) throws InvalidPropertyBoundaryException{
 
 		PropertyLocation propertyLocation = property.getBoundary();
 		Long id;
@@ -72,10 +73,10 @@ public class PropertyValidator {
 			if(boundaryResponseInfo.getResponseInfo()!=null && boundaryResponseInfo.getBoundary().size()!=0){
 				return true;
 			} else {
-				throw new InvalidPropertyBoundaryException();
+				throw new InvalidPropertyBoundaryException(requestInfo);
 			}
 		} catch (HttpClientErrorException ex){
-			throw new InvalidPropertyBoundaryException();
+			throw new InvalidPropertyBoundaryException(requestInfo);
 		}
 	}
 }

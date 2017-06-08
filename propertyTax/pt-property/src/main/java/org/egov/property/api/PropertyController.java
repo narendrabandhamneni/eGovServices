@@ -60,7 +60,7 @@ public class PropertyController {
 		List<String> applicationList=new ArrayList<String>();
 		//Boundary validations for all properties
 		for(Property property :propertyRequest.getProperties()){
-			propertyValidator.validatePropertyBoundary(property);		
+			propertyValidator.validatePropertyBoundary(property,propertyRequest.getRequestInfo());		
 		}
 
 		StringBuffer idGenerationUrl=new StringBuffer();
@@ -119,7 +119,7 @@ public class PropertyController {
 		//Boundary validations for all properties
 		for(Property property :propertyRequest.getProperties()){
 
-			propertyValidator.validatePropertyBoundary(property);
+			propertyValidator.validatePropertyBoundary(property,propertyRequest.getRequestInfo());
 
 			String acknowledgementNo = property.getPropertyDetail().getApplicationNo();
 
