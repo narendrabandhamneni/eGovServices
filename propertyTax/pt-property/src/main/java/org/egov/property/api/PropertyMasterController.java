@@ -1,5 +1,7 @@
 package org.egov.property.api;
 
+import org.egov.models.DepartmentRequest;
+import org.egov.models.DepartmentResponseInfo;
 import org.egov.models.RequestInfoWrapper;
 import org.egov.models.ResponseInfo;
 import org.egov.models.ResponseInfoFactory;
@@ -294,6 +296,13 @@ public class PropertyMasterController {
 		ResponseInfo responseInfo=responseInfoFactory.createResponseInfoFromRequestInfo(requestInfo.getRequestInfo(),true);
 		masterResponse.setResonseInfo(responseInfo);
 		return masterResponse;
+	}
+	
+	@RequestMapping(path="/departments/_create",method=RequestMethod.POST)
+	public DepartmentResponseInfo createDepartmentMaster(@RequestParam String tenantId, @RequestBody DepartmentRequest departmentRequest){
+		
+	return	masterService.createDepartmentMaster(tenantId,departmentRequest);
+		
 	}
 
 }

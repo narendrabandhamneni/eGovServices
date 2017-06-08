@@ -421,15 +421,17 @@ ALTER TABLE ONLY egpt_propertylocation
 ALTER TABLE ONLY egpt_propertylocation
     ADD CONSTRAINT egpt_propertylocation_fk FOREIGN KEY (property_id) REFERENCES egpt_property(id) DEFERRABLE INITIALLY DEFERRED;
 
+--- Tables
+
 CREATE TABLE egpt_department_master (
     id integer NOT NULL,
-    "tenantId" character varying NOT NULL,
+    tenantId character varying NOT NULL,
     code character varying NOT NULL,
     data character varying NOT NULL,
-    "createdBy" integer NOT NULL,
-    "createdDate" bigint NOT NULL,
-    "modifiedBy" bigint NOT NULL,
-    "modifiedDate" bigint NOT NULL
+    createdBy integer NOT NULL,
+    createdDate bigint NOT NULL,
+    modifiedBy bigint NOT NULL,
+    modifiedDate bigint NOT NULL
 );
 
 CREATE SEQUENCE seq_egpt_department_master
@@ -447,13 +449,13 @@ ADD CONSTRAINT egpt_department_master_pkey PRIMARY KEY (id);
 
     CREATE TABLE egpt_floortype_master (
     id integer NOT NULL,
-    "tenantId" character varying NOT NULL,
+    tenantid character varying NOT NULL,
     code character varying NOT NULL,
     data character varying NOT NULL,
-    "createdBy" integer NOT NULL,
-    "createdDate" bigint NOT NULL,
-    "modifiedBy" bigint NOT NULL,
-    "modifiedDate" bigint NOT NULL
+    createdby integer NOT NULL,
+    createddate bigint NOT NULL,
+    lastmodifiedby bigint NOT NULL,
+    lastmodifieddate bigint NOT NULL
 );
 
 
@@ -474,13 +476,13 @@ ADD CONSTRAINT egpt_floortype_master_pkey PRIMARY KEY (id);
 
  CREATE TABLE egpt_occuapancy_master (
     id integer NOT NULL,
-    "tenantId" character varying NOT NULL,
+    tenantid character varying NOT NULL,
     code character varying NOT NULL,
     data character varying NOT NULL,
-    "createdBy" integer NOT NULL,
-    "createdDate" bigint NOT NULL,
-    "modifiedBy" bigint NOT NULL,
-    "modifiedDate" bigint NOT NULL
+    createdby integer NOT NULL,
+    createddate bigint NOT NULL,
+    lastmodifiedby bigint NOT NULL,
+    lastmodifieddate bigint NOT NULL
 );
 
 
@@ -501,13 +503,13 @@ ADD CONSTRAINT egpt_occuapancy_master_pkey PRIMARY KEY (id);
 
  CREATE TABLE egpt_propertytypes_master (
     id integer NOT NULL,
-    "tenantId" character varying NOT NULL,
+    tenantid character varying NOT NULL,
     code character varying NOT NULL,
     data character varying NOT NULL,
-    "createdBy" integer NOT NULL,
-    "createdDate" bigint NOT NULL,
-    "modifiedBy" bigint NOT NULL,
-    "modifiedDate" bigint NOT NULL
+    createdby integer NOT NULL,
+    createddate bigint NOT NULL,
+    lastmodifiedby bigint NOT NULL,
+    lastmodifieddate bigint NOT NULL
 );
 
 
@@ -528,13 +530,13 @@ ALTER TABLE ONLY egpt_propertytypes_master
  
      CREATE TABLE egpt_rooftypes_master (
     id integer NOT NULL,
-    "tenantId" character varying NOT NULL,
+    tenantid character varying NOT NULL,
     code character varying NOT NULL,
     data character varying NOT NULL,
-    "createdBy" integer NOT NULL,
-    "createdDate" bigint NOT NULL,
-    "modifiedBy" bigint NOT NULL,
-    "modifiedDate" bigint NOT NULL
+    createdby integer NOT NULL,
+    createddate bigint NOT NULL,
+    lastmodifiedby bigint NOT NULL,
+    lastmodifieddate bigint NOT NULL
 );
 
 
@@ -554,13 +556,13 @@ ALTER TABLE ONLY egpt_rooftypes_master
     
      CREATE TABLE egpt_structureclasses_master (
     id integer NOT NULL,
-    "tenantId" character varying NOT NULL,
+    tenantid character varying NOT NULL,
     code character varying NOT NULL,
     data character varying NOT NULL,
-    "createdBy" integer NOT NULL,
-    "createdDate" bigint NOT NULL,
-    "modifiedBy" bigint NOT NULL,
-    "modifiedDate" bigint NOT NULL
+    createdby integer NOT NULL,
+    createddate bigint NOT NULL,
+    lastmodifiedby bigint NOT NULL,
+    lastmodifieddate bigint NOT NULL
 );
 
 
@@ -580,13 +582,13 @@ ALTER TABLE ONLY egpt_structureclasses_master
     
  CREATE TABLE egpt_usage_master (
     id integer NOT NULL,
-    "tenantId" character varying NOT NULL,
+    tenantid character varying NOT NULL,
     code character varying NOT NULL,
     data character varying NOT NULL,
-    "createdBy" integer NOT NULL,
-    "createdDate" bigint NOT NULL,
-    "modifiedBy" bigint NOT NULL,
-    "modifiedDate" bigint NOT NULL
+    createdby integer NOT NULL,
+    createddate bigint NOT NULL,
+    lastmodifiedby bigint NOT NULL,
+    lastmodifieddate bigint NOT NULL
 );
 
 
@@ -607,13 +609,13 @@ ALTER TABLE ONLY egpt_usage_master
 
 CREATE TABLE egpt_walltypes_master (
     id integer NOT NULL,
-    "tenantId" character varying NOT NULL,
+    tenantid character varying NOT NULL,
     code character varying NOT NULL,
     data character varying NOT NULL,
-    "createdBy" integer NOT NULL,
-    "createdDate" bigint NOT NULL,
-    "modifiedBy" bigint NOT NULL,
-    "modifiedDate" bigint NOT NULL
+    createdby integer NOT NULL,
+    createddate bigint NOT NULL,
+    lastmodifiedby bigint NOT NULL,
+    lastmodifieddate bigint NOT NULL
 );
 
 
@@ -633,13 +635,13 @@ ALTER TABLE ONLY egpt_walltypes_master
     
     CREATE TABLE egpt_woodtypes_master (
     id integer NOT NULL,
-    "tenantId" character varying NOT NULL,
+    tenantid character varying NOT NULL,
     code character varying NOT NULL,
     data character varying NOT NULL,
-    "createdBy" integer NOT NULL,
-    "createdDate" bigint NOT NULL,
-    "modifiedBy" bigint NOT NULL,
-    "modifiedDate" bigint NOT NULL
+    createdby integer NOT NULL,
+    createddate bigint NOT NULL,
+    lastmodifiedby bigint NOT NULL,
+    lastmodifieddate bigint NOT NULL
 );
 
 

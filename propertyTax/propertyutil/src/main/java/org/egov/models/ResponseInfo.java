@@ -41,46 +41,16 @@ public class ResponseInfo   {
 	}
 
 
-	public ResponseInfo(String apiId, String ver, Long ts, String resMsgId, String msgId, StatusEnum status) {
+	public ResponseInfo(String apiId, String ver, Long ts, String resMsgId, String msgId, String status) {
 		super();
 		this.apiId = apiId;
 		this.ver = ver;
 		this.ts = ts;
 		this.resMsgId = resMsgId;
 		this.msgId = msgId;
-		this.status = status;
+		this.status = StatusEnum.valueOf(status);
 	}
 
-	/**
-	 * status of request processing - to be enhanced in futuer to include INPROGRESS
-	 */
-	public enum StatusEnum {
-		SUCCESSFUL("SUCCESSFUL"),
-
-		FAILED("FAILED");
-	
-		private String value;
-
-		StatusEnum(String value) {
-			this.value = value;
-		}
-
-		@Override
-		@JsonValue
-		public String toString() {
-			return String.valueOf(value);
-		}
-
-		@JsonCreator
-		public static StatusEnum fromValue(String text) {
-			for (StatusEnum b : StatusEnum.values()) {
-				if (String.valueOf(b.value).equals(text)) {
-					return b;
-				}
-			}
-			return null;
-		}
-	}
 
 	@JsonProperty("status")
 	@NotNull
@@ -171,10 +141,7 @@ public class ResponseInfo   {
 		this.msgId = msgId;
 	}
 
-	public ResponseInfo status(StatusEnum status) {
-		this.status = status;
-		return this;
-	}
+
 
 	/**
 	 * status of request processing - to be enhanced in futuer to include INPROGRESS
@@ -185,8 +152,8 @@ public class ResponseInfo   {
 		return status;
 	}
 
-	public void setStatus(StatusEnum status) {
-		this.status = status;
+	public void setStatus(String status) {
+		this.status =StatusEnum.valueOf(status);
 	}
 
 
@@ -236,6 +203,37 @@ public class ResponseInfo   {
 			return "null";
 		}
 		return o.toString().replace("\n", "\n    ");
+	}
+	
+	/**
+	 * status of request processing - to be enhanced in futuer to include INPROGRESS
+	 */
+	public enum StatusEnum {
+		SUCCESSFUL("SUCCESSFUL"),
+
+		FAILED("FAILED");
+
+		private String value;
+
+		StatusEnum(String value) {
+			this.value = value;
+		}
+
+		@Override
+		@JsonValue
+		public String toString() {
+			return String.valueOf(value);
+		}
+
+		@JsonCreator
+		public static StatusEnum fromValue(String text) {
+			for (StatusEnum b : StatusEnum.values()) {
+				if (String.valueOf(b.value).equals(text)) {
+					return b;
+				}
+			}
+			return null;
+		}
 	}
 }
 
