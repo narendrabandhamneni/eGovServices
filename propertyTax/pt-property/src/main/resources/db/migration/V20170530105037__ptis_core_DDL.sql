@@ -1,6 +1,5 @@
-
-CREATE TABLE egpt_property (
-    id integer NOT NULL,
+CREATE TABLE egpt_property(
+    id bigint NOT NULL,
     tenantid character varying NOT NULL,
     upicnumber character varying NOT NULL,
     oldUpicNumber character varying,
@@ -22,11 +21,11 @@ CREATE TABLE egpt_property (
 
 
 CREATE SEQUENCE seq_egpt_property
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
+START WITH 1
+INCREMENT BY 1
+NO MINVALUE
+NO MAXVALUE
+CACHE 1;
 
 
 ALTER SEQUENCE seq_egpt_property OWNED BY egpt_property.id;
@@ -38,12 +37,12 @@ ALTER TABLE ONLY egpt_property ALTER COLUMN id SET DEFAULT nextval('seq_egpt_pro
 
 
 ALTER TABLE ONLY egpt_property
-    ADD CONSTRAINT egpt_property_pk PRIMARY KEY (id);
+ADD CONSTRAINT egpt_property_pk PRIMARY KEY(id);
 
 
 
-CREATE TABLE egpt_address (
-    id integer NOT NULL,
+CREATE TABLE egpt_address(
+    id bigint NOT NULL,
     tenantid character varying,
     latitude integer,
     longitude integer,
@@ -65,11 +64,11 @@ CREATE TABLE egpt_address (
 
 
 CREATE SEQUENCE seq_egpt_address
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
+START WITH 1
+INCREMENT BY 1
+NO MINVALUE
+NO MAXVALUE
+CACHE 1;
 
 
 
@@ -79,16 +78,16 @@ ALTER TABLE ONLY egpt_address ALTER COLUMN id SET DEFAULT nextval('seq_egpt_addr
 
 
 ALTER TABLE ONLY egpt_address
-    ADD CONSTRAINT egpt_address_pk PRIMARY KEY (id);
+ADD CONSTRAINT egpt_address_pk PRIMARY KEY(id);
 
 
 ALTER TABLE ONLY egpt_address
-    ADD CONSTRAINT egpt_address_property_id_fkey FOREIGN KEY (property_id) REFERENCES egpt_property(id) DEFERRABLE INITIALLY DEFERRED;
+ADD CONSTRAINT egpt_address_property_id_fkey FOREIGN KEY(property_id) REFERENCES egpt_property(id) DEFERRABLE INITIALLY DEFERRED;
 
 
 
-CREATE TABLE egpt_propertydetails (
-    id integer NOT NULL,
+CREATE TABLE egpt_propertydetails(
+    id bigint NOT NULL,
     source character varying,
     regddocno character varying,
     regddocdate character varying,
@@ -127,11 +126,11 @@ CREATE TABLE egpt_propertydetails (
 
 
 CREATE SEQUENCE seq_egpt_propertydetails
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
+START WITH 1
+INCREMENT BY 1
+NO MINVALUE
+NO MAXVALUE
+CACHE 1;
 
 
 ALTER SEQUENCE seq_egpt_propertydetails OWNED BY egpt_propertydetails.id;
@@ -141,15 +140,15 @@ ALTER TABLE ONLY egpt_propertydetails ALTER COLUMN id SET DEFAULT nextval('seq_e
 
 
 ALTER TABLE ONLY egpt_propertydetails
-    ADD CONSTRAINT egpt_propertydetail_pk PRIMARY KEY (id);
+ADD CONSTRAINT egpt_propertydetail_pk PRIMARY KEY(id);
 
 
 ALTER TABLE ONLY egpt_propertydetails
-    ADD CONSTRAINT egpt_propertydetail_property_id_fkey FOREIGN KEY (property_id) REFERENCES egpt_property(id) DEFERRABLE INITIALLY DEFERRED;
+ADD CONSTRAINT egpt_propertydetail_property_id_fkey FOREIGN KEY(property_id) REFERENCES egpt_property(id) DEFERRABLE INITIALLY DEFERRED;
 
 
-CREATE TABLE egpt_floors (
-    id integer NOT NULL,
+CREATE TABLE egpt_floors(
+    id bigint NOT NULL,
     floorno character varying NOT NULL,
     createdby character varying,
     lastmodifiedby character varying,
@@ -161,11 +160,11 @@ CREATE TABLE egpt_floors (
 
 
 CREATE SEQUENCE seq_egpt_floors
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
+START WITH 1
+INCREMENT BY 1
+NO MINVALUE
+NO MAXVALUE
+CACHE 1;
 
 
 ALTER SEQUENCE seq_egpt_floors OWNED BY egpt_floors.id;
@@ -175,14 +174,14 @@ ALTER TABLE ONLY egpt_floors ALTER COLUMN id SET DEFAULT nextval('seq_egpt_floor
 
 
 ALTER TABLE ONLY egpt_floors
-    ADD CONSTRAINT egpt_floors_pk PRIMARY KEY (id);
+ADD CONSTRAINT egpt_floors_pk PRIMARY KEY(id);
 
 ALTER TABLE ONLY egpt_floors
-    ADD CONSTRAINT egpt_floors_property_details_id_fkey FOREIGN KEY (property_details_id) REFERENCES egpt_propertydetails(id) DEFERRABLE INITIALLY DEFERRED;
+ADD CONSTRAINT egpt_floors_property_details_id_fkey FOREIGN KEY(property_details_id) REFERENCES egpt_propertydetails(id) DEFERRABLE INITIALLY DEFERRED;
 
- 
- CREATE TABLE egpt_unit (
-    id integer NOT NULL,
+
+CREATE TABLE egpt_unit(
+    id bigint NOT NULL,
     unitno integer NOT NULL,
     unittype character varying,
     length integer,
@@ -217,11 +216,11 @@ ALTER TABLE ONLY egpt_floors
 
 
 CREATE SEQUENCE seq_egpt_unit
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
+START WITH 1
+INCREMENT BY 1
+NO MINVALUE
+NO MAXVALUE
+CACHE 1;
 
 
 ALTER SEQUENCE seq_egpt_unit OWNED BY egpt_unit.id;
@@ -233,14 +232,14 @@ ALTER TABLE ONLY egpt_unit ALTER COLUMN id SET DEFAULT nextval('seq_egpt_unit'::
 
 
 ALTER TABLE ONLY egpt_unit
-    ADD CONSTRAINT egpt_unit_pk PRIMARY KEY (id);
+ADD CONSTRAINT egpt_unit_pk PRIMARY KEY(id);
 
 
 ALTER TABLE ONLY egpt_unit
-    ADD CONSTRAINT egpt_unit_fk FOREIGN KEY (floor_id) REFERENCES egpt_floors(id) DEFERRABLE INITIALLY DEFERRED;
+ADD CONSTRAINT egpt_unit_fk FOREIGN KEY(floor_id) REFERENCES egpt_floors(id) DEFERRABLE INITIALLY DEFERRED;
 
-CREATE TABLE egpt_documenttype (
-    id integer NOT NULL,
+CREATE TABLE egpt_documenttype(
+    id bigint NOT NULL,
     name character varying,
     application character varying,
     createdby character varying,
@@ -251,11 +250,11 @@ CREATE TABLE egpt_documenttype (
 
 
 CREATE SEQUENCE seq_egpt_documenttype
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
+START WITH 1
+INCREMENT BY 1
+NO MINVALUE
+NO MAXVALUE
+CACHE 1;
 
 
 ALTER SEQUENCE seq_egpt_documenttype OWNED BY egpt_documenttype.id;
@@ -265,11 +264,11 @@ ALTER TABLE ONLY egpt_documenttype ALTER COLUMN id SET DEFAULT nextval('seq_egpt
 
 
 ALTER TABLE ONLY egpt_documenttype
-    ADD CONSTRAINT egpt_documenttype_pk PRIMARY KEY (id);
+ADD CONSTRAINT egpt_documenttype_pk PRIMARY KEY(id);
 
 
-CREATE TABLE egpt_document (
-    id integer NOT NULL,
+CREATE TABLE egpt_document(
+    id bigint NOT NULL,
     documenttype integer NOT NULL,
     filestore character varying,
     createdby character varying,
@@ -282,11 +281,11 @@ CREATE TABLE egpt_document (
 
 
 CREATE SEQUENCE seq_egpt_document
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
+START WITH 1
+INCREMENT BY 1
+NO MINVALUE
+NO MAXVALUE
+CACHE 1;
 
 
 ALTER SEQUENCE seq_egpt_document OWNED BY egpt_document.id;
@@ -295,18 +294,18 @@ ALTER SEQUENCE seq_egpt_document OWNED BY egpt_document.id;
 ALTER TABLE ONLY egpt_document ALTER COLUMN id SET DEFAULT nextval('seq_egpt_document'::regclass);
 
 ALTER TABLE ONLY egpt_document
-    ADD CONSTRAINT egpt_document_pk PRIMARY KEY (id);
+ADD CONSTRAINT egpt_document_pk PRIMARY KEY(id);
 
 ALTER TABLE ONLY egpt_document
-    ADD CONSTRAINT egpt_document_property_details_id_fkey FOREIGN KEY (property_details_id) REFERENCES egpt_propertydetails(id) DEFERRABLE INITIALLY DEFERRED;
+ADD CONSTRAINT egpt_document_property_details_id_fkey FOREIGN KEY(property_details_id) REFERENCES egpt_propertydetails(id) DEFERRABLE INITIALLY DEFERRED;
 
 
 ALTER TABLE ONLY egpt_document
-    ADD CONSTRAINT egpt_documenttype_fk FOREIGN KEY (documenttype) REFERENCES egpt_documenttype(id) DEFERRABLE INITIALLY DEFERRED;
+ADD CONSTRAINT egpt_documenttype_fk FOREIGN KEY(documenttype) REFERENCES egpt_documenttype(id) DEFERRABLE INITIALLY DEFERRED;
 
 
-CREATE TABLE egpt_vacantland (
-    id integer NOT NULL,
+CREATE TABLE egpt_vacantland(
+    id bigint NOT NULL,
     surveynumber character varying,
     pattanumber character varying,
     marketvalue integer,
@@ -326,11 +325,11 @@ CREATE TABLE egpt_vacantland (
 
 
 CREATE SEQUENCE seq_egpt_vacantland
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
+START WITH 1
+INCREMENT BY 1
+NO MINVALUE
+NO MAXVALUE
+CACHE 1;
 
 
 ALTER SEQUENCE seq_egpt_vacantland OWNED BY egpt_vacantland.id;
@@ -339,14 +338,14 @@ ALTER SEQUENCE seq_egpt_vacantland OWNED BY egpt_vacantland.id;
 ALTER TABLE ONLY egpt_vacantland ALTER COLUMN id SET DEFAULT nextval('seq_egpt_vacantland'::regclass);
 
 ALTER TABLE ONLY egpt_vacantland
-    ADD CONSTRAINT egpt_vacantland_pk PRIMARY KEY (id);
+ADD CONSTRAINT egpt_vacantland_pk PRIMARY KEY(id);
 
 ALTER TABLE ONLY egpt_vacantland
-    ADD CONSTRAINT egpt_vacantland_property_id_fkey FOREIGN KEY (property_id) REFERENCES egpt_property(id) DEFERRABLE INITIALLY DEFERRED;
+ADD CONSTRAINT egpt_vacantland_property_id_fkey FOREIGN KEY(property_id) REFERENCES egpt_property(id) DEFERRABLE INITIALLY DEFERRED;
 
 
-CREATE TABLE egpt_property_user (
-    id integer NOT NULL,
+CREATE TABLE egpt_property_user(
+    id bigint NOT NULL,
     property_id integer NOT NULL,
     user_id integer,
     isPrimaryOwner boolean,
@@ -361,11 +360,11 @@ CREATE TABLE egpt_property_user (
 
 
 CREATE SEQUENCE seq_egpt_property_user
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
+START WITH 1
+INCREMENT BY 1
+NO MINVALUE
+NO MAXVALUE
+CACHE 1;
 
 
 ALTER SEQUENCE seq_egpt_property_user OWNED BY egpt_property_user.id;
@@ -375,16 +374,16 @@ ALTER TABLE ONLY egpt_property_user ALTER COLUMN id SET DEFAULT nextval('seq_egp
 
 
 ALTER TABLE ONLY egpt_property_user
-    ADD CONSTRAINT egpt_property_user_pk PRIMARY KEY (id);
+ADD CONSTRAINT egpt_property_user_pk PRIMARY KEY(id);
 
 
 ALTER TABLE ONLY egpt_property_user
-    ADD CONSTRAINT egpt_property_fk FOREIGN KEY (property_id) REFERENCES egpt_property(id) DEFERRABLE INITIALLY DEFERRED;
+ADD CONSTRAINT egpt_property_fk FOREIGN KEY(property_id) REFERENCES egpt_property(id) DEFERRABLE INITIALLY DEFERRED;
 
 
 
-CREATE TABLE egpt_propertylocation (
-    id integer NOT NULL,
+CREATE TABLE egpt_propertylocation(
+    id bigint NOT NULL,
     revenueboundary integer,
     locationboundary integer,
     adminboundary integer,
@@ -401,11 +400,11 @@ CREATE TABLE egpt_propertylocation (
 
 
 CREATE SEQUENCE seq_egpt_propertylocation
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
+START WITH 1
+INCREMENT BY 1
+NO MINVALUE
+NO MAXVALUE
+CACHE 1;
 
 
 ALTER SEQUENCE seq_egpt_propertylocation OWNED BY egpt_propertylocation.id;
@@ -415,16 +414,16 @@ ALTER TABLE ONLY egpt_propertylocation ALTER COLUMN id SET DEFAULT nextval('seq_
 
 
 ALTER TABLE ONLY egpt_propertylocation
-    ADD CONSTRAINT egpt_propertylocation_pk PRIMARY KEY (id);
+ADD CONSTRAINT egpt_propertylocation_pk PRIMARY KEY(id);
 
 
 ALTER TABLE ONLY egpt_propertylocation
-    ADD CONSTRAINT egpt_propertylocation_fk FOREIGN KEY (property_id) REFERENCES egpt_property(id) DEFERRABLE INITIALLY DEFERRED;
+ADD CONSTRAINT egpt_propertylocation_fk FOREIGN KEY(property_id) REFERENCES egpt_property(id) DEFERRABLE INITIALLY DEFERRED;
 
---- Tables
+-- - Tables
 
-CREATE TABLE egpt_department_master (
-    id integer NOT NULL,
+CREATE TABLE egpt_department_master(
+    id bigint NOT NULL,
     tenantId character varying NOT NULL,
     code character varying NOT NULL,
     data character varying NOT NULL,
@@ -435,20 +434,20 @@ CREATE TABLE egpt_department_master (
 );
 
 CREATE SEQUENCE seq_egpt_department_master
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
+START WITH 1
+INCREMENT BY 1
+NO MINVALUE
+NO MAXVALUE
+CACHE 1;
 
 ALTER SEQUENCE seq_egpt_department_master OWNED BY egpt_department_master.id;
 ALTER TABLE ONLY egpt_department_master ALTER COLUMN id SET DEFAULT nextval('seq_egpt_department_master'::regclass);
 ALTER TABLE ONLY egpt_department_master
-ADD CONSTRAINT egpt_department_master_pkey PRIMARY KEY (id);
-    
+ADD CONSTRAINT egpt_department_master_pkey PRIMARY KEY(id);
 
-    CREATE TABLE egpt_floortype_master (
-    id integer NOT NULL,
+
+CREATE TABLE egpt_floortype_master(
+    id bigint NOT NULL,
     tenantid character varying NOT NULL,
     code character varying NOT NULL,
     data character varying NOT NULL,
@@ -460,22 +459,22 @@ ADD CONSTRAINT egpt_department_master_pkey PRIMARY KEY (id);
 
 
 CREATE SEQUENCE seq_egpt_floortype_master
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
+START WITH 1
+INCREMENT BY 1
+NO MINVALUE
+NO MAXVALUE
+CACHE 1;
 
 ALTER SEQUENCE seq_egpt_floortype_master OWNED BY egpt_floortype_master.id;
 
 ALTER TABLE ONLY egpt_floortype_master ALTER COLUMN id SET DEFAULT nextval('seq_egpt_floortype_master'::regclass);
 
 ALTER TABLE ONLY egpt_floortype_master
-ADD CONSTRAINT egpt_floortype_master_pkey PRIMARY KEY (id);
+ADD CONSTRAINT egpt_floortype_master_pkey PRIMARY KEY(id);
 
 
- CREATE TABLE egpt_occuapancy_master (
-    id integer NOT NULL,
+CREATE TABLE egpt_occuapancy_master(
+    id bigint NOT NULL,
     tenantid character varying NOT NULL,
     code character varying NOT NULL,
     data character varying NOT NULL,
@@ -487,22 +486,22 @@ ADD CONSTRAINT egpt_floortype_master_pkey PRIMARY KEY (id);
 
 
 CREATE SEQUENCE seq_egpt_occuapancy_master
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
+START WITH 1
+INCREMENT BY 1
+NO MINVALUE
+NO MAXVALUE
+CACHE 1;
 
 ALTER SEQUENCE seq_egpt_occuapancy_master OWNED BY egpt_occuapancy_master.id;
 
 ALTER TABLE ONLY egpt_occuapancy_master ALTER COLUMN id SET DEFAULT nextval('seq_egpt_occuapancy_master'::regclass);
 
 ALTER TABLE ONLY egpt_occuapancy_master
-ADD CONSTRAINT egpt_occuapancy_master_pkey PRIMARY KEY (id);
+ADD CONSTRAINT egpt_occuapancy_master_pkey PRIMARY KEY(id);
 
 
- CREATE TABLE egpt_propertytypes_master (
-    id integer NOT NULL,
+CREATE TABLE egpt_propertytypes_master(
+    id bigint NOT NULL,
     tenantid character varying NOT NULL,
     code character varying NOT NULL,
     data character varying NOT NULL,
@@ -514,22 +513,22 @@ ADD CONSTRAINT egpt_occuapancy_master_pkey PRIMARY KEY (id);
 
 
 CREATE SEQUENCE seq_egpt_propertytypes_master
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
+START WITH 1
+INCREMENT BY 1
+NO MINVALUE
+NO MAXVALUE
+CACHE 1;
 
 ALTER SEQUENCE seq_egpt_propertytypes_master OWNED BY egpt_propertytypes_master.id;
 
 ALTER TABLE ONLY egpt_propertytypes_master ALTER COLUMN id SET DEFAULT nextval('seq_egpt_propertytypes_master'::regclass);
 
 ALTER TABLE ONLY egpt_propertytypes_master
-    ADD CONSTRAINT egpt_propertytypes_master_pkey PRIMARY KEY (id);
-    
- 
-     CREATE TABLE egpt_rooftypes_master (
-    id integer NOT NULL,
+ADD CONSTRAINT egpt_propertytypes_master_pkey PRIMARY KEY(id);
+
+
+CREATE TABLE egpt_rooftypes_master(
+    id bigint NOT NULL,
     tenantid character varying NOT NULL,
     code character varying NOT NULL,
     data character varying NOT NULL,
@@ -541,21 +540,21 @@ ALTER TABLE ONLY egpt_propertytypes_master
 
 
 CREATE SEQUENCE seq_egpt_rooftypes_master
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
+START WITH 1
+INCREMENT BY 1
+NO MINVALUE
+NO MAXVALUE
+CACHE 1;
 
 ALTER SEQUENCE seq_egpt_rooftypes_master OWNED BY egpt_rooftypes_master.id;
 
 ALTER TABLE ONLY egpt_rooftypes_master ALTER COLUMN id SET DEFAULT nextval('seq_egpt_rooftypes_master'::regclass);
 
 ALTER TABLE ONLY egpt_rooftypes_master
-    ADD CONSTRAINT egpt_rooftypes_master_pkey PRIMARY KEY (id);
-    
-     CREATE TABLE egpt_structureclasses_master (
-    id integer NOT NULL,
+ADD CONSTRAINT egpt_rooftypes_master_pkey PRIMARY KEY(id);
+
+CREATE TABLE egpt_structureclasses_master(
+    id bigint NOT NULL,
     tenantid character varying NOT NULL,
     code character varying NOT NULL,
     data character varying NOT NULL,
@@ -567,21 +566,21 @@ ALTER TABLE ONLY egpt_rooftypes_master
 
 
 CREATE SEQUENCE seq_egpt_structureclasses_master
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
+START WITH 1
+INCREMENT BY 1
+NO MINVALUE
+NO MAXVALUE
+CACHE 1;
 
 ALTER SEQUENCE seq_egpt_structureclasses_master OWNED BY egpt_structureclasses_master.id;
 
 ALTER TABLE ONLY egpt_structureclasses_master ALTER COLUMN id SET DEFAULT nextval('seq_egpt_structureclasses_master'::regclass);
 
 ALTER TABLE ONLY egpt_structureclasses_master
-    ADD CONSTRAINT egpt_structureclasses_master_pkey PRIMARY KEY (id);
-    
- CREATE TABLE egpt_usage_master (
-    id integer NOT NULL,
+ADD CONSTRAINT egpt_structureclasses_master_pkey PRIMARY KEY(id);
+
+CREATE TABLE egpt_usage_master(
+    id bigint NOT NULL,
     tenantid character varying NOT NULL,
     code character varying NOT NULL,
     data character varying NOT NULL,
@@ -593,22 +592,22 @@ ALTER TABLE ONLY egpt_structureclasses_master
 
 
 CREATE SEQUENCE seq_egpt_usage_master
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
+START WITH 1
+INCREMENT BY 1
+NO MINVALUE
+NO MAXVALUE
+CACHE 1;
 
 ALTER SEQUENCE seq_egpt_usage_master OWNED BY egpt_usage_master.id;
 
 ALTER TABLE ONLY egpt_usage_master ALTER COLUMN id SET DEFAULT nextval('seq_egpt_usage_master'::regclass);
 
 ALTER TABLE ONLY egpt_usage_master
-    ADD CONSTRAINT egpt_usage_master_pkey PRIMARY KEY (id);    
+ADD CONSTRAINT egpt_usage_master_pkey PRIMARY KEY(id);
 
 
-CREATE TABLE egpt_walltypes_master (
-    id integer NOT NULL,
+CREATE TABLE egpt_walltypes_master(
+    id bigint NOT NULL,
     tenantid character varying NOT NULL,
     code character varying NOT NULL,
     data character varying NOT NULL,
@@ -620,21 +619,21 @@ CREATE TABLE egpt_walltypes_master (
 
 
 CREATE SEQUENCE seq_egpt_walltypes_master
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
+START WITH 1
+INCREMENT BY 1
+NO MINVALUE
+NO MAXVALUE
+CACHE 1;
 
 ALTER SEQUENCE seq_egpt_walltypes_master OWNED BY egpt_walltypes_master.id;
 
 ALTER TABLE ONLY egpt_walltypes_master ALTER COLUMN id SET DEFAULT nextval('seq_egpt_walltypes_master'::regclass);
 
 ALTER TABLE ONLY egpt_walltypes_master
-    ADD CONSTRAINT egpt_walltypes_master_pkey PRIMARY KEY (id);    
-    
-    CREATE TABLE egpt_woodtypes_master (
-    id integer NOT NULL,
+ADD CONSTRAINT egpt_walltypes_master_pkey PRIMARY KEY(id);
+
+CREATE TABLE egpt_woodtypes_master(
+    id bigint NOT NULL,
     tenantid character varying NOT NULL,
     code character varying NOT NULL,
     data character varying NOT NULL,
@@ -646,15 +645,15 @@ ALTER TABLE ONLY egpt_walltypes_master
 
 
 CREATE SEQUENCE seq_egpt_woodtypes_master
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
+START WITH 1
+INCREMENT BY 1
+NO MINVALUE
+NO MAXVALUE
+CACHE 1;
 
 ALTER SEQUENCE seq_egpt_woodtypes_master OWNED BY egpt_woodtypes_master.id;
 
 ALTER TABLE ONLY egpt_woodtypes_master ALTER COLUMN id SET DEFAULT nextval('seq_egpt_woodtypes_master'::regclass);
 
 ALTER TABLE ONLY egpt_woodtypes_master
-    ADD CONSTRAINT egpt_woodtypes_master_pkey PRIMARY KEY (id);   
+ADD CONSTRAINT egpt_woodtypes_master_pkey PRIMARY KEY(id);
