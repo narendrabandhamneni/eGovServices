@@ -112,6 +112,20 @@ public class GlobalExceptionHandler {
 			return new ErrorRes(responseInfo,errorList);
 		}
 		
+		else if (ex instanceof PropertySearchException){
+			Error error=new Error(HttpStatus.BAD_REQUEST.toString(),environment.getProperty("invalid.input"),null,null);
+			ResponseInfo responseInfo=new ResponseInfo();
+			responseInfo.setApiId(((PropertySearchException)ex).getRequestInfo().getApiId());
+			responseInfo.setVer(((PropertySearchException)ex).getRequestInfo().getVer());
+			responseInfo.setMsgId(((PropertySearchException)ex).getRequestInfo().getMsgId());
+			responseInfo.setTs(new Date().getTime());
+			responseInfo.setStatus(StatusEnum.FAILED.toString());
+			List<Error> errorList=new ArrayList<Error>();
+			errorList.add(error);
+			return new ErrorRes(responseInfo,errorList);
+			
+		}
+		
 		else{
 			Error error=new Error(HttpStatus.INTERNAL_SERVER_ERROR.toString(),ex.getMessage(),null,new HashMap<String,String>());
 			ResponseInfo responseInfo=new ResponseInfo();

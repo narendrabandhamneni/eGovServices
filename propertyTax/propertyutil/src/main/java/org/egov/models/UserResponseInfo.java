@@ -1,4 +1,4 @@
-package org.egov.propertyUser.model;
+package org.egov.models;
 
 import java.util.List;
 

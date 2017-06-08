@@ -2,14 +2,13 @@ package org.egov.propertyUser.userConsumer;
 
 import java.util.HashMap;
 import java.util.Map;
-
+import org.egov.propertyUser.model.*;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.egov.models.Property;
 import org.egov.models.PropertyRequest;
 import org.egov.models.User;
-import org.egov.propertyUser.model.UserRequestInfo;
-import org.egov.propertyUser.model.UserResponseInfo;
+import org.egov.models.UserResponseInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
