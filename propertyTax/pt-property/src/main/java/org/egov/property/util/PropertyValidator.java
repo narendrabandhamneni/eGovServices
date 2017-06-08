@@ -63,8 +63,9 @@ public class PropertyValidator {
 		} else {
 			id = propertyLocation.getAdminBoundary().getId();
 		}
-
-		URI uri = UriComponentsBuilder.fromUriString(env.getProperty("egov.services.boundary_service.hostname")+env.getProperty("egov.services.boundary_service.searchpath"))
+		StringBuffer BoundaryURI = new StringBuffer();
+		BoundaryURI.append(env.getProperty("egov.services.boundary_service.hostname")).append(env.getProperty("egov.services.boundary_service.searchpath"));
+		URI uri = UriComponentsBuilder.fromUriString(BoundaryURI.toString())
 				.queryParam("Boundary.tenantId", property.getTenantId())
 				.queryParam("Boundary.id", id).build(true).encode().toUri();
 
