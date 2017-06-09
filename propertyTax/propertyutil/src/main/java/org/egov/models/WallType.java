@@ -17,18 +17,26 @@ public class WallType   {
   private Long id = null;
 
   @JsonProperty("tenantId")
+  @NotNull
+  @Size(min=4,max=128)
   private String tenantId = null;
 
   @JsonProperty("name")
+  @NotNull
+  @Size(min=4,max=128)
   private String name = null;
 
   @JsonProperty("code")
+  @NotNull
+  @Size(min=4,max=16)
   private String code = null;
 
   @JsonProperty("nameLocal")
+  @Size(min=8,max=256)
   private String nameLocal = null;
 
   @JsonProperty("description")
+  @Size(min=8,max=512)
   private String description = null;
 
   @JsonProperty("auditDetails")
@@ -39,8 +47,6 @@ public class WallType   {
     return this;
   }
 
-  
-  @NotNull
   public Long getId() {
     return id;
   }
@@ -54,9 +60,6 @@ public class WallType   {
     return this;
   }
 
-   
-  @NotNull
-  @Size(min=4,max=128)
   public String getTenantId() {
     return tenantId;
   }
@@ -70,10 +73,6 @@ public class WallType   {
     return this;
   }
 
-   
-  
-  @NotNull
-  @Size(min=4,max=128)
   public String getName() {
     return name;
   }
@@ -87,9 +86,7 @@ public class WallType   {
     return this;
   }
 
-  
-  @NotNull
-  @Size(min=4,max=16)
+
   public String getCode() {
     return code;
   }
@@ -103,8 +100,6 @@ public class WallType   {
     return this;
   }
 
- 
-  @Size(min=8,max=256)
   public String getNameLocal() {
     return nameLocal;
   }
@@ -118,8 +113,6 @@ public class WallType   {
     return this;
   }
 
-  
-  @Size(min=8,max=512)
   public String getDescription() {
     return description;
   }
