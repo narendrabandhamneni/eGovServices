@@ -4,15 +4,15 @@ import java.util.List;
 
 public class FloorTypeResponse {
 
-	private RequestInfo ResponseInfo;
+	private ResponseInfo ResponseInfo;
 
 	private List<FloorType> floorTypes;
 
-	public RequestInfo getResponseInfo() {
+	public ResponseInfo getResponseInfo() {
 		return ResponseInfo;
 	}
 
-	public void setResponseInfo(RequestInfo responseInfo) {
+	public void setResponseInfo(ResponseInfo responseInfo) {
 		ResponseInfo = responseInfo;
 	}
 
@@ -62,7 +62,7 @@ public class FloorTypeResponse {
 				+ ", getClass()=" + getClass() + ", toString()=" + super.toString() + "]";
 	}
 
-	public FloorTypeResponse(RequestInfo responseInfo, List<FloorType> floorTypes) {
+	public FloorTypeResponse(org.egov.models.ResponseInfo responseInfo, List<FloorType> floorTypes) {
 		super();
 		ResponseInfo = responseInfo;
 		this.floorTypes = floorTypes;
