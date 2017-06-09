@@ -54,7 +54,7 @@ import com.google.gson.GsonBuilder;
  */
 
 @Service
-@SuppressWarnings("rawtypes")
+@SuppressWarnings({"unchecked","rawtypes"})
 public class MasterServiceImpl  implements Masterservice{
 
 	@Autowired
@@ -235,6 +235,7 @@ public class MasterServiceImpl  implements Masterservice{
 		try {
 
 		
+			
 			List<Department> department = jdbcTemplate.query(departmentSearchSql.toString(), new BeanPropertyRowMapper(Department.class));
 			ResponseInfo responseInfo=responseInfoFactory.createResponseInfoFromRequestInfo(requestInfo,true);
 
