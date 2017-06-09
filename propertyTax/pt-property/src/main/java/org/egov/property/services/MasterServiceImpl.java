@@ -350,6 +350,9 @@ public class MasterServiceImpl  implements Masterservice{
 					final PreparedStatement ps = connection.prepareStatement(departmentTypeUpdate, new String[] { "id" });
 					ps.setString(1, department.getTenantId());	
 					ps.setString(2,department.getCode());
+					PGobject jsonObject = new PGobject();
+					jsonObject.setType("json");
+					jsonObject.setValue(data);
 					ps.setString(3, data);
 					ps.setString(4, department.getAuditDetails().getLastModifiedBy());
 					ps.setLong(5, modifiedTime);
