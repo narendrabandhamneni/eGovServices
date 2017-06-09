@@ -9,9 +9,12 @@ import org.egov.models.PropertyTypeResponse;
 import org.egov.models.RequestInfo;
 import org.egov.models.RoofTypeRequest;
 import org.egov.models.RoofTypeResponse;
+import org.egov.models.StructureClassRequest;
+import org.egov.models.StructureClassResponse;
 import org.egov.models.WoodTypeRequest;
 import org.egov.models.WoodTypeResponse;
-import org.egov.property.model.MasterModel;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 public interface Masterservice {
 
@@ -47,6 +50,10 @@ public interface Masterservice {
 
 	public RoofTypeResponse updateRoofType(RoofTypeRequest roofTypeRequest,String tenantId,Integer id) throws Exception;
 
+	public StructureClassResponse craeateStructureClassMaster(String tenantId, StructureClassRequest structureClassRequest);
+
+	public StructureClassResponse updateStructureClassMaster(String tenantId, Long id,
+			StructureClassRequest structureClassRequest);
 
 
 }

@@ -18,6 +18,9 @@ import org.egov.models.ResponseInfoFactory;
 import org.egov.models.RoofType;
 import org.egov.models.RoofTypeRequest;
 import org.egov.models.RoofTypeResponse;
+import org.egov.models.StructureClass;
+import org.egov.models.StructureClassRequest;
+import org.egov.models.StructureClassResponse;
 import org.egov.models.WoodType;
 import org.egov.models.WoodTypeRequest;
 import org.egov.models.WoodTypeResponse;
@@ -929,5 +932,117 @@ public class MasterServiceImpl  implements Masterservice{
 
 	}
 
+	/**
+	* Description : This api for creating strctureClass master
+	* @param tenantId
+	* @param StructureClassRequest
+	* @return structureClassResponse
+			* @throws Exception
+			*/
 
+			@Override
+			@Transactional
+			public StructureClassResponse craeateStructureClassMaster(String tenantId, StructureClassRequest structureClassRequest) {
+		// TODO Auto-generated method stub
+
+		for(StructureClass structureClass:structureClassRequest.getStructureClasses()){
+
+			Long createdTime=new Date().getTime();
+
+			Gson gson=new GsonBuilder().setExclusionStrategies(new ExcludeFileds()).serializeNulls().create();
+
+			String data=gson.toJson(structureClass);
+
+			StringBuffer structureClassQuery=new StringBuffer();
+			structureClassQuery.append("insert into egpt_structureclasses_master(tenantId,code,data,");
+			structureClassQuery.append("createdBy, lastModifiedBy, createdTime,lastModifiedTime)");
+			structureClassQuery.append(" values(?,?,?,?,?,?,?)");
+
+
+			final PreparedStatementCreator psc = new PreparedStatementCreator() {
+				@Override
+				public PreparedStatement createPreparedStatement(final Connection connection) throws SQLException {
+					final PreparedStatement ps = connection.prepareStatement(structureClassQuery.toString(), new String[] { "id" });
+					ps.setString(1, structureClass.getTenantId());
+					ps.setString(2, structureClass.getCode());
+					PGobject jsonObject = new PGobject();
+					jsonObject.setType("json");
+					jsonObject.setValue(data);
+					ps.setObject(3,jsonObject);
+					ps.setString(4, structureClass.getAuditDetails().getCreatedBy());
+					ps.setString(5, structureClass.getAuditDetails().getLastModifiedBy());
+					ps.setLong(6, createdTime);
+					ps.setLong(7, createdTime);
+					return ps;
+				}
+			};
+
+			// The newly generated key will be saved in this object
+			final KeyHolder holder = new GeneratedKeyHolder();
+			jdbcTemplate.update(psc, holder);
+			structureClass.setId(Long.valueOf(holder.getKey().intValue()));
+
+		}
+		ResponseInfo responseInfo=responseInfoFactory.createResponseInfoFromRequestInfo(structureClassRequest.getRequestInfo(),true);
+
+		StructureClassResponse structureClassResponse = new StructureClassResponse();
+
+		structureClassResponse.setStructureClasses(structureClassRequest.getStructureClasses());
+		structureClassResponse.setResponseInfo(responseInfo);
+
+		return structureClassResponse;
+		}
+
+		/**
+		* Description : This api for updating strctureClass master
+		* @param tenantId
+		* @param StructureClassRequest
+		* @return structureClassResponse
+		* @throws Exception
+		*/
+
+
+		@Override
+		@Transactional
+		public StructureClassResponse updateStructureClassMaster(String tenantId,Long id,StructureClassRequest structureClassRequest) {
+
+		for(StructureClass structureClass:structureClassRequest.getStructureClasses()){
+
+		Long modifiedTime=new Date().getTime();
+
+		Gson gson=new GsonBuilder().setExclusionStrategies(new ExcludeFileds()).serializeNulls().create();
+
+		String data=gson.toJson(structureClass);
+
+		String departmentTypeUpdate = "UPDATE egpt_department_master set tenantId = ?, code = ?,data = ?, lastModifiedBy = ?, lastModifiedTime = ? where id = " +id;
+
+
+		final PreparedStatementCreator psc = new PreparedStatementCreator() {
+		@Override
+		public PreparedStatement createPreparedStatement(final Connection connection) throws SQLException {
+		final PreparedStatement ps = connection.prepareStatement(departmentTypeUpdate, new String[] { "id" });
+		ps.setString(1, structureClass.getTenantId());	
+		ps.setString(2,structureClass.getCode());
+		PGobject jsonObject = new PGobject();
+		jsonObject.setType("json");
+		jsonObject.setValue(data);
+		ps.setString(3, data);
+		ps.setString(4, structureClass.getAuditDetails().getLastModifiedBy());
+		ps.setLong(5, modifiedTime);
+		return ps;
+		}
+		};
+		jdbcTemplate.update(psc);
+
+		}
+		ResponseInfo responseInfo=responseInfoFactory.createResponseInfoFromRequestInfo(structureClassRequest.getRequestInfo(),true);
+
+		StructureClassResponse structureClassResponse=new StructureClassResponse();
+		structureClassResponse.setStructureClasses(structureClassRequest.getStructureClasses());
+		structureClassResponse.setResponseInfo(responseInfo);
+		return structureClassResponse;
+		
+	
+
+	}
 }

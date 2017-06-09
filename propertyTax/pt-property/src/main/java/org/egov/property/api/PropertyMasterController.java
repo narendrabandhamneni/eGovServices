@@ -8,6 +8,8 @@ import org.egov.models.RequestInfoWrapper;
 import org.egov.models.ResponseInfoFactory;
 import org.egov.models.RoofTypeRequest;
 import org.egov.models.RoofTypeResponse;
+import org.egov.models.StructureClassRequest;
+import org.egov.models.StructureClassResponse;
 import org.egov.models.WoodTypeRequest;
 import org.egov.models.WoodTypeResponse;
 import org.egov.property.services.Masterservice;
@@ -231,6 +233,37 @@ public class PropertyMasterController {
 		return masterService.updateRoofType(roofTypeRequest, tenantId, id);
 	}
 
+	
+	/**
+	* Description : This api for creating strctureClass master
+	* @param tenantId
+	* @param StructureClassRequest
+	* @return structureClassResponse
+	* @throws Exception
+	*/
+
+
+	@RequestMapping(path="structureclasses/_create",method=RequestMethod.POST)
+	public StructureClassResponse craeateStructureClassMaster(@RequestParam String tenantId, @RequestBody  StructureClassRequest structureClassRequest){
+
+	return	masterService.craeateStructureClassMaster(tenantId, structureClassRequest);
+
+	}
+
+
+	/**
+	* Description : This api for updating strctureClass master
+	* @param tenantId
+	* @param StructureClassRequest
+	* @return structureClassResponse
+	* @throws Exception
+	*/
+	@RequestMapping(path="structureclasses/{id}/_update",method=RequestMethod.POST)
+	public StructureClassResponse updateStructureClassMaster(@RequestParam String tenantId, @PathVariable Long id,@RequestBody StructureClassRequest structureClassRequest){
+
+	return	masterService.updateStructureClassMaster(tenantId,id,structureClassRequest);
+
+	}
 
 
 
