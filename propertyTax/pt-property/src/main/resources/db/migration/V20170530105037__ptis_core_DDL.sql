@@ -429,7 +429,7 @@ CREATE TABLE egpt_department_master(
     id bigint NOT NULL,
     tenantId character varying NOT NULL,
     code character varying NOT NULL,
-    data character varying NOT NULL,
+    data jsonb NOT NULL,
     createdBy character varying,
     lastModifiedBy character varying,
     createdTime bigint,

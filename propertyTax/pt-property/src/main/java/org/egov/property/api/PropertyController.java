@@ -90,7 +90,7 @@ public class PropertyController {
 			List<Property> propertyList=new ArrayList<Property>();
 			propertyList.add(property);
 			propertyRequestInfo.setProperties(propertyList);
-			producer.send(environment.getProperty("property.create"), propertyRequestInfo);
+			producer.send(environment.getProperty("user.create"), propertyRequestInfo);
 		}
 
 		ResponseInfo responseInfo=responseInfoFactory.createResponseInfoFromRequestInfo(propertyRequest.getRequestInfo(),true);
@@ -154,7 +154,7 @@ public class PropertyController {
 
 				} 
 			}
-			producer.send(environment.getProperty("property.update"), propertyRequest);
+			producer.send(environment.getProperty("user.update"), propertyRequest);
 		}
 		ResponseInfo responseInfo=responseInfoFactory.createResponseInfoFromRequestInfo(propertyRequest.getRequestInfo(),true);
 		PropertyResponse propertyResponse=new PropertyResponse();

@@ -20,6 +20,7 @@ import org.egov.property.exception.PropertySearchException;
 import org.egov.property.model.ExcludeFileds;
 import org.egov.property.model.MasterListModel;
 import org.egov.property.model.MasterModel;
+import org.postgresql.util.PGobject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -285,16 +286,16 @@ public class MasterServiceImpl  implements Masterservice{
 		for(Department department:departmentRequest.getDepartments()){
 
 			Long createdTime=new Date().getTime();
-			
+
 			Gson gson=new GsonBuilder().setExclusionStrategies(new ExcludeFileds()).serializeNulls().create();
-			
+
 			String data=gson.toJson(department);
 
 			StringBuffer depeartmentQuery=new StringBuffer();
 			depeartmentQuery.append("insert into egpt_department_master(tenantId,code,data,");
 			depeartmentQuery.append("createdBy, lastModifiedBy, createdTime,lastModifiedTime)");
 			depeartmentQuery.append(" values(?,?,?,?,?,?,?)");
-			
+
 
 			final PreparedStatementCreator psc = new PreparedStatementCreator() {
 				@Override
@@ -302,7 +303,10 @@ public class MasterServiceImpl  implements Masterservice{
 					final PreparedStatement ps = connection.prepareStatement(depeartmentQuery.toString(), new String[] { "id" });
 					ps.setString(1, department.getTenantId());
 					ps.setString(2, department.getCode());
-					ps.setString(3, data);
+					PGobject jsonObject = new PGobject();
+					jsonObject.setType("json");
+					jsonObject.setValue(data);
+					ps.setObject(3,jsonObject);
 					ps.setString(4, department.getAuditDetails().getCreatedBy());
 					ps.setString(5, department.getAuditDetails().getLastModifiedBy());
 					ps.setLong(6, createdTime);
@@ -332,13 +336,13 @@ public class MasterServiceImpl  implements Masterservice{
 		for(Department department:departmentRequest.getDepartments()){
 
 			Long modifiedTime=new Date().getTime();
-			
-     Gson gson=new GsonBuilder().setExclusionStrategies(new ExcludeFileds()).serializeNulls().create();
-			
+
+			Gson gson=new GsonBuilder().setExclusionStrategies(new ExcludeFileds()).serializeNulls().create();
+
 			String data=gson.toJson(department);
 
 			String departmentTypeUpdate = "UPDATE egpt_department_master set tenantId = ?, code = ?,data = ?, lastModifiedBy = ?, lastModifiedTime = ? where id = " +id;
-					
+
 
 			final PreparedStatementCreator psc = new PreparedStatementCreator() {
 				@Override
@@ -371,8 +375,6 @@ public class MasterServiceImpl  implements Masterservice{
 
 		departmentSearchSql.append("select * from egpt_department_master where tenantid ='"+tenantId+"'");
 
-
-
 		if (ids!=null && ids.length>0){
 
 			String  departmentIds= "";
@@ -384,48 +386,46 @@ public class MasterServiceImpl  implements Masterservice{
 				else
 					departmentIds = departmentIds+id;
 
+				count++;
 			}
-
 
 			departmentSearchSql.append(" AND id IN ("+departmentIds+")");
 
-
-
 		}
 
-		
+		StringBuffer dataSearch = new StringBuffer();
 
 		if (code!=null && !code.isEmpty())
-			departmentSearchSql.append(" AND code ="+code);
-		
-		StringBuffer dataSearch = new StringBuffer();
-		
-		
-		if(!(name==null && nameLocal==null && category==null)){
+			departmentSearchSql.append(" AND code = '"+code+"'");
+
+		if(name!=null || category!=null || nameLocal!=null)
+			dataSearch.append(" AND data = '");
+
 		if (name!=null && !name.isEmpty())
-			dataSearch.append(" AND data = '[ { \"name\":"+name+"}");
-		
-		
-		
-		if (nameLocal!=null && !nameLocal.isEmpty() )
-			dataSearch.append(" , {\"nameLocal\":"+nameLocal+"}");
+			dataSearch.append("{ \"name\":\""+name+"\"");
 
-		if ( category!=null &&  !category.isEmpty() )
-			dataSearch.append(" ,  {\"category\":"+category+"}");
-		    dataSearch.append("]'");
-		    
-		    departmentSearchSql.append( dataSearch.toString());
-		
+		if (nameLocal!=null && !nameLocal.isEmpty()){
+			if(name!=null && !name.isEmpty())
+				dataSearch.append(" , {\"nameLocal\":\""+nameLocal+"\"");
+			else
+				dataSearch.append("{\"nameLocal\":\""+nameLocal+"\"");	
 		}
-		
-		
+		if ( category!=null &&  !category.isEmpty()  ){
+			if( nameLocal!=null && !nameLocal.isEmpty())
+				dataSearch.append(" ,  {\"category\":\""+category+"\"");
+			else if( name!=null && !name.isEmpty())
+				dataSearch.append(" ,  {\"category\":\""+category+"\"");
+			else
+				dataSearch.append("{\"category\":\""+category+"\"");
+		}	
 
-	
-		
+		if(name!=null || category!=null || nameLocal!=null)
+			dataSearch.append("}'");
 
-		if ( pageSize == -1 )
+		departmentSearchSql.append( dataSearch.toString());
+		if ( pageSize == null )
 			pageSize = 30;
-		if ( offSet == -1 )
+		if ( offSet ==null)
 			offSet = 0;
 
 
