@@ -17,6 +17,7 @@ import org.egov.models.ResponseInfo;
 import org.egov.models.ResponseInfoFactory;
 import org.egov.property.exception.InvalidInputException;
 import org.egov.property.exception.PropertySearchException;
+import org.egov.property.model.ExcludeFileds;
 import org.egov.property.model.MasterListModel;
 import org.egov.property.model.MasterModel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,9 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 /**
  * Description : MasterService interface implementation class 
@@ -281,25 +285,28 @@ public class MasterServiceImpl  implements Masterservice{
 		for(Department department:departmentRequest.getDepartments()){
 
 			Long createdTime=new Date().getTime();
+			
+			Gson gson=new GsonBuilder().setExclusionStrategies(new ExcludeFileds()).serializeNulls().create();
+			
+			String data=gson.toJson(department);
 
-			String departmentType="insert into egpt_department_master(tenantId,category,name,code,nameLocal,description,"
-					+ "createdBy, lastModifiedBy, createdTime,lastModifiedTime)"
-					+ " values(?,?,?,?,?,?,?,?,?,?)";	
+			StringBuffer depeartmentQuery=new StringBuffer();
+			depeartmentQuery.append("insert into egpt_department_master(tenantId,code,data,");
+			depeartmentQuery.append("createdBy, lastModifiedBy, createdTime,lastModifiedTime)");
+			depeartmentQuery.append(" values(?,?,?,?,?,?,?)");
+			
 
 			final PreparedStatementCreator psc = new PreparedStatementCreator() {
 				@Override
 				public PreparedStatement createPreparedStatement(final Connection connection) throws SQLException {
-					final PreparedStatement ps = connection.prepareStatement(departmentType, new String[] { "id" });
+					final PreparedStatement ps = connection.prepareStatement(depeartmentQuery.toString(), new String[] { "id" });
 					ps.setString(1, department.getTenantId());
-					ps.setString(2, department.getCategory());
-					ps.setString(3,department.getName());
-					ps.setString(4, department.getCode());
-					ps.setString(5, department.getNameLocal());
-					ps.setString(6, department.getDescription());
-					ps.setString(7, department.getAuditDetails().getCreatedBy());
-					ps.setString(8, department.getAuditDetails().getLastModifiedBy());
-					ps.setLong(9, createdTime);
-					ps.setLong(10, createdTime);
+					ps.setString(2, department.getCode());
+					ps.setString(3, data);
+					ps.setString(4, department.getAuditDetails().getCreatedBy());
+					ps.setString(5, department.getAuditDetails().getLastModifiedBy());
+					ps.setLong(6, createdTime);
+					ps.setLong(7, createdTime);
 					return ps;
 				}
 			};
@@ -325,23 +332,23 @@ public class MasterServiceImpl  implements Masterservice{
 		for(Department department:departmentRequest.getDepartments()){
 
 			Long modifiedTime=new Date().getTime();
+			
+     Gson gson=new GsonBuilder().setExclusionStrategies(new ExcludeFileds()).serializeNulls().create();
+			
+			String data=gson.toJson(department);
 
-			String departmentTypeUpdate = "UPDATE egpt_department_master set tenantId = ?,category=?, name=?, code = ?,"
-					+ "nameLocal = ?, description = ?, lastModifiedBy = ?, lastModifiedTime = ? "
-					+ "where id = " +id;
+			String departmentTypeUpdate = "UPDATE egpt_department_master set tenantId = ?, code = ?,data = ?, lastModifiedBy = ?, lastModifiedTime = ? where id = " +id;
+					
 
 			final PreparedStatementCreator psc = new PreparedStatementCreator() {
 				@Override
 				public PreparedStatement createPreparedStatement(final Connection connection) throws SQLException {
 					final PreparedStatement ps = connection.prepareStatement(departmentTypeUpdate, new String[] { "id" });
-					ps.setString(1, department.getTenantId());
-					ps.setString(2, department.getCategory());
-					ps.setString(3, department.getName());
-					ps.setString(4,department.getCode());
-					ps.setString(5, department.getNameLocal());
-					ps.setString(6, department.getDescription());
-					ps.setString(7, department.getAuditDetails().getLastModifiedBy());
-					ps.setLong(8, modifiedTime);
+					ps.setString(1, department.getTenantId());	
+					ps.setString(2,department.getCode());
+					ps.setString(3, data);
+					ps.setString(4, department.getAuditDetails().getLastModifiedBy());
+					ps.setLong(5, modifiedTime);
 					return ps;
 				}
 			};
@@ -386,17 +393,35 @@ public class MasterServiceImpl  implements Masterservice{
 
 		}
 
-		if ( category!=null && !category.isEmpty() )
-			departmentSearchSql.append(" AND category ="+category);
-
-		if ( name!=null && !name.isEmpty() )
-			departmentSearchSql.append(" AND name ="+name);
+		
 
 		if (code!=null && !code.isEmpty())
 			departmentSearchSql.append(" AND code ="+code);
+		
+		StringBuffer dataSearch = new StringBuffer();
+		
+		
+		if(!(name==null && nameLocal==null && category==null)){
+		if (name!=null && !name.isEmpty())
+			dataSearch.append(" AND data = '[ { \"name\":"+name+"}");
+		
+		
+		
+		if (nameLocal!=null && !nameLocal.isEmpty() )
+			dataSearch.append(" , {\"nameLocal\":"+nameLocal+"}");
 
-		if ( nameLocal!=null && !nameLocal.isEmpty())
-			departmentSearchSql.append(" AND  namelocal = "+nameLocal);
+		if ( category!=null &&  !category.isEmpty() )
+			dataSearch.append(" ,  {\"category\":"+category+"}");
+		    dataSearch.append("]'");
+		    
+		    departmentSearchSql.append( dataSearch.toString());
+		
+		}
+		
+		
+
+	
+		
 
 		if ( pageSize == -1 )
 			pageSize = 30;
