@@ -10,7 +10,8 @@ CREATE TABLE egpt_property(
     gisrefno character varying,
     isauthorised boolean,
     isunderworkflow boolean,
-    active boolean default true,
+    active boolean
+    default true,
     channel character varying NOT NULL,
     createdby character varying,
     lastmodifiedby character varying,
@@ -427,12 +428,15 @@ ADD CONSTRAINT egpt_propertylocation_fk FOREIGN KEY(property_id) REFERENCES egpt
 CREATE TABLE egpt_department_master(
     id bigint NOT NULL,
     tenantId character varying NOT NULL,
+    category character varying NOT NULL,
+    name character varying NOT NULL,
     code character varying NOT NULL,
-    data character varying NOT NULL,
-    createdBy integer NOT NULL,
-    createdDate bigint NOT NULL,
-    modifiedBy bigint NOT NULL,
-    modifiedDate bigint NOT NULL
+    nameLocal character varying NOT NULL,
+    description character varying,
+    createdBy character varying,
+    lastModifiedBy character varying,
+    createdTime bigint,
+    lastModifiedTime bigint
 );
 
 CREATE SEQUENCE seq_egpt_department_master
@@ -451,12 +455,14 @@ ADD CONSTRAINT egpt_department_master_pkey PRIMARY KEY(id);
 CREATE TABLE egpt_floortype_master(
     id bigint NOT NULL,
     tenantid character varying NOT NULL,
+    name character varying NOT NULL,
     code character varying NOT NULL,
-    data character varying NOT NULL,
-    createdby integer NOT NULL,
-    createddate bigint NOT NULL,
-    lastmodifiedby bigint NOT NULL,
-    lastmodifieddate bigint NOT NULL
+    nameLocal character varying,
+    description character varying,
+    createdBy character varying,
+    lastModifiedBy character varying,
+    createdTime bigint,
+    lastModifiedTime bigint
 );
 
 
@@ -478,12 +484,17 @@ ADD CONSTRAINT egpt_floortype_master_pkey PRIMARY KEY(id);
 CREATE TABLE egpt_occuapancy_master(
     id bigint NOT NULL,
     tenantid character varying NOT NULL,
+    name character varying NOT NULL,
     code character varying NOT NULL,
-    data character varying NOT NULL,
-    createdby integer NOT NULL,
-    createddate bigint NOT NULL,
-    lastmodifiedby bigint NOT NULL,
-    lastmodifieddate bigint NOT NULL
+    nameLocal character varying,
+    description character varying,
+    active boolean,
+    orderNumber integer,
+    createdBy character varying,
+    lastModifiedBy character varying,
+    createdTime bigint,
+    lastModifiedTime bigint
+
 );
 
 
@@ -505,12 +516,17 @@ ADD CONSTRAINT egpt_occuapancy_master_pkey PRIMARY KEY(id);
 CREATE TABLE egpt_propertytypes_master(
     id bigint NOT NULL,
     tenantid character varying NOT NULL,
+    name character varying NOT NULL,
     code character varying NOT NULL,
-    data character varying NOT NULL,
-    createdby integer NOT NULL,
-    createddate bigint NOT NULL,
-    lastmodifiedby bigint NOT NULL,
-    lastmodifieddate bigint NOT NULL
+    nameLocal character varying,
+    description character varying,
+    active boolean,
+    orderNumber integer,
+    createdBy character varying,
+    lastModifiedBy character varying,
+    createdTime bigint,
+    lastModifiedTime bigint
+
 );
 
 
@@ -532,12 +548,15 @@ ADD CONSTRAINT egpt_propertytypes_master_pkey PRIMARY KEY(id);
 CREATE TABLE egpt_rooftypes_master(
     id bigint NOT NULL,
     tenantid character varying NOT NULL,
+    name character varying NOT NULL,
     code character varying NOT NULL,
-    data character varying NOT NULL,
-    createdby integer NOT NULL,
-    createddate bigint NOT NULL,
-    lastmodifiedby bigint NOT NULL,
-    lastmodifieddate bigint NOT NULL
+    nameLocal character varying,
+    description character varying,
+    createdBy character varying,
+    lastModifiedBy character varying,
+    createdTime bigint,
+    lastModifiedTime bigint
+
 );
 
 
@@ -558,12 +577,17 @@ ADD CONSTRAINT egpt_rooftypes_master_pkey PRIMARY KEY(id);
 CREATE TABLE egpt_structureclasses_master(
     id bigint NOT NULL,
     tenantid character varying NOT NULL,
+    name character varying NOT NULL,
     code character varying NOT NULL,
-    data character varying NOT NULL,
-    createdby integer NOT NULL,
-    createddate bigint NOT NULL,
-    lastmodifiedby bigint NOT NULL,
-    lastmodifieddate bigint NOT NULL
+    nameLocal character varying,
+    description character varying,
+    active boolean,
+    orderNumber integer,
+    createdBy character varying,
+    lastModifiedBy character varying,
+    createdTime bigint,
+    lastModifiedTime bigint
+
 );
 
 
@@ -584,12 +608,18 @@ ADD CONSTRAINT egpt_structureclasses_master_pkey PRIMARY KEY(id);
 CREATE TABLE egpt_usage_master(
     id bigint NOT NULL,
     tenantid character varying NOT NULL,
+    name character varying NOT NULL,
     code character varying NOT NULL,
-    data character varying NOT NULL,
-    createdby integer NOT NULL,
-    createddate bigint NOT NULL,
-    lastmodifiedby bigint NOT NULL,
-    lastmodifieddate bigint NOT NULL
+    nameLocal character varying,
+    description character varying,
+    active boolean,
+    isResidential boolean,
+    orderNumber integer,
+    createdBy character varying,
+    lastModifiedBy character varying,
+    createdTime bigint,
+    lastModifiedTime bigint
+
 );
 
 
@@ -611,12 +641,15 @@ ADD CONSTRAINT egpt_usage_master_pkey PRIMARY KEY(id);
 CREATE TABLE egpt_walltypes_master(
     id bigint NOT NULL,
     tenantid character varying NOT NULL,
+    name character varying NOT NULL,
     code character varying NOT NULL,
-    data character varying NOT NULL,
-    createdby integer NOT NULL,
-    createddate bigint NOT NULL,
-    lastmodifiedby bigint NOT NULL,
-    lastmodifieddate bigint NOT NULL
+    nameLocal character varying,
+    description character varying,
+    createdBy character varying,
+    lastModifiedBy character varying,
+    createdTime bigint,
+    lastModifiedTime bigint
+
 );
 
 
@@ -637,12 +670,15 @@ ADD CONSTRAINT egpt_walltypes_master_pkey PRIMARY KEY(id);
 CREATE TABLE egpt_woodtypes_master(
     id bigint NOT NULL,
     tenantid character varying NOT NULL,
+    name character varying NOT NULL,
     code character varying NOT NULL,
-    data character varying NOT NULL,
-    createdby integer NOT NULL,
-    createddate bigint NOT NULL,
-    lastmodifiedby bigint NOT NULL,
-    lastmodifieddate bigint NOT NULL
+    nameLocal character varying,
+    description character varying,
+    createdBy character varying,
+    lastModifiedBy character varying,
+    createdTime bigint,
+    lastModifiedTime bigint
+
 );
 
 

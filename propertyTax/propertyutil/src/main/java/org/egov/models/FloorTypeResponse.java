@@ -4,16 +4,16 @@ import java.util.List;
 
 public class FloorTypeResponse {
 
-	private RequestInfo requestInfo;
+	private RequestInfo ResponseInfo;
 
 	private List<FloorType> floorTypes;
 
-	public RequestInfo getRequestInfo() {
-		return requestInfo;
+	public RequestInfo getResponseInfo() {
+		return ResponseInfo;
 	}
 
-	public void setRequestInfo(RequestInfo requestInfo) {
-		this.requestInfo = requestInfo;
+	public void setResponseInfo(RequestInfo responseInfo) {
+		ResponseInfo = responseInfo;
 	}
 
 	public List<FloorType> getFloorTypes() {
@@ -28,8 +28,8 @@ public class FloorTypeResponse {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((ResponseInfo == null) ? 0 : ResponseInfo.hashCode());
 		result = prime * result + ((floorTypes == null) ? 0 : floorTypes.hashCode());
-		result = prime * result + ((requestInfo == null) ? 0 : requestInfo.hashCode());
 		return result;
 	}
 
@@ -42,22 +42,29 @@ public class FloorTypeResponse {
 		if (getClass() != obj.getClass())
 			return false;
 		FloorTypeResponse other = (FloorTypeResponse) obj;
+		if (ResponseInfo == null) {
+			if (other.ResponseInfo != null)
+				return false;
+		} else if (!ResponseInfo.equals(other.ResponseInfo))
+			return false;
 		if (floorTypes == null) {
 			if (other.floorTypes != null)
 				return false;
 		} else if (!floorTypes.equals(other.floorTypes))
 			return false;
-		if (requestInfo == null) {
-			if (other.requestInfo != null)
-				return false;
-		} else if (!requestInfo.equals(other.requestInfo))
-			return false;
 		return true;
 	}
 
-	public FloorTypeResponse(RequestInfo requestInfo, List<FloorType> floorTypes) {
+	@Override
+	public String toString() {
+		return "FloorTypeResponse [ResponseInfo=" + ResponseInfo + ", floorTypes=" + floorTypes + ", getResponseInfo()="
+				+ getResponseInfo() + ", getFloorTypes()=" + getFloorTypes() + ", hashCode()=" + hashCode()
+				+ ", getClass()=" + getClass() + ", toString()=" + super.toString() + "]";
+	}
+
+	public FloorTypeResponse(RequestInfo responseInfo, List<FloorType> floorTypes) {
 		super();
-		this.requestInfo = requestInfo;
+		ResponseInfo = responseInfo;
 		this.floorTypes = floorTypes;
 	}
 
@@ -65,15 +72,5 @@ public class FloorTypeResponse {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-
-	@Override
-	public String toString() {
-		return "FloorTypeResponse [requestInfo=" + requestInfo + ", floorTypes=" + floorTypes + ", getRequestInfo()="
-				+ getRequestInfo() + ", getFloorTypes()=" + getFloorTypes() + ", hashCode()=" + hashCode()
-				+ ", getClass()=" + getClass() + ", toString()=" + super.toString() + "]";
-	}
-
-
-
 
 }
