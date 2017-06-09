@@ -4,6 +4,10 @@ import org.egov.models.DepartmentRequest;
 import org.egov.models.DepartmentResponseInfo;
 import org.egov.models.FloorTypeRequest;
 import org.egov.models.FloorTypeResponse;
+import org.egov.models.OccuapancyMasterRequest;
+import org.egov.models.OccuapancyMasterResponse;
+import org.egov.models.PropertyTypeRequest;
+import org.egov.models.PropertyTypeResponse;
 import org.egov.models.RequestInfoWrapper;
 import org.egov.models.ResponseInfoFactory;
 import org.egov.models.RoofTypeRequest;
@@ -265,6 +269,64 @@ public class PropertyMasterController {
 
 	}
 
+	@RequestMapping(path="/propertytypes/_create",method=RequestMethod.POST)
+    public PropertyTypeResponse createPropertyTypeMaster(@RequestParam String tenantId, @RequestBody PropertyTypeRequest propertyTypeRequest){
 
+        return  masterService.createPropertyTypeMaster(tenantId,propertyTypeRequest);
+
+    }
+
+    @RequestMapping(path="/propertytypes/{id}/_update",method=RequestMethod.POST)
+    public PropertyTypeResponse updatePropertyTypeMaster(@RequestParam String tenantId, @PathVariable Long id,@RequestBody PropertyTypeRequest propertyTypeRequest){
+
+        return  masterService.updatePropertyTypeMaster(tenantId,id,propertyTypeRequest);
+
+    }
+
+    @RequestMapping(path="/propertytypes/_search",method=RequestMethod.POST)
+    public PropertyTypeResponse getPropertyTypeMaster(@RequestBody RequestInfoWrapper requestInfo ,
+            @RequestParam(required=true) String tenantId,
+            @RequestParam(required=false) Integer[] ids,            
+            @RequestParam(required=false) String name,
+            @RequestParam(required=false) String code,
+            @RequestParam(required=false) String nameLocal,
+            @RequestParam(required=false) Boolean active,
+            @RequestParam(required=false) Integer orderNumber,
+            @RequestParam(required=false) Integer pageSize,
+            @RequestParam(required=false) Integer offSet
+            ) throws Exception {
+        return masterService.getPropertyTypeMaster(requestInfo.getRequestInfo(),tenantId,ids, name ,code,nameLocal,active,orderNumber,pageSize,offSet);
+
+    }
+
+    @RequestMapping(path="/occuapancies/_create",method=RequestMethod.POST)
+    public OccuapancyMasterResponse createOccuapancyMaster(@RequestParam String tenantId, @RequestBody OccuapancyMasterRequest occuapancyMasterRequest){
+
+        return  masterService.createOccuapancyMaster(tenantId,occuapancyMasterRequest);
+
+    }
+
+    @RequestMapping(path="/occuapancies/{id}/_update",method=RequestMethod.POST)
+    public OccuapancyMasterResponse updateOccuapancyMaster(@RequestParam String tenantId, @PathVariable Long id,@RequestBody OccuapancyMasterRequest occuapancyRequest){
+
+        return  masterService.updateOccuapancyMaster(tenantId,id,occuapancyRequest);
+
+    }
+
+    @RequestMapping(path="/occuapancies/_search",method=RequestMethod.POST)
+    public OccuapancyMasterResponse getOccuapancyMaster(@RequestBody RequestInfoWrapper requestInfo ,
+            @RequestParam(required=true) String tenantId,
+            @RequestParam(required=false) Integer[] ids,            
+            @RequestParam(required=false) String name,
+            @RequestParam(required=false) String code,
+            @RequestParam(required=false) String nameLocal,
+            @RequestParam(required=false) Boolean active,
+            @RequestParam(required=false) Integer orderNumber,
+            @RequestParam(required=false) Integer pageSize,
+            @RequestParam(required=false) Integer offSet
+            ) throws Exception {
+        return masterService.getOccuapancyMaster(requestInfo.getRequestInfo(),tenantId,ids, name ,code,nameLocal,active,orderNumber,pageSize,offSet);
+
+    }
 
 }
