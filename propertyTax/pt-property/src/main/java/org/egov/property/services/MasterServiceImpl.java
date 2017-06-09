@@ -1,27 +1,32 @@
 package org.egov.property.services;
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.egov.models.Department;
 import org.egov.models.DepartmentRequest;
 import org.egov.models.DepartmentResponseInfo;
-import org.egov.models.PropertyType;
-import org.egov.models.PropertyTypeRequest;
-import org.egov.models.PropertyTypeResponse;
+import org.egov.models.FloorType;
+import org.egov.models.FloorTypeRequest;
+import org.egov.models.FloorTypeResponse;
 import org.egov.models.RequestInfo;
 import org.egov.models.ResponseInfo;
 import org.egov.models.ResponseInfoFactory;
+import org.egov.models.RoofType;
+import org.egov.models.RoofTypeRequest;
+import org.egov.models.RoofTypeResponse;
+import org.egov.models.WoodType;
+import org.egov.models.WoodTypeRequest;
+import org.egov.models.WoodTypeResponse;
 import org.egov.property.exception.InvalidInputException;
 import org.egov.property.exception.PropertySearchException;
 import org.egov.property.model.ExcludeFileds;
-import org.egov.property.model.MasterListModel;
-import org.egov.property.model.MasterModel;
 import org.postgresql.util.PGobject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
@@ -43,233 +48,16 @@ import com.google.gson.GsonBuilder;
 public class MasterServiceImpl  implements Masterservice{
 
 	@Autowired
-	private MasterListModel masterList;
-
-
-	@Autowired
 	private JdbcTemplate jdbcTemplate;
 
 	@Autowired
 
 	private ResponseInfoFactory responseInfoFactory;
 
-	/**
-	 *Description : This method for getting property types
-	 * @param tenantId
-	 * @param code
-	 * @param requestInfo
-	 * @return masterModel
-	 * @throws Exception
-	 */
-	@Override
-	public MasterModel getPropertyTypes(String tenantId, String code,RequestInfo requestInfo) throws Exception {
-		return	getMaster(masterList.getPropertyType(),tenantId,code,requestInfo);
-	}
-
-	/**
-	 *Description : This method for getting usage master details
-	 * @param tenantId
-	 * @param code
-	 * @param requestInfo
-	 * @return masterModel
-	 * @throws Exception
-	 */
-
-	@Override
-	public MasterModel getUsageMaster(String tenantId, String code,RequestInfo requestInfo) throws Exception {
-		return	getMaster(masterList.getUsageMaster(),tenantId,code,requestInfo);
-	}
-
-	/**
-	 *Description : This method for getting ocupancy master details
-	 * @param tenantId
-	 * @param code
-	 * @param requestInfo
-	 * @return masterModel
-	 * @throws Exception
-	 */
+	@Autowired
+	private Environment environment;
 
 
-	@Override
-	public MasterModel getOcupancyMaster(String tenantId, String code,RequestInfo requestInfo) throws Exception {
-		return	getMaster(masterList.getOccupancyMaster(),tenantId,code,requestInfo);
-	}
-
-	/**
-	 *Description : This method for getting tax rate details
-	 * @param tenantId
-	 * @param code
-	 * @param requestInfo
-	 * @return masterModel
-	 * @throws Exception
-	 */
-
-
-	@Override
-	public MasterModel getTaxRateMaster(String tenantId, String code,RequestInfo requestInfo) throws Exception {
-		return	getMaster(masterList.getTaxRateMaster(),tenantId,code,requestInfo);
-	}
-
-	/**
-	 *Description : This method for getting wall type master details
-	 * @param tenantId
-	 * @param code
-	 * @param requestInfo
-	 * @return masterModel
-	 * @throws Exception
-	 */
-
-
-	@Override
-	public MasterModel getWallTypeMaster(String tenantId, String code,RequestInfo requestInfo) throws Exception {
-		return	getMaster(masterList.getWallTypeMaster(),tenantId,code,requestInfo);
-	}
-
-	/**
-	 *Description : This method for getting roof type master details
-	 * @param tenantId
-	 * @param code
-	 * @param requestInfo
-	 * @return masterModel
-	 * @throws Exception
-	 */
-
-
-	@Override
-	public MasterModel getRoofTypeMaster(String tenantId, String code,RequestInfo requestInfo) throws Exception {
-		return	getMaster(masterList.getRoofTypeMaster(),tenantId,code,requestInfo);
-	}
-
-
-	/**
-	 *Description : This method for getting wood type master details
-	 * @param tenantId
-	 * @param code
-	 * @param requestInfo
-	 * @return masterModel
-	 * @throws Exception
-	 */
-
-
-	@Override
-	public MasterModel getWoodTypeMaster(String tenantId, String code,RequestInfo requestInfo) throws Exception {
-		return	getMaster(masterList.getWoodTypeMaster(),tenantId,code,requestInfo);
-	}
-
-	/**
-	 *Description : This method for getting apartment master details
-	 * @param tenantId
-	 * @param code
-	 * @param requestInfo
-	 * @return masterModel
-	 * @throws Exception
-	 */
-
-
-	@Override
-	public MasterModel getApartmentMaster(String tenantId, String code,RequestInfo requestInfo) throws Exception {
-		return	getMaster(masterList.getApartmentMaster(),tenantId,code,requestInfo);
-	}
-
-	/**
-	 *Description : This method for getting floor master details
-	 * @param tenantId
-	 * @param code
-	 * @param requestInfo
-	 * @return masterModel
-	 * @throws Exception
-	 */
-
-
-	@Override
-	public MasterModel getFloorTypeMaster(String tenantId, String code,RequestInfo requestInfo) throws Exception {
-		return	getMaster(masterList.getFloorTypeMaster(),tenantId,code,requestInfo);
-	}
-
-	/**
-	 * Description : this method will get data from yaml
-	 * @param masterData
-	 * @param tenantId
-	 * @param code
-	 * @param requestInfo
-	 * @return
-	 */
-
-	public MasterModel getMaster(List<MasterModel> masterData,String tenantId,String code,RequestInfo requestInfo){
-		List<MasterModel> modelList = null;
-		if(tenantId!=null && code!=null){
-			modelList= masterData.stream().filter(m->m.getTenantId().equalsIgnoreCase(tenantId)&& m.getCode().equalsIgnoreCase(code)).collect(Collectors.toList());
-		}
-		else if(tenantId==null || tenantId.isEmpty()){
-			modelList= masterData.stream().filter(m->m.getCode().equalsIgnoreCase(code)).collect(Collectors.toList());
-		}
-		else if(code==null || code.isEmpty()){
-			modelList= masterData.stream().filter(m->m.getTenantId().equalsIgnoreCase(tenantId)).collect(Collectors.toList());
-		}
-		if(modelList.size()==0)
-			throw new InvalidInputException(requestInfo);
-		return modelList.get(0);
-	}
-
-	/**
-	 *Description : This method for getting strcture master details
-	 * @param tenantId
-	 * @param code
-	 * @param requestInfo
-	 * @return masterModel
-	 * @throws Exception
-	 */
-
-
-	@Override
-	public MasterModel getStructureMaster(String tenantId, String code,RequestInfo requestInfo) throws Exception {
-		return	getMaster(masterList.getStructureMaster(),tenantId,code,requestInfo);
-	}
-
-	/**
-	 * Description : This method for getting usage mutation reason master details
-	 * @param tenantId
-	 * @param code
-	 * @param requestInfo
-	 * @return masterModel
-	 * @throws Exception
-	 */
-
-
-	@Override
-	public MasterModel getMutationReasonMaster(String tenantId, String code,RequestInfo requestInfo) throws Exception {
-		return	getMaster(masterList.getMutationReasonMaster(),tenantId,code,requestInfo);
-	}
-
-
-	/**
-	 * Description : This method for getting mutation rate master details
-	 * @param tenantId
-	 * @param code
-	 * @param requestInfo
-	 * @return masterModel
-	 * @throws Exception
-	 */
-
-
-	@Override
-	public MasterModel getMutationRateMaster(String tenantId, String code,RequestInfo requestInfo) throws Exception {
-		return	getMaster(masterList.getMutationRateMaster(),tenantId,code,requestInfo);
-	}
-
-	/**
-	 *Description : This method for getting document type master details
-	 * @param tenantId
-	 * @param code
-	 * @param requestInfo
-	 * @return masterModel
-	 * @throws Exception
-	 */
-
-	@Override
-	public MasterModel getDocumentTypeMaster(String tenantId, String code,RequestInfo requestInfo) throws Exception {
-		return	getMaster(masterList.getDocumentTypeMaster(),tenantId,code,requestInfo);
-	}
 
 	/**
 	 * Description : This method will use for creating department type
@@ -430,7 +218,7 @@ public class MasterServiceImpl  implements Masterservice{
 			pageSize = 30;
 		if ( offSet ==null)
 			offSet = 0;
-
+		departmentSearchSql.append("offset "+offSet+" limit "+pageSize);
 
 		DepartmentResponseInfo departmentResponse = new DepartmentResponseInfo();
 
@@ -450,129 +238,275 @@ public class MasterServiceImpl  implements Masterservice{
 	}
 
 
+
+
+
 	/**
-	 * Description : This method will use for creating property type
+	 *Description : This method for getting floor master details
 	 * @param tenantId
-	 * @param propertyTypeRequest
-	 * @return
+	 * @param code
+	 * @param requestInfo
+	 * @return masterModel
+	 * @throws Exception
+	 */
+
+
+	@Override
+	public FloorTypeResponse getFloorTypeMaster(RequestInfo requestInfo, String tenantId,Integer []ids, String name ,String code,String nameLocal, Integer pageSize, Integer offSet) throws Exception {
+
+		StringBuffer floorTypeSearchSql = new StringBuffer();
+
+		floorTypeSearchSql.append("select * from egpt_floortype_master where tenantid ='"+tenantId+"'");
+
+
+
+
+		if (ids!=null && ids.length>0){
+
+			String  florTypeIds= "";
+
+			int count = 1;
+			for (Integer id : ids){
+				if (count<ids.length)
+					florTypeIds = florTypeIds+id+",";
+				else
+					florTypeIds = florTypeIds+id;
+
+				count++;
+
+			}
+
+
+			floorTypeSearchSql.append(" AND id IN ("+florTypeIds+")");
+
+
+
+		}
+
+		StringBuffer dataSearch = new StringBuffer();
+
+		if (code!=null && !code.isEmpty())
+			floorTypeSearchSql.append(" AND code = '"+code+"'");
+
+		if(name!=null || nameLocal!=null)
+			dataSearch.append(" AND data = '");
+
+		if (name!=null && !name.isEmpty())
+			dataSearch.append("{ \"name\":\""+name+"\"");
+
+		if (nameLocal!=null && !nameLocal.isEmpty()){
+			if(name!=null && !name.isEmpty())
+				dataSearch.append(" , {\"nameLocal\":\""+nameLocal+"\"");
+			else
+				dataSearch.append("{\"nameLocal\":\""+nameLocal+"\"");	
+		}
+
+
+		if(name!=null ||  nameLocal!=null)
+			dataSearch.append("}'");
+
+		floorTypeSearchSql.append( dataSearch.toString());
+
+		if ( pageSize == null )
+			pageSize = Integer.valueOf( environment.getProperty("default.page.size").trim());
+		if ( offSet == null )
+			offSet = Integer.valueOf( environment.getProperty("default.offset").trim());
+
+		floorTypeSearchSql.append("offset "+offSet+" limit "+pageSize);
+
+
+
+		FloorTypeResponse floorTypeResponse = new FloorTypeResponse();
+
+		try {
+
+			List<FloorType> floorTypes = jdbcTemplate.query(floorTypeSearchSql.toString(), new BeanPropertyRowMapper(FloorType.class));
+			ResponseInfo responseInfo=responseInfoFactory.createResponseInfoFromRequestInfo(requestInfo,true);
+
+			floorTypeResponse.setFloorTypes(floorTypes);
+			floorTypeResponse.setResponseInfo(responseInfo);
+		}
+		catch (Exception e) {
+			throw new PropertySearchException("invalid input",requestInfo);
+		}
+		return floorTypeResponse;
+
+
+		//return	getMaster(masterList.getFloorTypeMaster(),tenantId,code,requestInfo);
+	}
+
+
+	/**
+	 * <P> This method will presist the given floor type in the database</p>
+	 * @author Prasad
+	 * @param floorTypeRequest
+	 * @param tenantId
+	 * @return {@link FloorTypeResponse}
 	 */
 
 	@Override
-	public PropertyTypeResponse createPropertyTypeMaster(String tenantId, PropertyTypeRequest propertyTypeRequest) {
-		// TODO Auto-generated method stub
+	public FloorTypeResponse createFloorType(FloorTypeRequest floorTypeRequest, String tenantId) throws Exception {
+		List<FloorType> floorTypes = floorTypeRequest.getFloorTypes();
 
-		for(PropertyType propertyType:propertyTypeRequest.getPropertyTypes()){
+		for ( FloorType floorType : floorTypes ){
 
-			Long createdTime = new Date().getTime();
+			long createdTime =new Date().getTime();
 
-			String propertyTypeSql="insert into egpt_propertytypes_master(tenantId,name,code,nameLocal,description,active,orderNumber,"
-					+ "createdBy,lastmodifiedby, createdtime, lastmodifiedtime) values(?,?,?,?,?,?,?,?,?,?,?)";	
+			Gson gson=new GsonBuilder().setExclusionStrategies(new ExcludeFileds()).serializeNulls().create();
+
+			String data=gson.toJson(floorType);
+
+			StringBuffer usageMasterCreateSQL=new StringBuffer();
+
+			usageMasterCreateSQL.append("INSERT INTO egpt_floortype_master")
+			.append(" ( tenantid,code,data,createdby,lastModifiedBy, createdTime,lastModifiedtime) ")
+			.append(" VALUES( ?, ?, ?, ?, ?, ?,?)");
+
 			final PreparedStatementCreator psc = new PreparedStatementCreator() {
+
 				@Override
 				public PreparedStatement createPreparedStatement(final Connection connection) throws SQLException {
-					final PreparedStatement ps = connection.prepareStatement(propertyTypeSql, new String[] { "id" });
-					ps.setString(1, propertyType.getTenantId());
-					ps.setString(2, propertyType.getName());
-					ps.setString(3, propertyType.getCode());
-					ps.setString(4, propertyType.getNameLocal());
-					ps.setString(5, propertyType.getDescription() );
-					ps.setBoolean(6, propertyType.getActive());
-					ps.setInt(7, propertyType.getOrderNumber());
-					ps.setString(8, propertyType.getAuditDetails().getCreatedBy());
-					ps.setString(9, propertyType.getAuditDetails().getLastModifiedBy());
-					ps.setLong(10, createdTime);
-					ps.setLong(11, createdTime);
+
+					final PreparedStatement ps = connection.prepareStatement(usageMasterCreateSQL.toString(), new String[] { "id" });
+
+					ps.setString(1, floorType.getTenantId());
+					ps.setString(2, floorType.getCode());
+					PGobject jsonObject = new PGobject();
+					jsonObject.setType("json");
+					jsonObject.setValue(data);
+					ps.setObject(3,jsonObject);
+					ps.setString(6, floorType.getAuditDetails().getCreatedBy());
+					ps.setString(7, floorType.getAuditDetails().getLastModifiedBy());
+					ps.setBigDecimal(8, new BigDecimal(createdTime));
+					ps.setBigDecimal(9, new BigDecimal(createdTime));
 					return ps;
 				}
 			};
 
 			// The newly generated key will be saved in this object
 			final KeyHolder holder = new GeneratedKeyHolder();
-			jdbcTemplate.update(psc, holder);
-			propertyType.setId(Long.valueOf(holder.getKey().intValue()));
-
-
+			try {
+				jdbcTemplate.update(psc, holder);
+			}
+			catch (Exception e) {
+				throw new InvalidInputException(floorTypeRequest.getRequestInfo());
+			}
+			floorType.setId(holder.getKey().longValue());
 		}
-		ResponseInfo responseInfo=responseInfoFactory.createResponseInfoFromRequestInfo(propertyTypeRequest.getRequestInfo(),true);
 
-		PropertyTypeResponse propertyTypeResponse = new PropertyTypeResponse();
-
-		propertyTypeResponse.setPropertyTypes(propertyTypeRequest.getPropertyTypes());
-
-		propertyTypeResponse.setResponseInfo(responseInfo);
-
-		return propertyTypeResponse;
+		FloorTypeResponse floorTypeResponse = new FloorTypeResponse();
+		ResponseInfo responseInfo=responseInfoFactory.createResponseInfoFromRequestInfo(floorTypeRequest.getRequestInfo(),true);
+		floorTypeResponse.setFloorTypes(floorTypes);
+		floorTypeResponse.setResponseInfo(responseInfo);
+		return floorTypeResponse;
 	}
 
-
 	/**
-	 * Description : This method will use for update property type
+	 * <p>This method will update floor type object with the given details<p>
+	 * @author Prasad
+	 * @param floorTypeRequest
 	 * @param tenantId
-	 * @param propertyTypeResponse
-	 * @return
+	 * @param id
+	 * @return {@link FloorTypeRequest}
 	 */
 	@Override
-	public PropertyTypeResponse updatePropertyTypeMaster(String tenantId, Long id,PropertyTypeRequest propertyTypeRequest) {
+	public FloorTypeResponse updateFloorType(FloorTypeRequest floorTypeRequest, String tenantId, Integer id)
+			throws Exception {
 
-		for(PropertyType propertyType: propertyTypeRequest.getPropertyTypes()){
+		List<FloorType> floorTypes = floorTypeRequest.getFloorTypes();
 
-			Long modifiedTime=new Date().getTime();
 
-			String PropertyTypeUpdateSql = "update egpt_propertytypes_master set tenantId = ?, name = ?, code = ?, nameLocal = ?, description = ?, active = ?,"
-					+ "orderNumber = ?, lastmodifiedby = ?, lastmodifiedtime = ?   where id = id and tenantId = tenantId  ";
+		for (FloorType floorType : floorTypes ){
+
+
+			long updatedTime =new Date().getTime();
+
+			Gson gson=new GsonBuilder().setExclusionStrategies(new ExcludeFileds()).serializeNulls().create();
+
+			String data=gson.toJson(floorType);
+
+			StringBuffer updateFloorTypeSql=new StringBuffer();
+
+			updateFloorTypeSql.append("UPDATE egpt_floortype_master ")
+			.append(" SET tenantid = ? code = ?,")
+			.append(" data=?, createdby =?,")
+			.append(" lastModifiedBy =? ,createdTime = ?,lastModifiedtime= ?")
+			.append(" WHERE id = " + id);
+
 			final PreparedStatementCreator psc = new PreparedStatementCreator() {
 				@Override
 				public PreparedStatement createPreparedStatement(final Connection connection) throws SQLException {
-					final PreparedStatement ps = connection.prepareStatement(PropertyTypeUpdateSql, new String[] { "id" });
-					ps.setString(1, propertyType.getTenantId());
-					ps.setString(2, propertyType.getName());
-					ps.setString(3,propertyType.getCode());
-					ps.setString(4, propertyType.getNameLocal());
-					ps.setString(6, propertyType.getDescription());
-					ps.setBoolean(7, propertyType.getActive());
-					ps.setInt(8, propertyType.getOrderNumber());
-					ps.setString(9, propertyType.getAuditDetails().getLastModifiedBy());
-					ps.setLong(10, modifiedTime);
+					final PreparedStatement ps = connection.prepareStatement(updateFloorTypeSql.toString());
+					ps.setString(1, floorType.getTenantId());
+					ps.setString(2, floorType.getCode());
+					PGobject jsonObject = new PGobject();
+					jsonObject.setType("json");
+					jsonObject.setValue(data);
+					ps.setObject(3,jsonObject);
+					ps.setString(4, floorType.getAuditDetails().getCreatedBy());
+					ps.setString(5, floorType.getAuditDetails().getLastModifiedBy());
+					ps.setLong(6, floorType.getAuditDetails().getCreatedTime());
+					ps.setLong(7, updatedTime);
+
 					return ps;
 				}
 			};
+
 			jdbcTemplate.update(psc);
-
 		}
-		ResponseInfo responseInfo=responseInfoFactory.createResponseInfoFromRequestInfo(propertyTypeRequest.getRequestInfo(),true);
 
-		PropertyTypeResponse propertyTypeResponse=new PropertyTypeResponse();
-		propertyTypeResponse.setPropertyTypes(propertyTypeRequest.getPropertyTypes());
-		propertyTypeResponse.setResponseInfo(responseInfo);
-		return propertyTypeResponse;
+		FloorTypeResponse floorTypeResponse = new FloorTypeResponse();
+		floorTypeResponse.setFloorTypes(floorTypes);
+		ResponseInfo responseInfo=responseInfoFactory.createResponseInfoFromRequestInfo(floorTypeRequest.getRequestInfo(),true);
+		floorTypeResponse.setResponseInfo(responseInfo);
+
+		return floorTypeResponse;
+
+
+
 	}
 
-
+	/**
+	 * <P> This method will search the Wood type records based on the given parameters<p>
+	 * @author Prasad
+	 * @param requestInfo
+	 * @param tenantId
+	 * @param ids
+	 * @param name
+	 * @param code
+	 * @param nameLocal
+	 * @param pageSize
+	 * @param offSet
+	 * @return {@link WoodTypeResponse}
+	 */
 
 	@Override
-	public PropertyTypeResponse getPropertyTypeMaster(RequestInfo requestInfo, String tenantId, Integer[] ids, String name, String code, String nameLocal, Boolean active, Integer orderNumber, Integer pageSize, Integer offSet) {
+	public WoodTypeResponse getWoodTypes(RequestInfo requestInfo, String tenantId, Integer[] ids, String name,
+			String code, String nameLocal, Integer pageSize, Integer offSet) throws Exception {
+		StringBuffer woodTypeSearchSql = new StringBuffer();
 
-		StringBuffer propertyTypeSearchSql = new StringBuffer();
+		woodTypeSearchSql.append("select * from egpt_woodtypes_master where tenantid ='"+tenantId+"'");
 
-		propertyTypeSearchSql.append("select * from egpt_propertytypes_master where tenantid ='"+tenantId+"'");
 
 
 
 		if (ids!=null && ids.length>0){
 
-			String  propertyTypeIds= "";
+			String  florTypeIds= "";
 
 			int count = 1;
 			for (Integer id : ids){
 				if (count<ids.length)
-					propertyTypeIds = propertyTypeIds+id+",";
+					florTypeIds = florTypeIds+id+",";
 				else
-					propertyTypeIds = propertyTypeIds+id;
+					florTypeIds = florTypeIds+id;
+
+				count ++;
 
 			}
 
 
-			propertyTypeSearchSql.append(" AND id IN ("+propertyTypeIds+")");
+			woodTypeSearchSql.append(" AND id IN ("+florTypeIds+")");
 
 
 
@@ -580,40 +514,418 @@ public class MasterServiceImpl  implements Masterservice{
 
 
 
-		if ( name!=null && !name.isEmpty() )
-			propertyTypeSearchSql.append(" AND name ="+name);
+		StringBuffer dataSearch = new StringBuffer();
 
 		if (code!=null && !code.isEmpty())
-			propertyTypeSearchSql.append(" AND code ="+code);
+			woodTypeSearchSql.append(" AND code = '"+code+"'");
 
-		if ( nameLocal!=null && !nameLocal.isEmpty())
-			propertyTypeSearchSql.append(" AND  namelocal = "+nameLocal);
+		if(name!=null  || nameLocal!=null)
+			dataSearch.append(" AND data = '");
 
-		if ( active!=null )
-			propertyTypeSearchSql.append(" AND active ="+active);
-		if ( orderNumber!=null)
-			propertyTypeSearchSql.append(" AND orderNumber ="+orderNumber);
+		if (name!=null && !name.isEmpty())
+			dataSearch.append("{ \"name\":\""+name+"\"");
 
-		if ( pageSize == -1 )
-			pageSize = 30;
-		if ( offSet == -1 )
-			offSet = 0;
+		if (nameLocal!=null && !nameLocal.isEmpty()){
+			if(name!=null && !name.isEmpty())
+				dataSearch.append(" , {\"nameLocal\":\""+nameLocal+"\"");
+			else
+				dataSearch.append("{\"nameLocal\":\""+nameLocal+"\"");	
+		}
+
+		if(name!=null || nameLocal!=null)
+			dataSearch.append("}'");
+
+		woodTypeSearchSql.append(dataSearch.toString());
+
+		if ( pageSize == null )
+			pageSize = Integer.valueOf( environment.getProperty("default.page.size").trim());
+		if ( offSet == null )
+			offSet = Integer.valueOf( environment.getProperty("default.offset").trim());
+
+		woodTypeSearchSql.append("offset "+offSet+ " limit "+pageSize);
 
 
-		PropertyTypeResponse propertyTypeResponse = new PropertyTypeResponse();
+		WoodTypeResponse woodTypeResponse = new WoodTypeResponse();
 
 		try {
 
-			List<PropertyType> propertyTypes = jdbcTemplate.query(propertyTypeSearchSql.toString(), new BeanPropertyRowMapper(Department.class));
+			List<WoodType> woodTypes = jdbcTemplate.query(woodTypeSearchSql.toString(), new BeanPropertyRowMapper(WoodType.class));
 			ResponseInfo responseInfo=responseInfoFactory.createResponseInfoFromRequestInfo(requestInfo,true);
 
-			propertyTypeResponse.setPropertyTypes(propertyTypes);
-			propertyTypeResponse.setResponseInfo(responseInfo);
+			woodTypeResponse.setWoodTypes(woodTypes);
+			woodTypeResponse.setResponseInfo(responseInfo);
+		}
+		catch (Exception e) {
+			throw new InvalidInputException(requestInfo);
+		}
+		return woodTypeResponse;
+
+
+
+	}
+
+	/**
+	 * <p>Thos method will insert the wood type record in the database<p>
+	 * @author Prasad
+	 * @param woodTypeRequest
+	 * @param tenantId
+	 * @return {@link WoodTypeResponse}
+	 */
+	@Override
+	public WoodTypeResponse createWoodType(WoodTypeRequest woodTypeRequest, String tenantId) throws Exception {
+		List<WoodType> woodTypes = woodTypeRequest.getWoodTypes();
+
+		for ( WoodType woodType : woodTypes ){
+
+			long createdTime =new Date().getTime();
+
+			StringBuffer usageMasterCreateSQL=new StringBuffer();
+
+
+			Gson gson=new GsonBuilder().setExclusionStrategies(new ExcludeFileds()).serializeNulls().create();
+
+			String data=gson.toJson(woodType);
+
+			usageMasterCreateSQL.append("INSERT INTO egpt_woodtypes_master")
+			.append(" ( tenantid,code,data,createdby,lastModifiedBy, createdTime,lastModifiedTime) ")
+			.append(" VALUES( ?, ?, ?, ?, ?, ?,?)");
+
+			final PreparedStatementCreator psc = new PreparedStatementCreator() {
+
+				@Override
+				public PreparedStatement createPreparedStatement(final Connection connection) throws SQLException {
+
+					final PreparedStatement ps = connection.prepareStatement(usageMasterCreateSQL.toString(), new String[] { "id" });
+
+					PGobject jsonObject = new PGobject();
+					jsonObject.setType("json");
+					jsonObject.setValue(data);
+					ps.setString(1, woodType.getTenantId());
+					ps.setString(2, woodType.getCode());
+					ps.setObject(3, jsonObject);
+					ps.setString(4, woodType.getAuditDetails().getCreatedBy());
+					ps.setString(5, woodType.getAuditDetails().getLastModifiedBy());
+					ps.setBigDecimal(6, new BigDecimal(createdTime));
+					ps.setBigDecimal(7, new BigDecimal(createdTime));
+					return ps;
+				}
+			};
+
+			// The newly generated key will be saved in this object
+			final KeyHolder holder = new GeneratedKeyHolder();
+			try {
+				jdbcTemplate.update(psc, holder);
+			}
+			catch (Exception e) {
+				throw new InvalidInputException(woodTypeRequest.getRequestInfo());
+			}
+			woodType.setId(holder.getKey().longValue());
+		}
+
+		WoodTypeResponse woodTypeResponse = new WoodTypeResponse();
+		ResponseInfo responseInfo=responseInfoFactory.createResponseInfoFromRequestInfo(woodTypeRequest.getRequestInfo(),true);
+
+		woodTypeResponse.setWoodTypes(woodTypes);
+		woodTypeResponse.setResponseInfo(responseInfo);
+		return woodTypeResponse;
+
+	}
+
+
+	/**
+	 * <p> This method will update the wood type object for the given Id for given wood type object<p>
+	 * @author Prasad
+	 * @param woodTypeRequest
+	 * @param tenantId
+	 * @param id
+	 * @return {@link WoodTypeResponse}
+	 */
+	@Override
+	public WoodTypeResponse updateWoodType(WoodTypeRequest woodTypeRequest, String tenantId, Integer id)
+			throws Exception {
+
+
+		List<WoodType> woodTypes = woodTypeRequest.getWoodTypes();
+
+
+		for (WoodType woodType : woodTypes ){
+
+
+			long updatedTime =new Date().getTime();
+
+			StringBuffer updateFloorTypeSql=new StringBuffer();
+
+			Gson gson=new GsonBuilder().setExclusionStrategies(new ExcludeFileds()).serializeNulls().create();
+
+			String data=gson.toJson(woodType);
+
+			updateFloorTypeSql.append("UPDATE egpt_woodtypes_master ")
+			.append(" SET tenantid = ?, code = ?,")
+			.append(" data = ?, createdby =?")
+			.append(" lastModifiedBy =? ,createdTime = ?,lastModifiedTime= ?")
+			.append(" WHERE id = " + id);
+
+			final PreparedStatementCreator psc = new PreparedStatementCreator() {
+				@Override
+				public PreparedStatement createPreparedStatement(final Connection connection) throws SQLException {
+					final PreparedStatement ps = connection.prepareStatement(updateFloorTypeSql.toString());
+					ps.setString(1, woodType.getTenantId());
+					ps.setString(2, woodType.getCode());
+					PGobject jsonObject = new PGobject();
+					jsonObject.setType("json");
+					jsonObject.setValue(data);
+					ps.setObject(3,jsonObject );
+					ps.setString(4, woodType.getAuditDetails().getCreatedBy());
+					ps.setString(5, woodType.getAuditDetails().getLastModifiedBy());
+					ps.setLong(6, woodType.getAuditDetails().getCreatedTime());
+					ps.setBigDecimal(7, new BigDecimal(updatedTime));
+
+					return ps;
+				}
+			};
+
+			jdbcTemplate.update(psc);
+		}
+
+		WoodTypeResponse woodTypeResponse = new WoodTypeResponse();
+		ResponseInfo responseInfo=responseInfoFactory.createResponseInfoFromRequestInfo(woodTypeRequest.getRequestInfo(),true);
+
+		woodTypeResponse.setWoodTypes(woodTypes);
+		woodTypeResponse.setResponseInfo(responseInfo);
+		return woodTypeResponse;
+
+
+
+	}
+
+	/**
+	 * 
+	 * <P> This method will search for the roof type objects for the given parameters and returns the matched
+	 * roof type Objects<p>
+	 * @author Prasad
+	 * @param requestInfo
+	 * @param tenantId
+	 * @param ids
+	 * @param name
+	 * @param code
+	 * @param nameLocal
+	 * @param pageSize
+	 * @param offSet
+	 * @return {@link RoofTypeResponse}
+	 */
+	@Override
+	public RoofTypeResponse getRoofypes(RequestInfo requestInfo, String tenantId, Integer[] ids, String name,
+			String code, String nameLocal, Integer pageSize, Integer offSet) throws Exception {
+
+		StringBuffer roofTypeSearchSql = new StringBuffer();
+
+		roofTypeSearchSql.append("select * from egpt_rooftypes_master where tenantid ='"+tenantId+"'");
+
+
+
+
+		if (ids!=null && ids.length>0){
+
+			String  florTypeIds= "";
+
+			int count = 1;
+			for (Integer id : ids){
+				if (count<ids.length)
+					florTypeIds = florTypeIds+id+",";
+				else
+					florTypeIds = florTypeIds+id;
+
+				count++;
+
+			}
+
+
+			roofTypeSearchSql.append(" AND id IN ("+florTypeIds+")");
+
+
+
+		}
+
+
+		if (code!=null && !code.isEmpty())
+			roofTypeSearchSql.append(" AND code ="+code);
+
+
+		StringBuffer dataSearch = new StringBuffer();
+
+
+		if(name!=null || nameLocal!=null)
+			dataSearch.append(" AND data = '");
+
+		if (name!=null && !name.isEmpty())
+			dataSearch.append("{ \"name\":\""+name+"\"");
+
+		if (nameLocal!=null && !nameLocal.isEmpty()){
+			if(name!=null && !name.isEmpty())
+				dataSearch.append(" , {\"nameLocal\":\""+nameLocal+"\"");
+			else
+				dataSearch.append("{\"nameLocal\":\""+nameLocal+"\"");	
+		}
+
+
+		if(name!=null || nameLocal!=null)
+			dataSearch.append("}'");
+
+		roofTypeSearchSql.append(dataSearch.toString());
+
+
+		if ( pageSize == null )
+			pageSize = Integer.valueOf( environment.getProperty("default.page.size").trim());
+		if ( offSet ==  null )
+			offSet = Integer.valueOf( environment.getProperty("default.offset").trim());
+
+		roofTypeSearchSql.append("offset "+offSet+" limit "+pageSize );
+
+
+		RoofTypeResponse roofTypeResponse = new RoofTypeResponse();
+
+		try {
+
+			List<RoofType> roofTypes = jdbcTemplate.query(roofTypeSearchSql.toString(), new BeanPropertyRowMapper(RoofType.class));
+			ResponseInfo responseInfo=responseInfoFactory.createResponseInfoFromRequestInfo(requestInfo,true);
+
+			roofTypeResponse.setRoofTypes(roofTypes);
+			roofTypeResponse.setResponseInfo(responseInfo);
 		}
 		catch (Exception e) {
 			throw new PropertySearchException("invalid input",requestInfo);
 		}
-		return propertyTypeResponse;
+		return roofTypeResponse;
+
+
+
+	}
+
+	/**
+	 * <p>This methhod will insert the given roof object in the database</p>
+	 * @author Prasad
+	 * @param roofTypeRequest
+	 * @param tenantId
+	 * @return {@link RoofTypeResponse}
+	 */
+	@Override
+	public RoofTypeResponse createRoofype(RoofTypeRequest roofTypeRequest, String tenantId) throws Exception {
+		List<RoofType> roofTypes = roofTypeRequest.getRoofTypes();
+
+		for ( RoofType roofType : roofTypes ){
+
+			long createdTime =new Date().getTime();
+
+			Gson gson=new GsonBuilder().setExclusionStrategies(new ExcludeFileds()).serializeNulls().create();
+
+			String data=gson.toJson(roofType);
+
+			StringBuffer usageMasterCreateSQL=new StringBuffer();
+
+			usageMasterCreateSQL.append("INSERT INTO egpt_rooftypes_master")
+			.append(" ( tenantid,code,data,createdby,lastModifiedBy, createdTime,lastModifiedTime) ")
+			.append(" VALUES( ?, ?, ?, ?, ?,?,?)");
+
+			final PreparedStatementCreator psc = new PreparedStatementCreator() {
+
+				@Override
+				public PreparedStatement createPreparedStatement(final Connection connection) throws SQLException {
+
+					final PreparedStatement ps = connection.prepareStatement(usageMasterCreateSQL.toString(), new String[] { "id" });
+
+					ps.setString(1, roofType.getTenantId());
+					ps.setString(2, roofType.getCode());
+					PGobject jsonObject = new PGobject();
+					jsonObject.setType("json");
+					jsonObject.setValue(data);
+					ps.setObject(3,jsonObject);
+					ps.setString(4, roofType.getAuditDetails().getCreatedBy());
+					ps.setString(5, roofType.getAuditDetails().getLastModifiedBy());
+					ps.setLong(6, createdTime);
+					ps.setLong(7, createdTime);
+					return ps;
+				}
+			};
+
+			// The newly generated key will be saved in this object
+			final KeyHolder holder = new GeneratedKeyHolder();
+			try {
+				jdbcTemplate.update(psc, holder);
+			}
+			catch (Exception e) {
+				throw new InvalidInputException(roofTypeRequest.getRequestInfo());
+			}
+			roofType.setId(holder.getKey().longValue());
+		}
+
+		RoofTypeResponse roofTypeResponse = new RoofTypeResponse();
+		ResponseInfo responseInfo=responseInfoFactory.createResponseInfoFromRequestInfo(roofTypeRequest.getRequestInfo(),true);
+
+		roofTypeResponse.setRoofTypes(roofTypes);
+		roofTypeResponse.setResponseInfo(responseInfo);
+		return roofTypeResponse;
+	}
+
+	/**
+	 * <p>This method will update the given rooftype object for the given rooftype Id </p>
+	 * @author Prasad
+	 * @param roofTypeRequest
+	 * @param tenantId
+	 * @param id
+	 * @return {@link RoofTypeResponse}
+	 */
+
+	@Override
+	public RoofTypeResponse updateRoofType(RoofTypeRequest roofTypeRequest, String tenantId, Integer id)
+			throws Exception {
+		List<RoofType> roofTypes = roofTypeRequest.getRoofTypes();
+
+
+		for (RoofType roofType : roofTypes ){
+
+
+			long updatedTime =new Date().getTime();
+
+			StringBuffer updateFloorTypeSql=new StringBuffer();
+			Gson gson=new GsonBuilder().setExclusionStrategies(new ExcludeFileds()).serializeNulls().create();
+
+			String data=gson.toJson(roofType);
+
+			updateFloorTypeSql.append("UPDATE egpt_rooftypes_master ")
+			.append(" SET tenantid = ?, code = ?,")
+			.append(" data=?, createdby =?")
+			.append(" lastModifiedBy =? ,createdTime = ?,lastModifiedTime= ?")
+			.append(" WHERE id = " + id);
+
+			final PreparedStatementCreator psc = new PreparedStatementCreator() {
+				@Override
+				public PreparedStatement createPreparedStatement(final Connection connection) throws SQLException {
+					final PreparedStatement ps = connection.prepareStatement(updateFloorTypeSql.toString());
+					ps.setString(1, roofType.getTenantId());
+					ps.setString(2, roofType.getCode());
+					PGobject jsonObject = new PGobject();
+					jsonObject.setType("json");
+					jsonObject.setValue(data);
+					ps.setObject(3, jsonObject);
+					ps.setString(4, roofType.getAuditDetails().getCreatedBy());
+					ps.setString(5, roofType.getAuditDetails().getLastModifiedBy());
+					ps.setLong(6, roofType.getAuditDetails().getCreatedTime());
+					ps.setLong(7, updatedTime);
+
+					return ps;
+				}
+			};
+
+			jdbcTemplate.update(psc);
+		}
+
+		RoofTypeResponse roofTypeResponse = new RoofTypeResponse();
+		ResponseInfo responseInfo=responseInfoFactory.createResponseInfoFromRequestInfo(roofTypeRequest.getRequestInfo(),true);
+
+		roofTypeResponse.setRoofTypes(roofTypes);
+		roofTypeResponse.setResponseInfo(responseInfo);
+		return roofTypeResponse;
+
 
 	}
 
