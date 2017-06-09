@@ -12,6 +12,6 @@ public class ExcludeFileds implements ExclusionStrategy {
 
 		return (f.getName().equals("id") || f.getName().equals("tenantId") || f.getName().equals("createdBy")
 				|| f.getName().equals("lastModifiedBy") || f.getName().equals("createdTime")
-				|| f.getName().equals("lastModifiedTime"));
+				);
 	}
 }

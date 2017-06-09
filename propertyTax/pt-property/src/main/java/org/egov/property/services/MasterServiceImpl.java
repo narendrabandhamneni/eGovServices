@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
+import org.egov.models.AuditDetails;
 import org.egov.models.Department;
 import org.egov.models.DepartmentRequest;
 import org.egov.models.DepartmentResponseInfo;
@@ -171,7 +172,7 @@ public class MasterServiceImpl  implements Masterservice{
 
 	@Override
 	public DepartmentResponseInfo getDepartmentMaster(RequestInfo requestInfo, String tenantId, Integer[] ids, String category, String name, String code, String nameLocal, Integer pageSize, Integer offSet) {
-
+		Gson gson=new GsonBuilder().setExclusionStrategies(new ExcludeFileds()).serializeNulls().create();
 		StringBuffer departmentSearchSql = new StringBuffer();
 
 		departmentSearchSql.append("select * from egpt_department_master where tenantid ='"+tenantId+"'");
@@ -200,22 +201,22 @@ public class MasterServiceImpl  implements Masterservice{
 			departmentSearchSql.append(" AND code = '"+code+"'");
 
 		if(name!=null || category!=null || nameLocal!=null)
-			dataSearch.append(" AND data = '");
+			dataSearch.append(" AND data @> '");
 
 		if (name!=null && !name.isEmpty())
 			dataSearch.append("{ \"name\":\""+name+"\"");
 
 		if (nameLocal!=null && !nameLocal.isEmpty()){
 			if(name!=null && !name.isEmpty())
-				dataSearch.append(" , {\"nameLocal\":\""+nameLocal+"\"");
+				dataSearch.append(" , \"nameLocal\":\""+nameLocal+"\"");
 			else
 				dataSearch.append("{\"nameLocal\":\""+nameLocal+"\"");	
 		}
 		if ( category!=null &&  !category.isEmpty()  ){
 			if( nameLocal!=null && !nameLocal.isEmpty())
-				dataSearch.append(" ,  {\"category\":\""+category+"\"");
+				dataSearch.append(" , \"category\":\""+category+"\"");
 			else if( name!=null && !name.isEmpty())
-				dataSearch.append(" ,  {\"category\":\""+category+"\"");
+				dataSearch.append(" , \"category\":\""+category+"\"");
 			else
 				dataSearch.append("{\"category\":\""+category+"\"");
 		}	
@@ -236,10 +237,18 @@ public class MasterServiceImpl  implements Masterservice{
 
 		
 			
-			List<Department> department = jdbcTemplate.query(departmentSearchSql.toString(), new BeanPropertyRowMapper(Department.class));
+			List<Department> departments = jdbcTemplate.query(departmentSearchSql.toString(), new BeanPropertyRowMapper(Department.class));
+			for (Department department:departments){
+			Department departMentData=	gson.fromJson(department.getData(),Department.class);
+			department.setCategory(departMentData.getCategory());
+			department.setName(departMentData.getName());
+			department.setNameLocal(departMentData.getNameLocal());
+			department.setDescription(departMentData.getDescription());
+			department.setAuditDetails(departMentData.getAuditDetails());
+			}
 			ResponseInfo responseInfo=responseInfoFactory.createResponseInfoFromRequestInfo(requestInfo,true);
 
-			departmentResponse.setDepartments(department);
+			departmentResponse.setDepartments(departments);
 			departmentResponse.setResponseInfo(responseInfo);
 		}
 		catch (Exception e) {
@@ -288,10 +297,7 @@ public class MasterServiceImpl  implements Masterservice{
 
 			}
 
-
 			floorTypeSearchSql.append(" AND id IN ("+florTypeIds+")");
-
-
 
 		}
 
@@ -308,7 +314,7 @@ public class MasterServiceImpl  implements Masterservice{
 
 		if (nameLocal!=null && !nameLocal.isEmpty()){
 			if(name!=null && !name.isEmpty())
-				dataSearch.append(" , {\"nameLocal\":\""+nameLocal+"\"");
+				dataSearch.append(" , \"nameLocal\":\""+nameLocal+"\"");
 			else
 				dataSearch.append("{\"nameLocal\":\""+nameLocal+"\"");	
 		}
@@ -539,7 +545,7 @@ public class MasterServiceImpl  implements Masterservice{
 
 		if (nameLocal!=null && !nameLocal.isEmpty()){
 			if(name!=null && !name.isEmpty())
-				dataSearch.append(" , {\"nameLocal\":\""+nameLocal+"\"");
+				dataSearch.append(" ,\"nameLocal\":\""+nameLocal+"\"");
 			else
 				dataSearch.append("{\"nameLocal\":\""+nameLocal+"\"");	
 		}
@@ -774,7 +780,7 @@ public class MasterServiceImpl  implements Masterservice{
 
 		if (nameLocal!=null && !nameLocal.isEmpty()){
 			if(name!=null && !name.isEmpty())
-				dataSearch.append(" , {\"nameLocal\":\""+nameLocal+"\"");
+				dataSearch.append(" , \"nameLocal\":\""+nameLocal+"\"");
 			else
 				dataSearch.append("{\"nameLocal\":\""+nameLocal+"\"");	
 		}
@@ -1204,7 +1210,7 @@ public class MasterServiceImpl  implements Masterservice{
 
 	        if (nameLocal!=null && !nameLocal.isEmpty()){
 	            if(name!=null && !name.isEmpty())
-	                dataSearch.append(" , {\"nameLocal\":\""+nameLocal+"\"");
+	                dataSearch.append(" ,\"nameLocal\":\""+nameLocal+"\"");
 	            else
 	                dataSearch.append("{\"nameLocal\":\""+nameLocal+"\""); 
 
@@ -1212,19 +1218,20 @@ public class MasterServiceImpl  implements Masterservice{
 
 	        if ( active!=null){
 	            if( nameLocal!=null && !nameLocal.isEmpty())
-	                dataSearch.append(" ,  {\"active\":\""+active+"\"");
+	                dataSearch.append(" ,\"active\":\""+active+"\"");
 	            else if( name!=null && !name.isEmpty())
-	                dataSearch.append(" ,  {\"active\":\""+active+"\"");
+	                dataSearch.append(" ,\"active\":\""+active+"\"");
 	            else
 	                dataSearch.append("{\"active\":\""+active+"\"");
 	        }   
 
 	        if ( orderNumber!=null){
 	            if( name==null  && nameLocal==null && active == null)
-	                dataSearch.append(" ,  {\"orderNumber\":\""+orderNumber+"\"");
-
+	            	 dataSearch.append("{\"orderNumber\":\""+orderNumber+"\"");
+	         
 	            else
-	                dataSearch.append("{\"orderNumber\":\""+orderNumber+"\"");
+	            	dataSearch.append(" ,\"orderNumber\":\""+orderNumber+"\"");
+	               
 	        }   
 
 
@@ -1401,7 +1408,7 @@ public class MasterServiceImpl  implements Masterservice{
 
 	        if (nameLocal!=null && !nameLocal.isEmpty()){
 	            if(name!=null && !name.isEmpty())
-	                dataSearch.append(" , {\"nameLocal\":\""+nameLocal+"\"");
+	                dataSearch.append(" ,\"nameLocal\":\""+nameLocal+"\"");
 	            else
 	                dataSearch.append("{\"nameLocal\":\""+nameLocal+"\""); 
 
@@ -1409,19 +1416,19 @@ public class MasterServiceImpl  implements Masterservice{
 
 	        if ( active!=null){
 	            if( nameLocal!=null && !nameLocal.isEmpty())
-	                dataSearch.append(" ,  {\"active\":\""+active+"\"");
+	                dataSearch.append(" ,  \"active\":\""+active+"\"");
 	            else if( name!=null && !name.isEmpty())
-	                dataSearch.append(" ,  {\"active\":\""+active+"\"");
+	                dataSearch.append(" ,  \"active\":\""+active+"\"");
 	            else
 	                dataSearch.append("{\"active\":\""+active+"\"");
 	        }   
 
 	        if ( orderNumber!=null){
 	            if( name==null  && nameLocal==null && active == null)
-	                dataSearch.append(" ,  {\"orderNumber\":\""+orderNumber+"\"");
+	            	dataSearch.append("{\"orderNumber\":\""+orderNumber+"\"");
 
 	            else
-	                dataSearch.append("{\"orderNumber\":\""+orderNumber+"\"");
+	            dataSearch.append(" ,\"orderNumber\":\""+orderNumber+"\"");
 	        }   
 
 
