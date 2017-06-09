@@ -12,6 +12,12 @@ import org.egov.models.DepartmentResponseInfo;
 import org.egov.models.FloorType;
 import org.egov.models.FloorTypeRequest;
 import org.egov.models.FloorTypeResponse;
+import org.egov.models.OccuapancyMaster;
+import org.egov.models.OccuapancyMasterRequest;
+import org.egov.models.OccuapancyMasterResponse;
+import org.egov.models.PropertyType;
+import org.egov.models.PropertyTypeRequest;
+import org.egov.models.PropertyTypeResponse;
 import org.egov.models.RequestInfo;
 import org.egov.models.ResponseInfo;
 import org.egov.models.ResponseInfoFactory;
@@ -48,6 +54,7 @@ import com.google.gson.GsonBuilder;
  */
 
 @Service
+@SuppressWarnings("rawtypes")
 public class MasterServiceImpl  implements Masterservice{
 
 	@Autowired
@@ -227,6 +234,7 @@ public class MasterServiceImpl  implements Masterservice{
 
 		try {
 
+		
 			List<Department> department = jdbcTemplate.query(departmentSearchSql.toString(), new BeanPropertyRowMapper(Department.class));
 			ResponseInfo responseInfo=responseInfoFactory.createResponseInfoFromRequestInfo(requestInfo,true);
 
@@ -1041,8 +1049,401 @@ public class MasterServiceImpl  implements Masterservice{
 		structureClassResponse.setStructureClasses(structureClassRequest.getStructureClasses());
 		structureClassResponse.setResponseInfo(responseInfo);
 		return structureClassResponse;
-		
-	
-
 	}
+		
+		/**
+	     * Description : This method will use for creating property type
+	     * @param tenantId
+	     * @param propertyTypeRequest
+	     * @return
+	     */
+
+	    @Override
+	    public PropertyTypeResponse createPropertyTypeMaster(String tenantId, PropertyTypeRequest propertyTypeRequest) {
+	        // TODO Auto-generated method stub
+
+	        for(PropertyType propertyType:propertyTypeRequest.getPropertyTypes()){
+
+	            Long createdTime = new Date().getTime();
+
+	            Gson gson=new GsonBuilder().setExclusionStrategies(new ExcludeFileds()).serializeNulls().create();
+
+	            String data=gson.toJson(propertyType);
+
+	            StringBuffer propertyTypeQuery=new StringBuffer();
+	            propertyTypeQuery.append("insert into egpt_propertytypes_master(tenantId,code,data,");
+	            propertyTypeQuery.append("createdBy, lastModifiedBy, createdTime,lastModifiedTime)");
+	            propertyTypeQuery.append(" values(?,?,?,?,?,?,?)");
+
+	            final PreparedStatementCreator psc = new PreparedStatementCreator() {
+	                @Override
+	                public PreparedStatement createPreparedStatement(final Connection connection) throws SQLException {
+	                    final PreparedStatement ps = connection.prepareStatement(propertyTypeQuery.toString(), new String[] { "id" });
+	                    ps.setString(1, propertyType.getTenantId());
+	                    ps.setString(2, propertyType.getCode());
+	                    PGobject jsonObject = new PGobject();
+	                    jsonObject.setType("json");
+	                    jsonObject.setValue(data);
+	                    ps.setObject(3,jsonObject);
+	                    ps.setString(4, propertyType.getAuditDetails().getCreatedBy());
+	                    ps.setString(5, propertyType.getAuditDetails().getLastModifiedBy());
+	                    ps.setLong(6, createdTime);
+	                    ps.setLong(7, createdTime);
+	                    return ps;
+	                }
+	            };
+
+	            // The newly generated key will be saved in this object
+	            final KeyHolder holder = new GeneratedKeyHolder();
+	            jdbcTemplate.update(psc, holder);
+	            propertyType.setId(Long.valueOf(holder.getKey().intValue()));
+
+
+	        }
+	        ResponseInfo responseInfo=responseInfoFactory.createResponseInfoFromRequestInfo(propertyTypeRequest.getRequestInfo(),true);
+
+	        PropertyTypeResponse propertyTypeResponse = new PropertyTypeResponse();
+
+	        propertyTypeResponse.setPropertyTypes(propertyTypeRequest.getPropertyTypes());
+
+	        propertyTypeResponse.setResponseInfo(responseInfo);
+
+	        return propertyTypeResponse;
+	    }
+
+
+	    /**
+	     * Description : This method will use for update property type
+	     * @param tenantId
+	     * @param propertyTypeResponse
+	     * @return
+	     */
+	    @Override
+	    public PropertyTypeResponse updatePropertyTypeMaster(String tenantId, Long id,PropertyTypeRequest propertyTypeRequest) {
+
+	        for(PropertyType propertyType: propertyTypeRequest.getPropertyTypes()){
+
+
+	            Long modifiedTime=new Date().getTime();
+
+	            Gson gson=new GsonBuilder().setExclusionStrategies(new ExcludeFileds()).serializeNulls().create();
+
+	            String data=gson.toJson(propertyType);
+
+	            String departmentTypeUpdate = "UPDATE egpt_department_master set tenantId = ?, code = ?,data = ?, "
+	                    + "lastModifiedBy = ?, lastModifiedTime = ? where id = " +id;
+
+
+	            final PreparedStatementCreator psc = new PreparedStatementCreator() {
+	                @Override
+	                public PreparedStatement createPreparedStatement(final Connection connection) throws SQLException {
+	                    final PreparedStatement ps = connection.prepareStatement(departmentTypeUpdate, new String[] { "id" });
+	                    ps.setString(1, propertyType.getTenantId());  
+	                    ps.setString(2,propertyType.getCode());
+	                    PGobject jsonObject = new PGobject();
+	                    jsonObject.setType("json");
+	                    jsonObject.setValue(data);
+	                    ps.setObject(3,jsonObject);
+	                    ps.setString(4, propertyType.getAuditDetails().getLastModifiedBy());
+	                    ps.setLong(5, modifiedTime);
+	                    return ps;
+	                }
+	            };
+	            jdbcTemplate.update(psc);
+
+	        }
+	        ResponseInfo responseInfo=responseInfoFactory.createResponseInfoFromRequestInfo(propertyTypeRequest.getRequestInfo(),true);
+
+	        PropertyTypeResponse propertyTypeResponse=new PropertyTypeResponse();
+	        propertyTypeResponse.setPropertyTypes(propertyTypeRequest.getPropertyTypes());
+	        propertyTypeResponse.setResponseInfo(responseInfo);
+	        return propertyTypeResponse;
+	    }
+
+
+
+	    @Override
+	    public PropertyTypeResponse getPropertyTypeMaster(RequestInfo requestInfo, String tenantId, Integer[] ids, String name, String code, String nameLocal, Boolean active, Integer orderNumber, Integer pageSize, Integer offSet) {
+
+	        StringBuffer propertyTypeSearchSql = new StringBuffer();
+
+	        propertyTypeSearchSql.append("select * from egpt_propertytypes_master where tenantid ='"+tenantId+"'");
+
+
+
+	        if (ids!=null && ids.length>0){
+
+	            String  propertyTypeIds= "";
+
+	            int count = 1;
+	            for (Integer id : ids){
+	                if (count<ids.length)
+	                    propertyTypeIds = propertyTypeIds+id+",";
+	                else
+	                    propertyTypeIds = propertyTypeIds+id;
+	                count++;
+
+	            }
+
+
+	            propertyTypeSearchSql.append(" AND id IN ("+propertyTypeIds+")");
+
+
+
+	        }
+
+	        StringBuffer dataSearch = new StringBuffer();
+
+	        if (code!=null && !code.isEmpty())
+	            propertyTypeSearchSql.append(" AND code = '"+code+"'");
+
+
+	        if (name!=null && !name.isEmpty())
+	            dataSearch.append("{ \"name\":\""+name+"\"");
+
+	        if (nameLocal!=null && !nameLocal.isEmpty()){
+	            if(name!=null && !name.isEmpty())
+	                dataSearch.append(" , {\"nameLocal\":\""+nameLocal+"\"");
+	            else
+	                dataSearch.append("{\"nameLocal\":\""+nameLocal+"\""); 
+
+	        }
+
+	        if ( active!=null){
+	            if( nameLocal!=null && !nameLocal.isEmpty())
+	                dataSearch.append(" ,  {\"active\":\""+active+"\"");
+	            else if( name!=null && !name.isEmpty())
+	                dataSearch.append(" ,  {\"active\":\""+active+"\"");
+	            else
+	                dataSearch.append("{\"active\":\""+active+"\"");
+	        }   
+
+	        if ( orderNumber!=null){
+	            if( name==null  && nameLocal==null && active == null)
+	                dataSearch.append(" ,  {\"orderNumber\":\""+orderNumber+"\"");
+
+	            else
+	                dataSearch.append("{\"orderNumber\":\""+orderNumber+"\"");
+	        }   
+
+
+	        if ( pageSize == null)
+	            pageSize = 30;
+	        if ( offSet == null )
+	            offSet = 0;
+	        propertyTypeSearchSql.append("offset "+offSet+ " limit "+pageSize);
+
+	        PropertyTypeResponse propertyTypeResponse = new PropertyTypeResponse();
+
+	        try {
+
+	            List<PropertyType> propertyTypes = jdbcTemplate.query(propertyTypeSearchSql.toString(), new BeanPropertyRowMapper(PropertyType.class));
+	            ResponseInfo responseInfo=responseInfoFactory.createResponseInfoFromRequestInfo(requestInfo,true);
+
+	            propertyTypeResponse.setPropertyTypes(propertyTypes);
+	            propertyTypeResponse.setResponseInfo(responseInfo);
+	        }
+	        catch (Exception e) {
+	            throw new PropertySearchException("invalid input",requestInfo);
+	        }
+	        return propertyTypeResponse;
+
+	    }
+
+	    /**
+	     * Description : This method will use for creating Occuapancy
+	     * @param tenantId
+	     * @param occuapancyRequest
+	     * @return
+	     */
+
+	    @Override
+	    public OccuapancyMasterResponse createOccuapancyMaster(String tenantId, OccuapancyMasterRequest occuapancyMasterRequest) {
+	        // TODO Auto-generated method stub
+
+	        for(OccuapancyMaster occuapancy: occuapancyMasterRequest.getOccuapancyMasters()){
+
+	            Long createdTime = new Date().getTime();
+
+	            Gson gson=new GsonBuilder().setExclusionStrategies(new ExcludeFileds()).serializeNulls().create();
+
+	            String data=gson.toJson(occuapancy);
+
+	            StringBuffer occuapancyQuery=new StringBuffer();
+	            occuapancyQuery.append("insert into egpt_occuapancy_master(tenantId,code,data,");
+	            occuapancyQuery.append("createdBy, lastModifiedBy, createdTime,lastModifiedTime)");
+	            occuapancyQuery.append(" values(?,?,?,?,?,?,?)");
+
+	            final PreparedStatementCreator psc = new PreparedStatementCreator() {
+	                @Override
+	                public PreparedStatement createPreparedStatement(final Connection connection) throws SQLException {
+	                    final PreparedStatement ps = connection.prepareStatement(occuapancyQuery.toString(), new String[] { "id" });
+	                    ps.setString(1, occuapancy.getTenantId());
+	                    ps.setString(2, occuapancy.getCode());
+	                    PGobject jsonObject = new PGobject();
+	                    jsonObject.setType("json");
+	                    jsonObject.setValue(data);
+	                    ps.setObject(3,jsonObject);
+	                    ps.setString(4, occuapancy.getAuditDetails().getCreatedBy());
+	                    ps.setString(5, occuapancy.getAuditDetails().getLastModifiedBy());
+	                    ps.setLong(6, createdTime);
+	                    ps.setLong(7, createdTime);
+	                    return ps;
+	                }
+	            };
+
+	            // The newly generated key will be saved in this object
+	            final KeyHolder holder = new GeneratedKeyHolder();
+	            jdbcTemplate.update(psc, holder);
+	            occuapancy.setId(Long.valueOf(holder.getKey().intValue()));
+
+	        }
+	        ResponseInfo responseInfo=responseInfoFactory.createResponseInfoFromRequestInfo(occuapancyMasterRequest.getRequestInfo(),true);
+
+	        OccuapancyMasterResponse occuapancyMasterResponse = new OccuapancyMasterResponse();
+
+	        occuapancyMasterResponse.setOccuapancyMasters(occuapancyMasterRequest.getOccuapancyMasters());
+
+	        occuapancyMasterResponse.setResponseInfo(responseInfo);
+
+	        return occuapancyMasterResponse;
+	    }
+
+	    /**
+	     * Description : This method will use for update occuapancy 
+	     * @param tenantId
+	     * @param propertyTypeResponse
+	     * @return
+	     */
+	    @Override
+	    public OccuapancyMasterResponse updateOccuapancyMaster(String tenantId, Long id, OccuapancyMasterRequest occuapancyRequest) {
+
+	        for(OccuapancyMaster occuapancyMaster: occuapancyRequest.getOccuapancyMasters()){
+
+
+	            Long modifiedTime=new Date().getTime();
+
+	            Gson gson=new GsonBuilder().setExclusionStrategies(new ExcludeFileds()).serializeNulls().create();
+
+	            String data=gson.toJson(occuapancyMaster);
+
+	            String departmentTypeUpdate = "UPDATE egpt_occuapancy_master set tenantId = ?, code = ?,data = ?, "
+	                    + "lastModifiedBy = ?, lastModifiedTime = ? where id = " +id;
+
+
+	            final PreparedStatementCreator psc = new PreparedStatementCreator() {
+	                @Override
+	                public PreparedStatement createPreparedStatement(final Connection connection) throws SQLException {
+	                    final PreparedStatement ps = connection.prepareStatement(departmentTypeUpdate, new String[] { "id" });
+	                    ps.setString(1, occuapancyMaster.getTenantId());  
+	                    ps.setString(2,occuapancyMaster.getCode());
+	                    PGobject jsonObject = new PGobject();
+	                    jsonObject.setType("json");
+	                    jsonObject.setValue(data);
+	                    ps.setObject(3,jsonObject);
+	                    ps.setString(4, occuapancyMaster.getAuditDetails().getLastModifiedBy());
+	                    ps.setLong(5, modifiedTime);
+	                    return ps;
+	                }
+	            };
+	            jdbcTemplate.update(psc);
+
+	        }
+	        ResponseInfo responseInfo=responseInfoFactory.createResponseInfoFromRequestInfo(occuapancyRequest.getRequestInfo(),true);
+
+	        OccuapancyMasterResponse occuapancyResponse=new OccuapancyMasterResponse();
+	        occuapancyResponse.setOccuapancyMasters(occuapancyRequest.getOccuapancyMasters());
+	        occuapancyResponse.setResponseInfo(responseInfo);
+	        return occuapancyResponse;
+	    }
+
+	    @Override
+	    public OccuapancyMasterResponse getOccuapancyMaster(RequestInfo requestInfo, String tenantId, Integer[] ids,
+	            String name, String code, String nameLocal, Boolean active, Integer orderNumber, Integer pageSize,
+	            Integer offSet) {
+
+	        StringBuffer occuapancySearchSql = new StringBuffer();
+
+	        occuapancySearchSql.append("select * from egpt_occuapancy_master where tenantid ='"+tenantId+"'");
+
+
+
+	        if (ids!=null && ids.length>0){
+
+	            String  occuapancyIds= "";
+
+	            int count = 1;
+	            for (Integer id : ids){
+	                if (count<ids.length)
+	                    occuapancyIds = occuapancyIds+id+",";
+	                else
+	                    occuapancyIds = occuapancyIds+id;
+	                count++;
+
+	            }
+
+
+	            occuapancySearchSql.append(" AND id IN ("+occuapancyIds+")");
+
+
+
+	        }
+
+	        StringBuffer dataSearch = new StringBuffer();
+
+	        if (code!=null && !code.isEmpty())
+	            occuapancySearchSql.append(" AND code = '"+code+"'");
+
+
+	        if (name!=null && !name.isEmpty())
+	            dataSearch.append("{ \"name\":\""+name+"\"");
+
+	        if (nameLocal!=null && !nameLocal.isEmpty()){
+	            if(name!=null && !name.isEmpty())
+	                dataSearch.append(" , {\"nameLocal\":\""+nameLocal+"\"");
+	            else
+	                dataSearch.append("{\"nameLocal\":\""+nameLocal+"\""); 
+
+	        }
+
+	        if ( active!=null){
+	            if( nameLocal!=null && !nameLocal.isEmpty())
+	                dataSearch.append(" ,  {\"active\":\""+active+"\"");
+	            else if( name!=null && !name.isEmpty())
+	                dataSearch.append(" ,  {\"active\":\""+active+"\"");
+	            else
+	                dataSearch.append("{\"active\":\""+active+"\"");
+	        }   
+
+	        if ( orderNumber!=null){
+	            if( name==null  && nameLocal==null && active == null)
+	                dataSearch.append(" ,  {\"orderNumber\":\""+orderNumber+"\"");
+
+	            else
+	                dataSearch.append("{\"orderNumber\":\""+orderNumber+"\"");
+	        }   
+
+
+	        if ( pageSize == null)
+	            pageSize = 30;
+	        if ( offSet == null )
+	            offSet = 0;
+	        occuapancySearchSql.append("offset "+offSet+ " limit "+pageSize);
+
+	        OccuapancyMasterResponse occuapancyResponse = new OccuapancyMasterResponse();
+
+	        try {
+
+	            List<OccuapancyMaster> occuapancyMaster = jdbcTemplate.query(occuapancySearchSql.toString(), new BeanPropertyRowMapper(OccuapancyMaster.class));
+	            ResponseInfo responseInfo=responseInfoFactory.createResponseInfoFromRequestInfo(requestInfo,true);
+
+	            occuapancyResponse.setOccuapancyMasters(occuapancyMaster);
+	            occuapancyResponse.setResponseInfo(responseInfo);
+	        }
+	        catch (Exception e) {
+	            throw new PropertySearchException("invalid input",requestInfo);
+	        }
+	        return occuapancyResponse;
+
+	    }
 }

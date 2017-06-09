@@ -4,6 +4,8 @@ import org.egov.models.DepartmentRequest;
 import org.egov.models.DepartmentResponseInfo;
 import org.egov.models.FloorTypeRequest;
 import org.egov.models.FloorTypeResponse;
+import org.egov.models.OccuapancyMasterRequest;
+import org.egov.models.OccuapancyMasterResponse;
 import org.egov.models.PropertyTypeRequest;
 import org.egov.models.PropertyTypeResponse;
 import org.egov.models.RequestInfo;
@@ -13,8 +15,6 @@ import org.egov.models.StructureClassRequest;
 import org.egov.models.StructureClassResponse;
 import org.egov.models.WoodTypeRequest;
 import org.egov.models.WoodTypeResponse;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 
 public interface Masterservice {
 
@@ -54,6 +54,25 @@ public interface Masterservice {
 
 	public StructureClassResponse updateStructureClassMaster(String tenantId, Long id,
 			StructureClassRequest structureClassRequest);
+	
+	public PropertyTypeResponse createPropertyTypeMaster(String tenantId, PropertyTypeRequest propertyTypeRequest);
+
+	public PropertyTypeResponse updatePropertyTypeMaster(String tenantId, Long id, PropertyTypeRequest propertyTypeRequest);
+
+
+	public PropertyTypeResponse getPropertyTypeMaster(RequestInfo requestInfo, String tenantId, Integer[] ids,
+	    String name, String code, String nameLocal, Boolean active, Integer orderNumber, Integer pageSize,
+	    Integer offSet);
+
+	public OccuapancyMasterResponse createOccuapancyMaster(String tenantId,
+	    OccuapancyMasterRequest occuapancyMasterRequest);
+
+	public OccuapancyMasterResponse updateOccuapancyMaster(String tenantId, Long id,
+	    OccuapancyMasterRequest occuapancyRequest);
+
+	public OccuapancyMasterResponse getOccuapancyMaster(RequestInfo requestInfo, String tenantId, Integer[] ids,
+	    String name, String code, String nameLocal, Boolean active, Integer orderNumber, Integer pageSize,
+	    Integer offSet);
 
 
 }
