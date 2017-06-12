@@ -65,12 +65,12 @@ SELECT pg_catalog.setval('seq_egpt_vacantland', 2, true);
 
 
 
-INSERT INTO egpt_property_user VALUES(1, 1, 2, true, true, 0, 'anilkumarsandrapati', 'kumar', 'kumar', 1496835742464, 1496835742464);
-INSERT INTO egpt_property_user VALUES(2, 2, 1, true, true, 0, 'sandrapatianilkumar', 'anil', 'anil', 1496835749070, 1496835749070);
+INSERT INTO egpt_property_owner VALUES(1, 1, 2, true, true, 0, 'anilkumarsandrapati', 'kumar', 'kumar', 1496835742464, 1496835742464);
+INSERT INTO egpt_property_owner VALUES(2, 2, 1, true, true, 0, 'sandrapatianilkumar', 'anil', 'anil', 1496835749070, 1496835749070);
 
 
 
-SELECT pg_catalog.setval('seq_egpt_property_user', 2, true);
+SELECT pg_catalog.setval('seq_egpt_property_owner', 2, true);
 
 
 

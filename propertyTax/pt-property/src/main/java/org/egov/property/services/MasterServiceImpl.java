@@ -97,7 +97,7 @@ public class MasterServiceImpl  implements Masterservice{
 			String data=gson.toJson(department);
 
 			StringBuffer depeartmentQuery=new StringBuffer();
-			depeartmentQuery.append("insert into egpt_department_master(tenantId,code,data,");
+			depeartmentQuery.append("insert into egpt_mstr_department(tenantId,code,data,");
 			depeartmentQuery.append("createdBy, lastModifiedBy, createdTime,lastModifiedTime)");
 			depeartmentQuery.append(" values(?,?,?,?,?,?,?)");
 
@@ -146,7 +146,7 @@ public class MasterServiceImpl  implements Masterservice{
 
 			String data=gson.toJson(department);
 
-			String departmentTypeUpdate = "UPDATE egpt_department_master set tenantId = ?, code = ?,data = ?, lastModifiedBy = ?, lastModifiedTime = ? where id = " +id;
+			String departmentTypeUpdate = "UPDATE egpt_mstr_department set tenantId = ?, code = ?,data = ?, lastModifiedBy = ?, lastModifiedTime = ? where id = " +id;
 
 
 			final PreparedStatementCreator psc = new PreparedStatementCreator() {
@@ -181,7 +181,7 @@ public class MasterServiceImpl  implements Masterservice{
 		Gson gson=new GsonBuilder().setExclusionStrategies(new ExcludeFileds()).serializeNulls().create();
 		StringBuffer departmentSearchSql = new StringBuffer();
 
-		departmentSearchSql.append("select * from egpt_department_master where tenantid ='"+tenantId+"'");
+		departmentSearchSql.append("select * from egpt_mstr_department where tenantid ='"+tenantId+"'");
 
 		if (ids!=null && ids.length>0){
 
@@ -279,7 +279,7 @@ public class MasterServiceImpl  implements Masterservice{
 
 		StringBuffer floorTypeSearchSql = new StringBuffer();
 
-		floorTypeSearchSql.append("select * from egpt_floortype_master where tenantid ='"+tenantId+"'");
+		floorTypeSearchSql.append("select * from egpt_mstr_floor where tenantid ='"+tenantId+"'");
 
 		if (ids!=null && ids.length>0){
 
@@ -380,7 +380,7 @@ public class MasterServiceImpl  implements Masterservice{
 
 			StringBuffer usageMasterCreateSQL=new StringBuffer();
 
-			usageMasterCreateSQL.append("INSERT INTO egpt_floortype_master")
+			usageMasterCreateSQL.append("INSERT INTO egpt_mstr_floor")
 			.append(" ( tenantid,code,data,createdby,lastModifiedBy, createdTime,lastModifiedtime) ")
 			.append(" VALUES( ?, ?, ?, ?, ?, ?,?)");
 
@@ -449,7 +449,7 @@ public class MasterServiceImpl  implements Masterservice{
 
 			StringBuffer updateFloorTypeSql=new StringBuffer();
 
-			updateFloorTypeSql.append("UPDATE egpt_floortype_master ")
+			updateFloorTypeSql.append("UPDATE egpt_mstr_floor ")
 			.append(" SET tenantid = ? code = ?,")
 			.append(" data=?, createdby =?,")
 			.append(" lastModifiedBy =? ,createdTime = ?,lastModifiedtime= ?")
@@ -507,7 +507,7 @@ public class MasterServiceImpl  implements Masterservice{
 			String code, String nameLocal, Integer pageSize, Integer offSet) throws Exception {
 		StringBuffer woodTypeSearchSql = new StringBuffer();
 
-		woodTypeSearchSql.append("select * from egpt_woodtypes_master where tenantid ='"+tenantId+"'");
+		woodTypeSearchSql.append("select * from egpt_mstr_wood where tenantid ='"+tenantId+"'");
 
 
 
@@ -613,7 +613,7 @@ public class MasterServiceImpl  implements Masterservice{
 
 			String data=gson.toJson(woodType);
 
-			usageMasterCreateSQL.append("INSERT INTO egpt_woodtypes_master")
+			usageMasterCreateSQL.append("INSERT INTO egpt_mstr_wood")
 			.append(" ( tenantid,code,data,createdby,lastModifiedBy, createdTime,lastModifiedTime) ")
 			.append(" VALUES( ?, ?, ?, ?, ?, ?,?)");
 
@@ -686,7 +686,7 @@ public class MasterServiceImpl  implements Masterservice{
 
 			String data=gson.toJson(woodType);
 
-			updateFloorTypeSql.append("UPDATE egpt_woodtypes_master ")
+			updateFloorTypeSql.append("UPDATE egpt_mstr_wood ")
 			.append(" SET tenantid = ?, code = ?,")
 			.append(" data = ?, createdby =?")
 			.append(" lastModifiedBy =? ,createdTime = ?,lastModifiedTime= ?")
@@ -746,7 +746,7 @@ public class MasterServiceImpl  implements Masterservice{
 
 		StringBuffer roofTypeSearchSql = new StringBuffer();
 
-		roofTypeSearchSql.append("select * from egpt_rooftypes_master where tenantid ='"+tenantId+"'");
+		roofTypeSearchSql.append("select * from egpt_mstr_roof where tenantid ='"+tenantId+"'");
 
 
 
@@ -849,7 +849,7 @@ public class MasterServiceImpl  implements Masterservice{
 
 			StringBuffer usageMasterCreateSQL=new StringBuffer();
 
-			usageMasterCreateSQL.append("INSERT INTO egpt_rooftypes_master")
+			usageMasterCreateSQL.append("INSERT INTO egpt_mstr_roof")
 			.append(" ( tenantid,code,data,createdby,lastModifiedBy, createdTime,lastModifiedTime) ")
 			.append(" VALUES( ?, ?, ?, ?, ?,?,?)");
 
@@ -918,7 +918,7 @@ public class MasterServiceImpl  implements Masterservice{
 
 			String data=gson.toJson(roofType);
 
-			updateFloorTypeSql.append("UPDATE egpt_rooftypes_master ")
+			updateFloorTypeSql.append("UPDATE egpt_mstr_roof ")
 			.append(" SET tenantid = ?, code = ?,")
 			.append(" data=?, createdby =?")
 			.append(" lastModifiedBy =? ,createdTime = ?,lastModifiedTime= ?")
@@ -978,7 +978,7 @@ public class MasterServiceImpl  implements Masterservice{
 			String data=gson.toJson(structureClass);
 
 			StringBuffer structureClassQuery=new StringBuffer();
-			structureClassQuery.append("insert into egpt_structureclasses_master(tenantId,code,data,");
+			structureClassQuery.append("insert into egpt_mstr_structure(tenantId,code,data,");
 			structureClassQuery.append("createdBy, lastModifiedBy, createdTime,lastModifiedTime)");
 			structureClassQuery.append(" values(?,?,?,?,?,?,?)");
 
@@ -1038,7 +1038,7 @@ public class MasterServiceImpl  implements Masterservice{
 
 			String data=gson.toJson(structureClass);
 
-			String departmentTypeUpdate = "UPDATE egpt_department_master set tenantId = ?, code = ?,data = ?, lastModifiedBy = ?, lastModifiedTime = ? where id = " +id;
+			String departmentTypeUpdate = "UPDATE egpt_mstr_structure set tenantId = ?, code = ?,data = ?, lastModifiedBy = ?, lastModifiedTime = ? where id = " +id;
 
 
 			final PreparedStatementCreator psc = new PreparedStatementCreator() {
@@ -1089,7 +1089,7 @@ public class MasterServiceImpl  implements Masterservice{
 
 		StringBuffer structureSearchSql = new StringBuffer();
 
-		structureSearchSql.append("select * from egpt_department_master where tenantid ='"+tenantId+"'");
+		structureSearchSql.append("select * from egpt_mstr_structure where tenantid ='"+tenantId+"'");
 
 		if (ids!=null && ids.length>0){
 
@@ -1195,7 +1195,7 @@ public class MasterServiceImpl  implements Masterservice{
 			String data=gson.toJson(propertyType);
 
 			StringBuffer propertyTypeQuery=new StringBuffer();
-			propertyTypeQuery.append("insert into egpt_propertytypes_master(tenantId,code,data,");
+			propertyTypeQuery.append("insert into egpt_mstr_property(tenantId,code,data,");
 			propertyTypeQuery.append("createdBy, lastModifiedBy, createdTime,lastModifiedTime)");
 			propertyTypeQuery.append(" values(?,?,?,?,?,?,?)");
 
@@ -1254,7 +1254,7 @@ public class MasterServiceImpl  implements Masterservice{
 
 			String data=gson.toJson(propertyType);
 
-			String propertyTypeUpdate = "UPDATE egpt_department_master set tenantId = ?, code = ?,data = ?, "
+			String propertyTypeUpdate = "UPDATE egpt_mstr_department set tenantId = ?, code = ?,data = ?, "
 					+ "lastModifiedBy = ?, lastModifiedTime = ? where id = " +id;
 
 
@@ -1305,7 +1305,7 @@ public class MasterServiceImpl  implements Masterservice{
 
 		StringBuffer propertyTypeSearchSql = new StringBuffer();
 
-		propertyTypeSearchSql.append("select * from egpt_propertytypes_master where tenantid ='"+tenantId+"'");
+		propertyTypeSearchSql.append("select * from egpt_mstr_property where tenantid ='"+tenantId+"'");
 
 
 
@@ -1422,7 +1422,7 @@ public class MasterServiceImpl  implements Masterservice{
 			String data=gson.toJson(occuapancy);
 
 			StringBuffer occuapancyQuery=new StringBuffer();
-			occuapancyQuery.append("insert into egpt_occuapancy_master(tenantId,code,data,");
+			occuapancyQuery.append("insert into egpt_mstr_occuapancy(tenantId,code,data,");
 			occuapancyQuery.append("createdBy, lastModifiedBy, createdTime,lastModifiedTime)");
 			occuapancyQuery.append(" values(?,?,?,?,?,?,?)");
 
@@ -1480,7 +1480,7 @@ public class MasterServiceImpl  implements Masterservice{
 
 			String data=gson.toJson(occuapancyMaster);
 
-			String occupancyTypeUpdate = "UPDATE egpt_occuapancy_master set tenantId = ?, code = ?,data = ?, "
+			String occupancyTypeUpdate = "UPDATE egpt_mstr_occuapancy set tenantId = ?, code = ?,data = ?, "
 					+ "lastModifiedBy = ?, lastModifiedTime = ? where id = " +id;
 
 
@@ -1532,7 +1532,7 @@ public class MasterServiceImpl  implements Masterservice{
 
 		StringBuffer occuapancySearchSql = new StringBuffer();
 
-		occuapancySearchSql.append("select * from egpt_occuapancy_master where tenantid ='"+tenantId+"'");
+		occuapancySearchSql.append("select * from egpt_mstr_occuapancy where tenantid ='"+tenantId+"'");
 
 		if (ids!=null && ids.length>0){
 
@@ -1640,7 +1640,7 @@ public class MasterServiceImpl  implements Masterservice{
 
 		StringBuffer wallTypeMasterSearchSQL = new StringBuffer();
 
-		wallTypeMasterSearchSQL.append("SELECT * FROM egpt_walltypes_master where tenantid ='"+tenantId+"'");
+		wallTypeMasterSearchSQL.append("SELECT * FROM egpt_mstr_wall where tenantid ='"+tenantId+"'");
 
 		if (ids!=null && ids.length>0){
 
@@ -1742,7 +1742,7 @@ public class MasterServiceImpl  implements Masterservice{
 
 			StringBuffer wallTypeMasterCreateSQL=new StringBuffer();
 
-			wallTypeMasterCreateSQL.append("INSERT INTO egpt_walltypes_master")
+			wallTypeMasterCreateSQL.append("INSERT INTO egpt_mstr_wall")
 			.append(" ( tenantid, code, data, createdby,")
 			.append(" createdtime, lastmodifiedby, lastmodifiedtime) ")
 			.append(" VALUES( ?, ?, ?, ?, ?, ?, ? )");
@@ -1814,7 +1814,7 @@ public class MasterServiceImpl  implements Masterservice{
 
 			String data=gson.toJson(wallType);
 
-			wallTypeMasterUpdateSQL.append("UPDATE egpt_walltypes_master")
+			wallTypeMasterUpdateSQL.append("UPDATE egpt_mstr_wall")
 			.append(" SET tenantid = ?, code = ?, data =? ,")
 			.append(" lastmodifiedby = ?, lastmodifieddate = ?")
 			.append(" WHERE id = " + id );
@@ -1875,7 +1875,7 @@ public class MasterServiceImpl  implements Masterservice{
 
 		StringBuffer usageMasterSearchSQL = new StringBuffer();
 
-		usageMasterSearchSQL.append("SELECT * FROM egpt_usage_master where tenantid ='"+tenantId+"'");
+		usageMasterSearchSQL.append("SELECT * FROM egpt_mstr_usage where tenantid ='"+tenantId+"'");
 
 		if (ids!=null && ids.length>0){
 
@@ -1979,7 +1979,7 @@ public class MasterServiceImpl  implements Masterservice{
 
 			StringBuffer usageMasterCreateSQL=new StringBuffer();
 
-			usageMasterCreateSQL.append("INSERT INTO egpt_usage_master")
+			usageMasterCreateSQL.append("INSERT INTO egpt_mstr_usage")
 			.append(" ( tenantid, code,")
 			.append(" data, createdby, lastmodifiedby, createdtime, lastmodifiedtime) ")
 			.append(" VALUES( ?, ?, ?, ?, ?, ?, ?)");
@@ -2048,7 +2048,7 @@ public class MasterServiceImpl  implements Masterservice{
 
 			String data=gson.toJson(usageMaster);
 
-			usageMasterUpdateSQL.append("UPDATE egpt_usage_master")
+			usageMasterUpdateSQL.append("UPDATE egpt_mstr_usage")
 			.append(" SET tenantid = ?, code = ?,")
 			.append(" data= ?, lastmodifiedby = ?, lastmodifiedtime = ?")
 			.append(" WHERE id = " + id);

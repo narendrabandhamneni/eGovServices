@@ -89,8 +89,7 @@ CREATE TABLE egpt_propertydetails(
 
 CREATE SEQUENCE seq_egpt_propertydetails;
 
-ALTER TABLE egpt_propertydetails  ADD CONSTRAINT fk_egpt_propertydetail_property FOREIGN KEY(property) REFERENCES egpt_property(id) DEFERRABLE INITIALLY DEFERRED;
-
+ALTER TABLE egpt_propertydetails  ADD CONSTRAINT fk_egpt_propertydetail_property FOREIGN KEY(property) REFERENCES egpt_property(id);
 
 CREATE TABLE egpt_floors(
     id bigint NOT NULL,
@@ -107,7 +106,7 @@ CREATE TABLE egpt_floors(
 
 CREATE SEQUENCE seq_egpt_floors;
 
-ALTER TABLE  egpt_floors ADD CONSTRAINT fk_egpt_floors_propertydetails FOREIGN KEY(propertydetails) REFERENCES egpt_propertydetails(id) DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE  egpt_floors ADD CONSTRAINT fk_egpt_floors_propertydetails FOREIGN KEY(propertydetails) REFERENCES egpt_propertydetails(id);
 
 
 CREATE TABLE egpt_unit(
@@ -144,7 +143,7 @@ CREATE TABLE egpt_unit(
     CONSTRAINT pk_egpt_unit PRIMARY KEY (id)    
 );
 CREATE SEQUENCE seq_egpt_unit;
-ALTER TABLE  egpt_unit ADD CONSTRAINT fk_egpt_unit_floor FOREIGN KEY(floor) REFERENCES egpt_floors(id) DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE  egpt_unit ADD CONSTRAINT fk_egpt_unit_floor FOREIGN KEY(floor) REFERENCES egpt_floors(id);
 
 CREATE TABLE egpt_document(
     id bigint NOT NULL,
@@ -158,7 +157,7 @@ CREATE TABLE egpt_document(
 );
 
 CREATE SEQUENCE seq_egpt_document;
-ALTER TABLE  egpt_document ADD CONSTRAINT fk_egpt_document_propertydetails FOREIGN KEY(propertydetails) REFERENCES egpt_propertydetails(id) DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE  egpt_document ADD CONSTRAINT fk_egpt_document_propertydetails FOREIGN KEY(propertydetails) REFERENCES egpt_propertydetails(id);
 
 
 CREATE TABLE egpt_documenttype(
@@ -173,7 +172,7 @@ CREATE TABLE egpt_documenttype(
     CONSTRAINT egpt_documenttype_pk PRIMARY KEY(id)
 );
 CREATE SEQUENCE seq_egpt_documenttype;
-ALTER TABLE  egpt_documenttype ADD CONSTRAINT fk_egpt_documenttype_document FOREIGN KEY(document) REFERENCES egpt_document(id) DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE  egpt_documenttype ADD CONSTRAINT fk_egpt_documenttype_document FOREIGN KEY(document) REFERENCES egpt_document(id);
 
 
 CREATE TABLE egpt_vacantland(
@@ -196,13 +195,13 @@ CREATE TABLE egpt_vacantland(
 );
 
 CREATE SEQUENCE seq_egpt_vacantland;
-ALTER TABLE  egpt_vacantland ADD CONSTRAINT fk_egpt_vacantland_property FOREIGN KEY(property) REFERENCES egpt_property(id) DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE  egpt_vacantland ADD CONSTRAINT fk_egpt_vacantland_property FOREIGN KEY(property) REFERENCES egpt_property(id);
 
 
-CREATE TABLE egpt_property_user(
+CREATE TABLE egpt_property_owner(
     id bigint NOT NULL,
     property integer NOT NULL,
-    user_id integer,
+    user integer,
     isPrimaryOwner boolean,
     isSecondaryOwner boolean,
     ownerShipPercentage integer,
@@ -211,12 +210,12 @@ CREATE TABLE egpt_property_user(
     lastmodifiedby character varying,
     createdtime bigint,
     lastmodifiedtime bigint,
-    CONSTRAINT egpt_property_user_pk PRIMARY KEY(id)
+    CONSTRAINT egpt_property_owner_pk PRIMARY KEY(id)
 );
 
 
-CREATE SEQUENCE seq_egpt_property_user;
-ALTER TABLE  egpt_property_user ADD CONSTRAINT fk_egpt_property_user_property FOREIGN KEY(property) REFERENCES egpt_property(id) DEFERRABLE INITIALLY DEFERRED;
+CREATE SEQUENCE seq_egpt_property_owner;
+ALTER TABLE  egpt_property_owner ADD CONSTRAINT fk_egpt_property_owner_property FOREIGN KEY(property) REFERENCES egpt_property(id);
 
 
 
@@ -240,9 +239,9 @@ CREATE TABLE egpt_propertylocation(
 
 CREATE SEQUENCE seq_egpt_propertylocation;
 
-ALTER TABLE  egpt_propertylocation ADD CONSTRAINT fk_egpt_propertylocation FOREIGN KEY(property) REFERENCES egpt_property(id) DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE  egpt_propertylocation ADD CONSTRAINT fk_egpt_propertylocation FOREIGN KEY(property) REFERENCES egpt_property(id);
 
-CREATE TABLE egpt_department_master(
+CREATE TABLE egpt_mstr_department(
     id bigint NOT NULL,
     tenantId character varying NOT NULL,
     code character varying NOT NULL,
@@ -251,12 +250,12 @@ CREATE TABLE egpt_department_master(
     lastModifiedBy character varying,
     createdTime bigint,
     lastModifiedTime bigint,
-    CONSTRAINT egpt_department_master_pkey PRIMARY KEY(id)
+    CONSTRAINT egpt_mstr_department_pkey PRIMARY KEY(id)
 );
 
-CREATE SEQUENCE seq_egpt_department_master;
+CREATE SEQUENCE seq_egpt_mstr_department;
 
-CREATE TABLE egpt_floortype_master(
+CREATE TABLE egpt_mstr_floor(
     id bigint NOT NULL,
     tenantid character varying NOT NULL,
     code character varying NOT NULL,
@@ -265,15 +264,15 @@ CREATE TABLE egpt_floortype_master(
     lastModifiedBy character varying,
     createdTime bigint,
     lastModifiedTime bigint,
-     CONSTRAINT egpt_floortype_master_pkey PRIMARY KEY(id)
+     CONSTRAINT egpt_mstr_floor_pkey PRIMARY KEY(id)
 );
 
-CREATE SEQUENCE seq_egpt_floortype_master;
+CREATE SEQUENCE seq_egpt_mstr_floor;
 
 
 
 
-CREATE TABLE egpt_occuapancy_master(
+CREATE TABLE egpt_mstr_occuapancy(
     id bigint NOT NULL,
     tenantid character varying NOT NULL,
     code character varying NOT NULL,
@@ -282,12 +281,12 @@ CREATE TABLE egpt_occuapancy_master(
     lastModifiedBy character varying,
     createdTime bigint,
     lastModifiedTime bigint,
-CONSTRAINT egpt_occuapancy_master_pkey PRIMARY KEY(id)
+CONSTRAINT egpt_mstr_occuapancy_pkey PRIMARY KEY(id)
 );
 
-CREATE SEQUENCE seq_egpt_occuapancy_master;
+CREATE SEQUENCE seq_egpt_mstr_occuapancy;
 
-CREATE TABLE egpt_propertytypes_master(
+CREATE TABLE egpt_mstr_property(
     id bigint NOT NULL,
     tenantid character varying NOT NULL,
     code character varying NOT NULL,
@@ -296,14 +295,14 @@ CREATE TABLE egpt_propertytypes_master(
     lastModifiedBy character varying,
     createdTime bigint,
     lastModifiedTime bigint,
-CONSTRAINT egpt_propertytypes_master_pkey PRIMARY KEY(id)
+CONSTRAINT egpt_mstr_property_pkey PRIMARY KEY(id)
 );
 
-CREATE SEQUENCE seq_egpt_propertytypes_master;
+CREATE SEQUENCE seq_egpt_mstr_property;
 
 
 
-CREATE TABLE egpt_rooftypes_master(
+CREATE TABLE egpt_mstr_roof(
     id bigint NOT NULL,
     tenantid character varying NOT NULL,
     code character varying NOT NULL,
@@ -312,14 +311,14 @@ CREATE TABLE egpt_rooftypes_master(
     lastModifiedBy character varying,
     createdTime bigint,
     lastModifiedTime bigint,
-CONSTRAINT egpt_rooftypes_master_pkey PRIMARY KEY(id)
+CONSTRAINT egpt_mstr_roof_pkey PRIMARY KEY(id)
 );
 
 
-CREATE SEQUENCE seq_egpt_rooftypes_master;
+CREATE SEQUENCE seq_egpt_mstr_roof;
 
 
-CREATE TABLE egpt_structureclasses_master(
+CREATE TABLE egpt_mstr_structure(
     id bigint NOT NULL,
     tenantid character varying NOT NULL,
     code character varying NOT NULL,
@@ -328,15 +327,15 @@ CREATE TABLE egpt_structureclasses_master(
     lastModifiedBy character varying,
     createdTime bigint,
     lastModifiedTime bigint,
-    CONSTRAINT egpt_structureclasses_master_pkey PRIMARY KEY(id)
+    CONSTRAINT egpt_mstr_structure_pkey PRIMARY KEY(id)
 
 );
 
 
-CREATE SEQUENCE seq_egpt_structureclasses_master;
+CREATE SEQUENCE seq_egpt_mstr_structure;
 
 
-CREATE TABLE egpt_usage_master(
+CREATE TABLE egpt_mstr_usage(
     id bigint NOT NULL,
     tenantid character varying NOT NULL,
     code character varying NOT NULL,
@@ -345,14 +344,14 @@ CREATE TABLE egpt_usage_master(
     lastModifiedBy character varying,
     createdTime bigint,
     lastModifiedTime bigint,
-CONSTRAINT egpt_usage_master_pkey PRIMARY KEY(id)
+CONSTRAINT egpt_mstr_usage_pkey PRIMARY KEY(id)
 );
 
 
-CREATE SEQUENCE seq_egpt_usage_master;
+CREATE SEQUENCE seq_egpt_mstr_usage;
 
 
-CREATE TABLE egpt_walltypes_master(
+CREATE TABLE egpt_mstr_wall(
     id bigint NOT NULL,
     tenantid character varying NOT NULL,
     code character varying NOT NULL,
@@ -361,14 +360,14 @@ CREATE TABLE egpt_walltypes_master(
     lastModifiedBy character varying,
     createdTime bigint,
     lastModifiedTime bigint,
-    CONSTRAINT egpt_walltypes_master_pkey PRIMARY KEY(id)
+    CONSTRAINT egpt_mstr_wall_pkey PRIMARY KEY(id)
 );
 
 
-CREATE SEQUENCE seq_egpt_walltypes_master;
+CREATE SEQUENCE seq_egpt_mstr_wall;
 
 
-CREATE TABLE egpt_woodtypes_master(
+CREATE TABLE egpt_mstr_wood(
     id bigint NOT NULL,
     tenantid character varying NOT NULL,
     code character varying NOT NULL,
@@ -377,6 +376,6 @@ CREATE TABLE egpt_woodtypes_master(
     lastModifiedBy character varying,
     createdTime bigint,
     lastModifiedTime bigint,
-CONSTRAINT egpt_woodtypes_master_pkey PRIMARY KEY(id)
+CONSTRAINT egpt_mstr_wood_pkey PRIMARY KEY(id)
 );
-CREATE SEQUENCE seq_egpt_woodtypes_master;
+CREATE SEQUENCE seq_egpt_mstr_wood;
