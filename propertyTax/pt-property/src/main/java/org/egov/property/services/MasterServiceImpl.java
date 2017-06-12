@@ -124,6 +124,9 @@ public class MasterServiceImpl  implements Masterservice{
 			final KeyHolder holder = new GeneratedKeyHolder();
 			jdbcTemplate.update(psc, holder);
 			department.setId(Long.valueOf(holder.getKey().intValue()));
+			department.getAuditDetails().setCreatedTime(createdTime);
+			department.getAuditDetails().setLastModifiedTime(createdTime);
+
 
 		}
 		ResponseInfo responseInfo=responseInfoFactory.createResponseInfoFromRequestInfo(departmentRequest.getRequestInfo(),true);
@@ -158,13 +161,15 @@ public class MasterServiceImpl  implements Masterservice{
 					PGobject jsonObject = new PGobject();
 					jsonObject.setType("json");
 					jsonObject.setValue(data);
-					ps.setString(3, data);
+					ps.setObject(3,jsonObject);
 					ps.setString(4, department.getAuditDetails().getLastModifiedBy());
 					ps.setLong(5, modifiedTime);
 					return ps;
 				}
 			};
 			jdbcTemplate.update(psc);
+			department.getAuditDetails().setLastModifiedTime(modifiedTime);
+
 
 		}
 		ResponseInfo responseInfo=responseInfoFactory.createResponseInfoFromRequestInfo(departmentRequest.getRequestInfo(),true);
@@ -414,6 +419,8 @@ public class MasterServiceImpl  implements Masterservice{
 				throw new InvalidInputException(floorTypeRequest.getRequestInfo());
 			}
 			floorType.setId(holder.getKey().longValue());
+			floorType.getAuditDetails().setCreatedTime(createdTime);
+			floorType.getAuditDetails().setLastModifiedTime(createdTime);
 		}
 
 		FloorTypeResponse floorTypeResponse = new FloorTypeResponse();
@@ -475,6 +482,7 @@ public class MasterServiceImpl  implements Masterservice{
 			};
 
 			jdbcTemplate.update(psc);
+			floorType.getAuditDetails().setLastModifiedTime(updatedTime);
 		}
 
 		FloorTypeResponse floorTypeResponse = new FloorTypeResponse();
@@ -647,6 +655,8 @@ public class MasterServiceImpl  implements Masterservice{
 				throw new InvalidInputException(woodTypeRequest.getRequestInfo());
 			}
 			woodType.setId(holder.getKey().longValue());
+			woodType.getAuditDetails().setCreatedTime(createdTime);
+			woodType.getAuditDetails().setLastModifiedTime(createdTime);
 		}
 
 		WoodTypeResponse woodTypeResponse = new WoodTypeResponse();
@@ -712,6 +722,7 @@ public class MasterServiceImpl  implements Masterservice{
 			};
 
 			jdbcTemplate.update(psc);
+			woodType.getAuditDetails().setLastModifiedTime(updatedTime);
 		}
 
 		WoodTypeResponse woodTypeResponse = new WoodTypeResponse();
@@ -883,6 +894,8 @@ public class MasterServiceImpl  implements Masterservice{
 				throw new InvalidInputException(roofTypeRequest.getRequestInfo());
 			}
 			roofType.setId(holder.getKey().longValue());
+			roofType.getAuditDetails().setCreatedTime(createdTime);
+			roofType.getAuditDetails().setLastModifiedTime(createdTime);
 		}
 
 		RoofTypeResponse roofTypeResponse = new RoofTypeResponse();
@@ -944,6 +957,7 @@ public class MasterServiceImpl  implements Masterservice{
 			};
 
 			jdbcTemplate.update(psc);
+			roofType.getAuditDetails().setLastModifiedTime(updatedTime);
 		}
 
 		RoofTypeResponse roofTypeResponse = new RoofTypeResponse();
@@ -1005,6 +1019,8 @@ public class MasterServiceImpl  implements Masterservice{
 			final KeyHolder holder = new GeneratedKeyHolder();
 			jdbcTemplate.update(psc, holder);
 			structureClass.setId(Long.valueOf(holder.getKey().intValue()));
+			structureClass.getAuditDetails().setCreatedTime(createdTime);
+			structureClass.getAuditDetails().setLastModifiedTime(createdTime);
 
 		}
 		ResponseInfo responseInfo=responseInfoFactory.createResponseInfoFromRequestInfo(structureClassRequest.getRequestInfo(),true);
@@ -1057,6 +1073,7 @@ public class MasterServiceImpl  implements Masterservice{
 				}
 			};
 			jdbcTemplate.update(psc);
+			structureClass.getAuditDetails().setLastModifiedTime(modifiedTime);
 
 		}
 		ResponseInfo responseInfo=responseInfoFactory.createResponseInfoFromRequestInfo(structureClassRequest.getRequestInfo(),true);
@@ -1221,6 +1238,9 @@ public class MasterServiceImpl  implements Masterservice{
 			final KeyHolder holder = new GeneratedKeyHolder();
 			jdbcTemplate.update(psc, holder);
 			propertyType.setId(Long.valueOf(holder.getKey().intValue()));
+			propertyType.getAuditDetails().setCreatedTime(createdTime);
+			propertyType.getAuditDetails().setLastModifiedTime(createdTime);
+
 
 
 		}
@@ -1274,6 +1294,8 @@ public class MasterServiceImpl  implements Masterservice{
 				}
 			};
 			jdbcTemplate.update(psc);
+			propertyType.getAuditDetails().setCreatedTime(modifiedTime);
+
 
 		}
 		ResponseInfo responseInfo=responseInfoFactory.createResponseInfoFromRequestInfo(propertyTypeRequest.getRequestInfo(),true);
@@ -1448,6 +1470,8 @@ public class MasterServiceImpl  implements Masterservice{
 			final KeyHolder holder = new GeneratedKeyHolder();
 			jdbcTemplate.update(psc, holder);
 			occuapancy.setId(Long.valueOf(holder.getKey().intValue()));
+			occuapancy.getAuditDetails().setCreatedTime(createdTime);
+			occuapancy.getAuditDetails().setLastModifiedTime(createdTime);
 
 		}
 		ResponseInfo responseInfo=responseInfoFactory.createResponseInfoFromRequestInfo(occuapancyMasterRequest.getRequestInfo(),true);
@@ -1500,6 +1524,8 @@ public class MasterServiceImpl  implements Masterservice{
 				}
 			};
 			jdbcTemplate.update(psc);
+			occuapancyMaster.getAuditDetails().setLastModifiedTime(modifiedTime);
+
 
 		}
 		ResponseInfo responseInfo=responseInfoFactory.createResponseInfoFromRequestInfo(occuapancyRequest.getRequestInfo(),true);
@@ -1774,6 +1800,8 @@ public class MasterServiceImpl  implements Masterservice{
 			final KeyHolder holder = new GeneratedKeyHolder();
 			jdbcTemplate.update(psc, holder);
 			wallType.setId(Long.valueOf(holder.getKey().intValue()));
+			wallType.getAuditDetails().setCreatedTime(createdTime);
+			wallType.getAuditDetails().setLastModifiedTime(createdTime);
 
 		}
 
@@ -1842,6 +1870,7 @@ public class MasterServiceImpl  implements Masterservice{
 			try {
 
 				jdbcTemplate.update(psc);
+				wallType.getAuditDetails().setLastModifiedTime(updatedTime);
 			}
 			catch (Exception e) {
 
@@ -2011,6 +2040,8 @@ public class MasterServiceImpl  implements Masterservice{
 			final KeyHolder holder = new GeneratedKeyHolder();
 			jdbcTemplate.update(psc, holder);
 			usageMaster.setId(Long.valueOf(holder.getKey().intValue()));
+			usageMaster.getAuditDetails().setCreatedTime(createdTime);
+			usageMaster.getAuditDetails().setLastModifiedTime(createdTime);
 
 		}
 		ResponseInfo responseInfo=responseInfoFactory.createResponseInfoFromRequestInfo(usageMasterRequest.getRequestInfo(),true);
@@ -2074,6 +2105,7 @@ public class MasterServiceImpl  implements Masterservice{
 			try {
 
 				jdbcTemplate.update(psc);
+				usageMaster.getAuditDetails().setLastModifiedTime(updatedTime);
 			} catch (Exception e) {
 
 				throw new InvalidInputException(usageMasterRequest.getRequestInfo());
