@@ -345,7 +345,7 @@ public class PersisterService {
 			//property and user relation table insertion
 			for (OwnerInfo owner : property.getOwners()) {
 				StringBuffer userPropertySql = new StringBuffer();
-				userPropertySql.append("insert into egpt_property_owner(property, user,isPrimaryOwner,")
+				userPropertySql.append("insert into egpt_property_owner(property,owner,isPrimaryOwner,")
 				.append("isSecondaryOwner,ownerShipPercentage, ownerType, createdBy, lastModifiedBy, createdTime,lastModifiedTime)")
 				.append("values (?,?,?,?,?,?,?,?,?,?);");
 				Object[] userPropertyArgs = { propertyId, owner.getId(),
@@ -631,7 +631,7 @@ public class PersisterService {
 				StringBuffer userUpdateSQL=new StringBuffer();
 
 				userUpdateSQL.append("UPDATE egpt_property_owner")
-				.append(" SET property_Id = ?, user= ?, isPrimaryOwner = ?,")
+				.append(" SET property_Id = ?, owner= ?, isPrimaryOwner = ?,")
 				.append(" isSecondaryOwner = ?, ownerShipPercentage = ?, ownerType = ?,")
 				.append(" lastModifiedBy = ?, lastModifiedTime = ?")
 				.append(" WHERE id = " + user_id);

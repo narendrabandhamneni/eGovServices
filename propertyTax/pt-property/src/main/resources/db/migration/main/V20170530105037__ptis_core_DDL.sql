@@ -201,7 +201,7 @@ ALTER TABLE  egpt_vacantland ADD CONSTRAINT fk_egpt_vacantland_property FOREIGN 
 CREATE TABLE egpt_property_owner(
     id bigint NOT NULL,
     property integer NOT NULL,
-    user integer,
+    owner integer,
     isPrimaryOwner boolean,
     isSecondaryOwner boolean,
     ownerShipPercentage integer,

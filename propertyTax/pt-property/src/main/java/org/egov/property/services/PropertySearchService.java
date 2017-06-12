@@ -277,7 +277,7 @@ public class PropertySearchService {
 
 			for (PropertyUser propertyUser : propertyUsers ){
 
-				userIds.add(propertyUser.getUser());
+				userIds.add(propertyUser.getOwner());
 			}
 
 			List<User> userOfProperty = getUserObjectForUserIds(userIds,users);
