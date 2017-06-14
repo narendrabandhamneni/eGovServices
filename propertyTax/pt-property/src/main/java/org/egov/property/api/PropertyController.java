@@ -75,12 +75,13 @@ public class PropertyController {
 
 		//generating acknowledgement number for all properties
 		for(Property property:propertyRequest.getProperties()){
+			List<IdRequest> idRequests = new ArrayList<>();
 			IdRequest idrequest=new IdRequest();
-			idrequest.setEntity(environment.getProperty(environment.getProperty("id.entity")));
-			idrequest.setIdType(environment.getProperty("id.type"));
-			idrequest.setTenentId(propertyRequest.getProperties().get(0).getTenantId());
+			idrequest.setIdName(environment.getProperty(environment.getProperty("id.idName")));
+			idrequest.setTenantId(propertyRequest.getProperties().get(0).getTenantId());
 			IdGenerationRequest idGeneration=new IdGenerationRequest();
-			idGeneration.setIdRequest(idrequest);
+			idRequests.add(idrequest);
+			idGeneration.setIdRequests(idRequests); 
 			idGeneration.setRequestInfo(propertyRequest.getRequestInfo());
 			IdGenerationResponse idResponse=restTemplate.patchForObject(idGenerationUrl.toString(), idGeneration, IdGenerationResponse.class);
 			if(idResponse.getResponseInfo().getStatus().toString().equalsIgnoreCase(environment.getProperty("success"))){
@@ -88,8 +89,8 @@ public class PropertyController {
 					throw new AttributeNotFoundException(environment.getProperty("attribute.notfound"),propertyRequest.getRequestInfo());
 				}
 			}
-			property.getPropertyDetail().setApplicationNo(idResponse.getIdResponse().getId());		
-			applicationList.add(idResponse.getIdResponse().getId());
+			property.getPropertyDetail().setApplicationNo(idResponse.getIdResponses().get(0).getId());		
+			applicationList.add(idResponse.getIdResponses().get(0).getId());
 			PropertyRequest propertyRequestInfo=new PropertyRequest();
 			propertyRequestInfo.setRequestInfo(propertyRequest.getRequestInfo());
 			List<Property> propertyList=new ArrayList<Property>();
