@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
-
 import org.egov.models.Department;
 import org.egov.models.DepartmentRequest;
 import org.egov.models.DepartmentResponseInfo;
@@ -39,6 +38,7 @@ import org.egov.models.WoodTypeResponse;
 import org.egov.property.exception.InvalidInputException;
 import org.egov.property.exception.PropertySearchException;
 import org.egov.property.model.ExcludeFileds;
+import org.json.simple.JSONObject;
 import org.postgresql.util.PGobject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -203,36 +203,29 @@ public class MasterServiceImpl  implements Masterservice{
 			departmentSearchSql.append(" AND id IN ("+departmentIds+")");
 		}
 
-		StringBuffer dataSearch = new StringBuffer();
+		JSONObject data = new JSONObject();
 
 		if (code!=null && !code.isEmpty())
 			departmentSearchSql.append(" AND code = '"+code+"'");
 
 		if(name!=null || category!=null || nameLocal!=null)
-			dataSearch.append(" AND data @> '");
+			departmentSearchSql.append(" AND data @> '");
 
 		if (name!=null && !name.isEmpty())
-			dataSearch.append("{ \"name\":\""+name+"\"");
+			data.put("name", name);
 
-		if (nameLocal!=null && !nameLocal.isEmpty()){
-			if(name!=null && !name.isEmpty())
-				dataSearch.append(" , \"nameLocal\":\""+nameLocal+"\"");
-			else
-				dataSearch.append("{\"nameLocal\":\""+nameLocal+"\"");	
-		}
-		if ( category!=null &&  !category.isEmpty()  ){
-			if( nameLocal!=null && !nameLocal.isEmpty())
-				dataSearch.append(" , \"category\":\""+category+"\"");
-			else if( name!=null && !name.isEmpty())
-				dataSearch.append(" , \"category\":\""+category+"\"");
-			else
-				dataSearch.append("{\"category\":\""+category+"\"");
-		}	
+		if (nameLocal!=null && !nameLocal.isEmpty())
+			data.put("nameLocal", nameLocal);
+
+
+		if ( category!=null &&  !category.isEmpty()  )
+			data.put("category", category);
+
 
 		if(name!=null || category!=null || nameLocal!=null)
-			dataSearch.append("}'");
+			departmentSearchSql.append(data.toJSONString()+"'");
 
-		departmentSearchSql.append( dataSearch);
+
 		if ( pageSize == null )
 			pageSize = 30;
 		if ( offSet ==null)
@@ -301,29 +294,22 @@ public class MasterServiceImpl  implements Masterservice{
 
 		}
 
-		StringBuffer dataSearch = new StringBuffer();
+		JSONObject data = new JSONObject();
 
 		if (code!=null && !code.isEmpty())
 			floorTypeSearchSql.append(" AND code = '"+code+"'");
 
 		if(name!=null || nameLocal!=null)
-			dataSearch.append(" AND data @> '");
+			floorTypeSearchSql.append(" AND data @> '");
 
 		if (name!=null && !name.isEmpty())
-			dataSearch.append("{ \"name\":\""+name+"\"");
+			data.put("name", name);
 
-		if (nameLocal!=null && !nameLocal.isEmpty()){
-			if(name!=null && !name.isEmpty())
-				dataSearch.append(" , \"nameLocal\":\""+nameLocal+"\"");
-			else
-				dataSearch.append("{\"nameLocal\":\""+nameLocal+"\"");	
-		}
+		if (nameLocal!=null && !nameLocal.isEmpty())
+			data.put("nameLocal", nameLocal);
 
-
-		if(name!=null ||  nameLocal!=null)
-			dataSearch.append("}'");
-
-		floorTypeSearchSql.append( dataSearch);
+		if(name!=null || nameLocal!=null)
+			floorTypeSearchSql.append(data.toJSONString()+"'");
 
 		if ( pageSize == null )
 			pageSize = Integer.valueOf( environment.getProperty("default.page.size").trim());
@@ -331,7 +317,6 @@ public class MasterServiceImpl  implements Masterservice{
 			offSet = Integer.valueOf( environment.getProperty("default.offset").trim());
 
 		floorTypeSearchSql.append("offset "+offSet+" limit "+pageSize);
-
 
 
 		FloorTypeResponse floorTypeResponse = new FloorTypeResponse();
@@ -534,37 +519,27 @@ public class MasterServiceImpl  implements Masterservice{
 
 			}
 
-
 			woodTypeSearchSql.append(" AND id IN ("+florTypeIds+")");
-
-
 
 		}
 
-
-
-		StringBuffer dataSearch = new StringBuffer();
+		JSONObject data = new JSONObject();
 
 		if (code!=null && !code.isEmpty())
 			woodTypeSearchSql.append(" AND code = '"+code+"'");
 
 		if(name!=null  || nameLocal!=null)
-			dataSearch.append(" AND data @> '");
+			woodTypeSearchSql.append(" AND data @> '");
 
 		if (name!=null && !name.isEmpty())
-			dataSearch.append("{ \"name\":\""+name+"\"");
+			data.put("name", name);
 
-		if (nameLocal!=null && !nameLocal.isEmpty()){
-			if(name!=null && !name.isEmpty())
-				dataSearch.append(" ,\"nameLocal\":\""+nameLocal+"\"");
-			else
-				dataSearch.append("{\"nameLocal\":\""+nameLocal+"\"");	
-		}
+		if (nameLocal!=null && !nameLocal.isEmpty())
+			data.put("nameLocal", nameLocal);
+
 
 		if(name!=null || nameLocal!=null)
-			dataSearch.append("}'");
-
-		woodTypeSearchSql.append(dataSearch);
+			woodTypeSearchSql.append(data.toJSONString()+"'");
 
 		if ( pageSize == null )
 			pageSize = Integer.valueOf( environment.getProperty("default.page.size").trim());
@@ -758,9 +733,6 @@ public class MasterServiceImpl  implements Masterservice{
 
 		roofTypeSearchSql.append("select * from egpt_mstr_rooftype where tenantid ='"+tenantId+"'");
 
-
-
-
 		if (ids!=null && ids.length>0){
 
 			String  florTypeIds= "";
@@ -778,31 +750,23 @@ public class MasterServiceImpl  implements Masterservice{
 			roofTypeSearchSql.append(" AND id IN ("+florTypeIds+")");
 		}
 
-
 		if (code!=null && !code.isEmpty())
 			roofTypeSearchSql.append(" AND code ='"+code+"'");
 
-		StringBuffer dataSearch = new StringBuffer();
+		JSONObject data = new JSONObject();
 
 		if(name!=null || nameLocal!=null)
-			dataSearch.append(" AND data @> '");
+			roofTypeSearchSql.append(" AND data @> '");
 
 		if (name!=null && !name.isEmpty())
-			dataSearch.append("{ \"name\":\""+name+"\"");
+			data.put("name", name);
 
-		if (nameLocal!=null && !nameLocal.isEmpty()){
-			if(name!=null && !name.isEmpty())
-				dataSearch.append(" , \"nameLocal\":\""+nameLocal+"\"");
-			else
-				dataSearch.append("{\"nameLocal\":\""+nameLocal+"\"");	
-		}
+		if (nameLocal!=null && !nameLocal.isEmpty())
+			data.put("nameLocal", nameLocal);
 
 
 		if(name!=null || nameLocal!=null)
-			dataSearch.append("}'");
-
-		roofTypeSearchSql.append(dataSearch);
-
+			roofTypeSearchSql.append(data.toJSONString()+"'");
 
 		if ( pageSize == null )
 			pageSize = Integer.valueOf( environment.getProperty("default.page.size").trim());
@@ -1124,41 +1088,32 @@ public class MasterServiceImpl  implements Masterservice{
 
 		}
 
-		StringBuffer dataSearch = new StringBuffer();
 
 		if (code!=null && !code.isEmpty())
 			structureSearchSql.append(" AND code = '"+code+"'");
 
+		JSONObject data = new JSONObject();
+
 		if (name != null || nameLocal != null || active != null || orderNumber != null)
-			dataSearch.append(" AND data @> '");
+			structureSearchSql.append(" AND data @> '");
 
 		if (name!=null && !name.isEmpty())
-			dataSearch.append("{ \"name\":\""+name+"\"");
+			data.put("name", name);
 
-		if (nameLocal!=null && !nameLocal.isEmpty()){
-			if(name!=null && !name.isEmpty())
-				dataSearch.append(" , \"nameLocal\":\""+nameLocal+"\"");
-			else
-				dataSearch.append("{\"nameLocal\":\""+nameLocal+"\"");	
-		}
-		if ( active!=null ){
-			if( nameLocal!=null && !nameLocal.isEmpty())
-				dataSearch.append(" ,  \"active\":"+active);
-			else if( name!=null && !name.isEmpty())
-				dataSearch.append(" ,  \"active\":"+active);
-			else
-				dataSearch.append("{\"active\":"+active);
-		}	
-		if(orderNumber != null){
-			if(nameLocal==null && name==null && active==null)
-				dataSearch.append("{\"orderNumber\":"+orderNumber);
-			else
-				dataSearch.append(" ,  \"orderNumber\":"+orderNumber);
-		}
+		if (nameLocal!=null && !nameLocal.isEmpty())
+			data.put("nameLocal", nameLocal);
+
+		if ( active!=null )
+			data.put("active", active);
+
+
+		if(orderNumber != null)
+			data.put("orderNumber", orderNumber);
 
 		if(name!=null || active!=null || nameLocal!=null || orderNumber != null)
-			dataSearch.append("}'");
-		structureSearchSql.append(dataSearch);
+			structureSearchSql.append(data.toJSONString()+"'");
+
+
 		if ( pageSize == null)
 			pageSize = 30;
 		if ( offSet == null )
@@ -1344,54 +1299,36 @@ public class MasterServiceImpl  implements Masterservice{
 
 			}
 
-
 			propertyTypeSearchSql.append(" AND id IN ("+propertyTypeIds+")");
-
 
 
 		}
 
-		StringBuffer dataSearch = new StringBuffer();
 
 		if (code!=null && !code.isEmpty())
 			propertyTypeSearchSql.append(" AND code = '"+code+"'");
 
+		JSONObject data = new JSONObject();
+
 		if(name!=null || nameLocal!=null || active!=null || orderNumber!=null)
-			dataSearch.append(" AND data @> '");
+			propertyTypeSearchSql.append(" AND data @> '");
 
 
 		if (name!=null && !name.isEmpty())
-			dataSearch.append("{ \"name\":\""+name+"\"");
+			data.put("name", name);
 
-		if (nameLocal!=null && !nameLocal.isEmpty()){
-			if(name!=null && !name.isEmpty())
-				dataSearch.append(" ,\"nameLocal\":\""+nameLocal+"\"");
-			else
-				dataSearch.append("{\"nameLocal\":\""+nameLocal+"\""); 
+		if (nameLocal!=null && !nameLocal.isEmpty())
+			data.put("nameLocal", nameLocal);
 
-		}
+		if ( active!=null)
+			data.put("active", active);
 
-		if ( active!=null){
-			if( nameLocal!=null && !nameLocal.isEmpty())
-				dataSearch.append(" ,\"active\":"+active);
-			else if( name!=null && !name.isEmpty())
-				dataSearch.append(" ,\"active\":"+active);
-			else
-				dataSearch.append("{\"active\":"+active);
-		}   
+		if ( orderNumber!=null)
+			data.put("orderNumber", orderNumber);
 
-		if ( orderNumber!=null){
-			if( name==null  && nameLocal==null && active == null)
-				dataSearch.append("{\"orderNumber\":"+orderNumber);
-
-			else
-				dataSearch.append(" ,\"orderNumber\":"+orderNumber);
-
-		}   
 		if(name!=null || active!=null || nameLocal!=null || active!=null || orderNumber != null)
-			dataSearch.append("}'");
+			propertyTypeSearchSql.append(data.toJSONString()+"'");
 
-		propertyTypeSearchSql.append(dataSearch);
 
 		if ( pageSize == null)
 			pageSize = 30;
@@ -1579,47 +1516,31 @@ public class MasterServiceImpl  implements Masterservice{
 
 		}
 
-		StringBuffer dataSearch = new StringBuffer();
+		JSONObject data = new JSONObject();
 
 		if (code!=null && !code.isEmpty())
 			occuapancySearchSql.append(" AND code = '"+code+"'");
 
 		if(name!=null || nameLocal!=null || active!=null || orderNumber!=null)
-			dataSearch.append(" AND data @> '");
+			occuapancySearchSql.append(" AND data @> '");
 
 
 		if (name!=null && !name.isEmpty())
-			dataSearch.append("{ \"name\":\""+name+"\"");
+			data.put("name", name);
 
-		if (nameLocal!=null && !nameLocal.isEmpty()){
-			if(name!=null && !name.isEmpty())
-				dataSearch.append(" ,\"nameLocal\":\""+nameLocal+"\"");
-			else
-				dataSearch.append("{\"nameLocal\":\""+nameLocal+"\""); 
+		if (nameLocal!=null && !nameLocal.isEmpty())
+			data.put("nameLocal", nameLocal);
 
-		}
+		if ( active!=null)
+			data.put("active", active);
 
-		if ( active!=null){
-			if( nameLocal!=null && !nameLocal.isEmpty())
-				dataSearch.append(" ,  \"active\":"+active);
-			else if( name!=null && !name.isEmpty())
-				dataSearch.append(" ,  \"active\":"+active);
-			else
-				dataSearch.append("{\"active\":"+active);
-		}   
-
-		if ( orderNumber!=null){
-			if( name==null  && nameLocal==null && active == null)
-				dataSearch.append("{\"orderNumber\":"+orderNumber);
-
-			else
-				dataSearch.append(" ,\"orderNumber\":"+orderNumber);
-		}   
+		if ( orderNumber!=null)
+			data.put("orderNumber", orderNumber);
 
 		if(name!=null || active!=null || nameLocal!=null || active!=null || orderNumber != null)
-			dataSearch.append("}'");
+			occuapancySearchSql.append(data.toJSONString()+"'");
 
-		occuapancySearchSql.append(dataSearch);
+
 
 		if ( pageSize == null)
 			pageSize = 30;
@@ -1689,29 +1610,25 @@ public class MasterServiceImpl  implements Masterservice{
 
 		}
 
-		StringBuffer dataSearch = new StringBuffer();
+		JSONObject data = new JSONObject();
 
 		if (code!=null && !code.isEmpty())
 			wallTypeMasterSearchSQL.append(" AND code = '"+code+"'");
 
 		if(name!=null || nameLocal!=null)
-			dataSearch.append(" AND data @> '");
+			wallTypeMasterSearchSQL.append(" AND data @> '");
 
 		if (name!=null && !name.isEmpty())
-			dataSearch.append("{ \"name\":\""+name+"\"");
+			data.put("name", name);
 
-		if (nameLocal!=null && !nameLocal.isEmpty()){
-			if(name!=null && !name.isEmpty())
-				dataSearch.append(" , {\"nameLocal\":\""+nameLocal+"\"");
-			else
-				dataSearch.append("{\"nameLocal\":\""+nameLocal+"\"");	
-		}
+		if (nameLocal!=null && !nameLocal.isEmpty())
+			data.put("nameLocal", nameLocal);
 
 
 		if(name!=null || nameLocal!=null)
-			dataSearch.append("}'");
+			wallTypeMasterSearchSQL.append( data.toJSONString()+"'");
 
-		wallTypeMasterSearchSQL.append( dataSearch);
+
 
 		if ( pageSize == null )
 			pageSize = Integer.valueOf( environment.getProperty("default.page.size").trim());
@@ -1847,7 +1764,7 @@ public class MasterServiceImpl  implements Masterservice{
 
 			wallTypeMasterUpdateSQL.append("UPDATE egpt_mstr_walltype")
 			.append(" SET tenantid = ?, code = ?, data =? ,")
-			.append(" lastmodifiedby = ?, lastmodifieddate = ?")
+			.append(" lastmodifiedby = ?, lastmodifiedtime = ?")
 			.append(" WHERE id = " + id );
 
 			final PreparedStatementCreator psc = new PreparedStatementCreator() {
@@ -1925,29 +1842,25 @@ public class MasterServiceImpl  implements Masterservice{
 
 		}
 
-		StringBuffer dataSearch = new StringBuffer();
+		JSONObject data = new JSONObject();
 
 		if (code!=null && !code.isEmpty())
 			usageMasterSearchSQL.append(" AND code = '"+code+"'");
 
 		if(name!=null || nameLocal!=null)
-			dataSearch.append(" AND data @> '");
+			usageMasterSearchSQL.append(" AND data @> '");
 
 		if (name!=null && !name.isEmpty())
-			dataSearch.append("{ \"name\":\""+name+"\"");
+			data.put("name", name);
 
-		if (nameLocal!=null && !nameLocal.isEmpty()){
-			if(name!=null && !name.isEmpty())
-				dataSearch.append(" , \"nameLocal\":\""+nameLocal+"\"");
-			else
-				dataSearch.append("{\"nameLocal\":\""+nameLocal+"\"");	
-		}
+		if (nameLocal!=null && !nameLocal.isEmpty())
+			data.put("nameLocal", nameLocal);
 
 
 		if(name!=null || nameLocal!=null)
-			dataSearch.append("}'");
+			usageMasterSearchSQL.append( data.toJSONString()+"'");
 
-		usageMasterSearchSQL.append( dataSearch);
+
 
 		if ( pageSize == null )
 			pageSize = Integer.valueOf( environment.getProperty("default.page.size").trim());
@@ -2012,7 +1925,7 @@ public class MasterServiceImpl  implements Masterservice{
 			usageMasterCreateSQL.append("INSERT INTO egpt_mstr_usage")
 			.append(" ( tenantid, code,")
 			.append(" data, createdby, lastmodifiedby, createdtime, lastmodifiedtime) ")
-			.append(" VALUES( ?, ?,?, ?, ?, ?, ?)");
+			.append(" VALUES( ?, ?, ?, ?, ?, ?, ?)");
 
 			final PreparedStatementCreator psc = new PreparedStatementCreator() {
 
@@ -2099,6 +2012,7 @@ public class MasterServiceImpl  implements Masterservice{
 					return ps;
 				}
 			};
+
 			try {
 
 				jdbcTemplate.update(psc);
