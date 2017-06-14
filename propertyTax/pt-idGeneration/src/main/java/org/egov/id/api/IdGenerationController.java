@@ -1,8 +1,12 @@
 package org.egov.id.api;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.egov.id.util.IdGenerationService;
 import org.egov.models.IdGenerationRequest;
 import org.egov.models.IdGenerationResponse;
+import org.egov.models.IdRequest;
 import org.egov.models.IdResponse;
 import org.egov.models.RequestInfo;
 import org.egov.models.ResponseInfoFactory;
@@ -32,16 +36,25 @@ public class IdGenerationController {
 	 * @return IdGenerationResponse
 	 * @throws Exception
 	 */
-	@RequestMapping(method = RequestMethod.POST, path = "_create")
-	public IdGenerationResponse generateIdResponse(@RequestBody IdGenerationRequest idGenReq) throws Exception {
+	@RequestMapping(method = RequestMethod.POST, path = "_genearate")
+	public IdGenerationResponse generateIdResponse(@RequestBody IdGenerationRequest idGenerationRequest) throws Exception {
 
-		RequestInfo requestInfo = idGenReq.getRequestInfo();
+		RequestInfo requestInfo = idGenerationRequest.getRequestInfo();
+		List<IdRequest> idRequests = idGenerationRequest.getIdRequests();
+		List<IdResponse> idResponses = new ArrayList<>();
 		IdGenerationResponse idGenerationResponse = new IdGenerationResponse();
-		IdResponse idResponse = new IdResponse();
-
-		String generatedId = idGenerationService.generateId(idGenReq);
-		idResponse.setId(generatedId);
-		idGenerationResponse.setIdResponse(idResponse);
+		for(IdRequest idRequest: idRequests){
+			String generatedId = "";
+			if(idRequest.getFormat()!=null && !idRequest.getFormat().isEmpty()){
+				generatedId = idGenerationService.getFormattedId(idRequest);
+			} else {
+				generatedId = idGenerationService.getGeneratedId(idRequest);
+			}
+			IdResponse idResponse = new IdResponse();
+			idResponse.setId(generatedId);
+			idResponses.add(idResponse);
+			idGenerationResponse.setIdResponses(idResponses);
+		}
 		idGenerationResponse.setResponseInfo(responseInfoFactory.createResponseInfoFromRequestInfo(requestInfo, true));
 
 		return idGenerationResponse;

@@ -3,7 +3,9 @@ package org.egov.id.util;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import java.util.regex.Matcher;
@@ -11,13 +13,8 @@ import java.util.regex.Pattern;
 
 import javax.sql.DataSource;
 
-import org.egov.id.model.IdResultSet;
-import org.egov.models.AttributeNotFoundException;
-import org.egov.models.IdAttribute;
-import org.egov.models.IdGenerationRequest;
 import org.egov.models.IdRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.stereotype.Service;
 
@@ -31,82 +28,99 @@ public class IdGenerationService {
 	@Autowired
 	DataSource dataSource;
 
-	@Autowired
-	private Environment environment;
-
 	/**
-	 * Description : This method for generating Id for property
-	 * @param idGenReq
-	 * @throws Exception
+	 * Description : This method to generate Id when format is unknown
 	 * @return generatedId
 	 */
-	public String generateId(IdGenerationRequest idGenReq) throws Exception {
-
-		IdRequest idRequest = idGenReq.getIdRequest();
-		List<IdAttribute> attributes = new ArrayList<IdAttribute>(idRequest.getAttributes());
-		IdResultSet resultSet = new IdResultSet();
+	public String getGeneratedId(IdRequest idRequest) throws Exception {
+		String IdFormat = getIdFormat(idRequest);
+		idRequest.setFormat(IdFormat);
+		String generatedId = getFormattedId(idRequest);
+		return generatedId;
+	}
+	
+	/**
+	 * Description : This method to retrieve Id format
+	 * @return idFormat
+	 */
+	public String getIdFormat(IdRequest idRequest) throws Exception {
 		//connection and prepared statement
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		Connection conn = null;
-		String generatedId = null;
+		String idFormat = null;
 		try{
 			conn = DataSourceUtils.getConnection(dataSource);
 			conn.setAutoCommit(false);
-			//select the id type from the id generation table 
+			String idName = idRequest.getIdName();
+			String tenantId = idRequest.getTenantId();
+			//select the id format from the id generation table 
 			StringBuffer idSelectQuery = new StringBuffer();
-			idSelectQuery.append( "SELECT * FROM ") .append( environment.getProperty("id.generation.table"))
-			.append(" WHERE (idtype=? and entity=? and tenentid=?) FOR UPDATE" );
+			idSelectQuery.append( "SELECT format FROM id_generator ")
+			.append(" WHERE idname=? and tenantid=?");
 			pst = conn.prepareStatement(idSelectQuery.toString());
-			pst.setString(1,idRequest.getIdType());
-			pst.setString(2,idRequest.getEntity());
-			pst.setString(3,idRequest.getTenentId());
+			pst.setString(1,idName);
+			pst.setString(2,tenantId);
 			rs = pst.executeQuery();
-			while(rs.next()){
-				resultSet.setTenentid(rs.getString("tenentid"));
-				resultSet.setCurrentseqnum(rs.getString("currentseqnum"));
-				resultSet.setEntity(rs.getString("entity"));
-				resultSet.setId(rs.getString("id"));
-				resultSet.setIdtype(rs.getString("idtype"));
-				resultSet.setRegex(rs.getString("regex"));
-			}
-			generatedId = ValidateAttributesAndGetId(attributes, resultSet);
-			//updating the sequence number of the id type
-			StringBuffer idUpdateQuery = new StringBuffer();
-			idUpdateQuery.append("UPDATE ").append(environment.getProperty("id.generation.table"))
-			.append(" SET currentseqnum=? WHERE (idtype=? and entity=? and tenentid=?)");
-			pst = conn.prepareStatement(idUpdateQuery.toString());
-			pst.setInt(1,Integer.parseInt(resultSet.getCurrentseqnum())+1);
-			pst.setString(2,idRequest.getIdType());
-			pst.setString(3,idRequest.getEntity());
-			pst.setString(4,idRequest.getTenentId());
-			pst.executeUpdate();
+			if(rs.next()){
+				idFormat = rs.getString(1);
+			} else {
+				//querying for the id format with idname
+				StringBuffer idNameQuery = new StringBuffer();
+				idNameQuery.append( "SELECT format FROM id_generator ")
+				.append(" WHERE idname=?");
+				pst = conn.prepareStatement(idNameQuery.toString());
+				pst.setString(1,idName);
+				rs = pst.executeQuery();
+				if(rs.next())
+					idFormat = rs.getString(1);
+			}	
 			//committing the transaction
 			conn.commit();
 			conn.setAutoCommit(true);
 		} finally{
 			conn.close();
 		}
-		return generatedId;
+		return idFormat;
 	}
-
+	
 	/**
-	 * Description : This method to check the attribute exists or not
-	 * @param attributeList
-	 * @param key
-	 * @return true/false
+	 * Description : This method to generate Id when format is known
+	 * @return Id
 	 */
-	public boolean containsAttribute(List<IdAttribute> attributeList, String key) {
-
-		for (IdAttribute attribute : attributeList) {
-			if (attribute.getKey().equals(key)) {
-				return true;
+	
+	public String getFormattedId(IdRequest idRequest) throws Exception{
+		
+		String idFormat = idRequest.getFormat();
+		List<String> matchList = new ArrayList<String>();
+		Pattern regExpPattern = Pattern.compile("\\[(.*?)\\]");
+		Matcher regExpMatcher = regExpPattern.matcher(idFormat);
+		while (regExpMatcher.find()) {//Finds Matching Pattern in String
+			matchList.add(regExpMatcher.group(1));//Fetching Group from String
+		}
+		for(String attributeName:matchList) {
+			if(matchList.get(0)==attributeName){
+				idFormat = idFormat.replace("["+ attributeName +"]", generateDateFormat(attributeName));
+			} else if(matchList.get(matchList.size()-1)==attributeName){
+				idFormat = idFormat.replace("["+ attributeName +"]", generateRandomText());
+			} else {
+				idFormat = idFormat.replace("["+ attributeName +"]", generateSequenceNumber(attributeName));
 			}
 		}
-		return false;
-
+		return idFormat.toString().toUpperCase();
 	}
-
+	
+	/**
+	 * Description : This method to generate date in given format
+	 * @return formattedDate
+	 */
+	public String generateDateFormat(String dateFormat){
+		Date date = new Date();
+		SimpleDateFormat formatter = new SimpleDateFormat(dateFormat);
+		String formattedDate= formatter.format(date);
+		return formattedDate;
+	}
+	
 	/**
 	 * Description : This method to generate random text
 	 * @return randomTxt
@@ -114,51 +128,39 @@ public class IdGenerationService {
 	public String generateRandomText(){
 
 		Random random = new Random();
-		int k = random.nextInt(25)+65;
-		int l = random.nextInt(25)+65;
-		String randomTxt = Character.toString((char) k)+(char)l;
+		int randomNo = random.nextInt(25)+65;
+		String randomTxt = ""+randomNo;
 		return randomTxt;
 
 	}
-
+	
 	/**
-	 * Description : This method to validate the attributes and returns the generated id
-	 * @param attributes
-	 * @param resultSet
-	 * @return regex
+	 * Description : This method to generate sequence number
+	 * @return strDate
 	 */
-	public String ValidateAttributesAndGetId( List<IdAttribute> attributes, IdResultSet resultSet ){
-
-		String regex = resultSet.getRegex();
-		List<String> matchList = new ArrayList<String>();
-		Pattern regExpPattern = Pattern.compile("\\{(.*?)\\}");
-		Matcher regexMatcher = regExpPattern.matcher(regex);
-		while (regexMatcher.find()) {//Finds Matching Pattern in String
-			matchList.add(regexMatcher.group(1));//Fetching Group from String
+	public String generateSequenceNumber(String sequenceName) throws Exception {
+		
+		String sequenceSql = "SELECT nextval('" + sequenceName + "')";
+		//connection and prepared statement
+		PreparedStatement pst = null;
+		ResultSet rs = null;
+		Connection conn = null;
+		Long seqId = null;
+		try{
+			conn = DataSourceUtils.getConnection(dataSource);
+			conn.setAutoCommit(false);
+			pst = conn.prepareStatement(sequenceSql);
+			rs = pst.executeQuery();
+			if(rs.next())
+				seqId = rs.getLong(1);
+			
+			//committing the transaction
+			conn.commit();
+			conn.setAutoCommit(true);
+		} finally{
+			conn.close();
 		}
-		for(String attributeName:matchList) {
-			if(attributeName.equalsIgnoreCase("randNo") || attributeName.equalsIgnoreCase("seqNumber")){
-				if(attributeName.equalsIgnoreCase("randNo")){
-					regex = regex.replace("{randNo}", generateRandomText());
-				} else {
-					regex = regex.replace("{seqNumber}", resultSet.getCurrentseqnum());
-				}
-			} else {
-				if(containsAttribute(attributes, attributeName)){
-					for(IdAttribute attribute:attributes){  
-						if(attribute.getKey().equalsIgnoreCase(attributeName)){
-							regex = regex.replace("{"+attributeName+"}", attribute.getValue());
-						} 
-					}
-				} else {
-					//throw the exception for attribute not found
-					AttributeNotFoundException attException = new AttributeNotFoundException();
-					attException.setCustomMsg("attribute "+ attributeName +" Not found");
-					throw attException;
-				}
-			}
-		}
-		return regex.toString().toUpperCase();
-
+		StringBuilder seqNumber = new StringBuilder(String.format("%06d", seqId));
+		return seqNumber.toString();
 	}
 }
