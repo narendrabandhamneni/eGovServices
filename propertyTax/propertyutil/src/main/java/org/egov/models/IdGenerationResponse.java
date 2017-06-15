@@ -1,6 +1,4 @@
 package org.egov.models;
-import java.util.List;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,6 +19,6 @@ public class IdGenerationResponse {
 
 	private ResponseInfo responseInfo;
 
-	private List<IdResponse> idResponses;
+	private IdResponse idResponse;
 
 }
