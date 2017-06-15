@@ -7,6 +7,7 @@ import java.util.Objects;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
@@ -286,6 +287,7 @@ public class Property   {
 	 * There will be work flow to create a new property in a system. The assessment date is the final approval and UPIC no generation date.
 	 * @return assessmentDate
 	 **/
+
 	public String getAssessmentDate() {
 		return assessmentDate;
 	}
