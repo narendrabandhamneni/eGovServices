@@ -2,11 +2,11 @@ package org.egov.models;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
@@ -154,6 +154,26 @@ public class Property   {
 
 	@JsonProperty("auditDetails")
 	private AuditDetails auditDetails = null;
+	
+	private String taxCalculations;
+	
+	private List<Demand> demands;
+	
+	public List<Demand> getDemands() {
+		return demands;
+	}
+
+	public void setDemands(List<Demand> demands) {
+		this.demands = demands;
+	}
+
+	public String getTaxCalculations() {
+		return taxCalculations;
+	}
+
+	public void setTaxCalculations(String taxCalculations) {
+		this.taxCalculations = taxCalculations;
+	}
 
 	/**
 	 * Unique Identifier of the Property
@@ -395,79 +415,158 @@ public class Property   {
 		this.auditDetails = auditDetails;
 	}
 
-
 	@Override
-	public boolean equals(java.lang.Object o) {
-		if (this == o) {
-			return true;
-		}
-		if (o == null || getClass() != o.getClass()) {
-			return false;
-		}
-		Property property = (Property) o;
-		return Objects.equals(this.id, property.id) &&
-				Objects.equals(this.tenantId, property.tenantId) &&
-				Objects.equals(this.upicNumber, property.upicNumber) &&
-				Objects.equals(this.oldUpicNumber, property.oldUpicNumber) &&
-				Objects.equals(this.vltUpicNumber, property.vltUpicNumber) &&
-				Objects.equals(this.creationReason, property.creationReason) &&
-				Objects.equals(this.address, property.address) &&
-				Objects.equals(this.owners, property.owners) &&
-				Objects.equals(this.propertyDetail, property.propertyDetail) &&
-				Objects.equals(this.vacantLand, property.vacantLand) &&
-				Objects.equals(this.assessmentDate, property.assessmentDate) &&
-				Objects.equals(this.occupancyDate, property.occupancyDate) &&
-				Objects.equals(this.gisRefNo, property.gisRefNo) &&
-				Objects.equals(this.isAuthorised, property.isAuthorised) &&
-				Objects.equals(this.isUnderWorkflow, property.isUnderWorkflow) &&
-				Objects.equals(this.boundary, property.boundary) &&
-				Objects.equals(this.active, property.active) &&
-				Objects.equals(this.channel, property.channel) &&
-				Objects.equals(this.auditDetails, property.auditDetails);
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((active == null) ? 0 : active.hashCode());
+		result = prime * result + ((address == null) ? 0 : address.hashCode());
+		result = prime * result + ((assessmentDate == null) ? 0 : assessmentDate.hashCode());
+		result = prime * result + ((auditDetails == null) ? 0 : auditDetails.hashCode());
+		result = prime * result + ((boundary == null) ? 0 : boundary.hashCode());
+		result = prime * result + ((channel == null) ? 0 : channel.hashCode());
+		result = prime * result + ((creationReason == null) ? 0 : creationReason.hashCode());
+		result = prime * result + ((demands == null) ? 0 : demands.hashCode());
+		result = prime * result + ((gisRefNo == null) ? 0 : gisRefNo.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((isAuthorised == null) ? 0 : isAuthorised.hashCode());
+		result = prime * result + ((isUnderWorkflow == null) ? 0 : isUnderWorkflow.hashCode());
+		result = prime * result + ((occupancyDate == null) ? 0 : occupancyDate.hashCode());
+		result = prime * result + ((oldUpicNumber == null) ? 0 : oldUpicNumber.hashCode());
+		result = prime * result + ((owners == null) ? 0 : owners.hashCode());
+		result = prime * result + ((propertyDetail == null) ? 0 : propertyDetail.hashCode());
+		result = prime * result + ((taxCalculations == null) ? 0 : taxCalculations.hashCode());
+		result = prime * result + ((tenantId == null) ? 0 : tenantId.hashCode());
+		result = prime * result + ((upicNumber == null) ? 0 : upicNumber.hashCode());
+		result = prime * result + ((vacantLand == null) ? 0 : vacantLand.hashCode());
+		result = prime * result + ((vltUpicNumber == null) ? 0 : vltUpicNumber.hashCode());
+		return result;
 	}
 
 	@Override
-	public int hashCode() {
-		return Objects.hash(id, tenantId, upicNumber, oldUpicNumber, vltUpicNumber, creationReason, address, owners, propertyDetail, vacantLand, assessmentDate, occupancyDate, gisRefNo, isAuthorised, isUnderWorkflow, boundary, active, channel, auditDetails);
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Property other = (Property) obj;
+		if (active == null) {
+			if (other.active != null)
+				return false;
+		} else if (!active.equals(other.active))
+			return false;
+		if (address == null) {
+			if (other.address != null)
+				return false;
+		} else if (!address.equals(other.address))
+			return false;
+		if (assessmentDate == null) {
+			if (other.assessmentDate != null)
+				return false;
+		} else if (!assessmentDate.equals(other.assessmentDate))
+			return false;
+		if (auditDetails == null) {
+			if (other.auditDetails != null)
+				return false;
+		} else if (!auditDetails.equals(other.auditDetails))
+			return false;
+		if (boundary == null) {
+			if (other.boundary != null)
+				return false;
+		} else if (!boundary.equals(other.boundary))
+			return false;
+		if (channel != other.channel)
+			return false;
+		if (creationReason != other.creationReason)
+			return false;
+		if (demands == null) {
+			if (other.demands != null)
+				return false;
+		} else if (!demands.equals(other.demands))
+			return false;
+		if (gisRefNo == null) {
+			if (other.gisRefNo != null)
+				return false;
+		} else if (!gisRefNo.equals(other.gisRefNo))
+			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (isAuthorised == null) {
+			if (other.isAuthorised != null)
+				return false;
+		} else if (!isAuthorised.equals(other.isAuthorised))
+			return false;
+		if (isUnderWorkflow == null) {
+			if (other.isUnderWorkflow != null)
+				return false;
+		} else if (!isUnderWorkflow.equals(other.isUnderWorkflow))
+			return false;
+		if (occupancyDate == null) {
+			if (other.occupancyDate != null)
+				return false;
+		} else if (!occupancyDate.equals(other.occupancyDate))
+			return false;
+		if (oldUpicNumber == null) {
+			if (other.oldUpicNumber != null)
+				return false;
+		} else if (!oldUpicNumber.equals(other.oldUpicNumber))
+			return false;
+		if (owners == null) {
+			if (other.owners != null)
+				return false;
+		} else if (!owners.equals(other.owners))
+			return false;
+		if (propertyDetail == null) {
+			if (other.propertyDetail != null)
+				return false;
+		} else if (!propertyDetail.equals(other.propertyDetail))
+			return false;
+		if (taxCalculations == null) {
+			if (other.taxCalculations != null)
+				return false;
+		} else if (!taxCalculations.equals(other.taxCalculations))
+			return false;
+		if (tenantId == null) {
+			if (other.tenantId != null)
+				return false;
+		} else if (!tenantId.equals(other.tenantId))
+			return false;
+		if (upicNumber == null) {
+			if (other.upicNumber != null)
+				return false;
+		} else if (!upicNumber.equals(other.upicNumber))
+			return false;
+		if (vacantLand == null) {
+			if (other.vacantLand != null)
+				return false;
+		} else if (!vacantLand.equals(other.vacantLand))
+			return false;
+		if (vltUpicNumber == null) {
+			if (other.vltUpicNumber != null)
+				return false;
+		} else if (!vltUpicNumber.equals(other.vltUpicNumber))
+			return false;
+		return true;
 	}
 
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append("class Property {\n");
-
-		sb.append("    id: ").append(toIndentedString(id)).append("\n");
-		sb.append("    tenantId: ").append(toIndentedString(tenantId)).append("\n");
-		sb.append("    upicNumber: ").append(toIndentedString(upicNumber)).append("\n");
-		sb.append("    oldUpicNumber: ").append(toIndentedString(oldUpicNumber)).append("\n");
-		sb.append("    vltUpicNumber: ").append(toIndentedString(vltUpicNumber)).append("\n");
-		sb.append("    creationReason: ").append(toIndentedString(creationReason)).append("\n");
-		sb.append("    address: ").append(toIndentedString(address)).append("\n");
-		sb.append("    owners: ").append(toIndentedString(owners)).append("\n");
-		sb.append("    propertyDetail: ").append(toIndentedString(propertyDetail)).append("\n");
-		sb.append("    vacantLand: ").append(toIndentedString(vacantLand)).append("\n");
-		sb.append("    assessmentDate: ").append(toIndentedString(assessmentDate)).append("\n");
-		sb.append("    occupancyDate: ").append(toIndentedString(occupancyDate)).append("\n");
-		sb.append("    gisRefNo: ").append(toIndentedString(gisRefNo)).append("\n");
-		sb.append("    isAuthorised: ").append(toIndentedString(isAuthorised)).append("\n");
-		sb.append("    isUnderWorkflow: ").append(toIndentedString(isUnderWorkflow)).append("\n");
-		sb.append("    boundary: ").append(toIndentedString(boundary)).append("\n");
-		sb.append("    active: ").append(toIndentedString(active)).append("\n");
-		sb.append("    channel: ").append(toIndentedString(channel)).append("\n");
-		sb.append("    auditDetails: ").append(toIndentedString(auditDetails)).append("\n");
-		sb.append("}");
-		return sb.toString();
+		return "Property [id=" + id + ", tenantId=" + tenantId + ", upicNumber=" + upicNumber + ", oldUpicNumber="
+				+ oldUpicNumber + ", vltUpicNumber=" + vltUpicNumber + ", creationReason=" + creationReason
+				+ ", address=" + address + ", owners=" + owners + ", propertyDetail=" + propertyDetail + ", vacantLand="
+				+ vacantLand + ", assessmentDate=" + assessmentDate + ", occupancyDate=" + occupancyDate + ", gisRefNo="
+				+ gisRefNo + ", isAuthorised=" + isAuthorised + ", isUnderWorkflow=" + isUnderWorkflow + ", boundary="
+				+ boundary + ", active=" + active + ", channel=" + channel + ", auditDetails=" + auditDetails
+				+ ", taxCalculations=" + taxCalculations + ", demands=" + demands + "]";
 	}
 
-	/**
-	 * Convert the given object to string with each line indented by 4 spaces
-	 * (except the first line).
-	 */
-	private String toIndentedString(java.lang.Object o) {
-		if (o == null) {
-			return "null";
-		}
-		return o.toString().replace("\n", "\n    ");
-	}
+
+	
+	
 }
 
