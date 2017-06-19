@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
+
 import org.egov.models.Department;
 import org.egov.models.DepartmentRequest;
 import org.egov.models.DepartmentResponseInfo;
@@ -73,7 +74,47 @@ public class MasterServiceImpl  implements Masterservice{
 	@Autowired
 	private Environment environment;
 
+	/**
+	 * create department sql query creation and calling inside createDepartmentMaster method
+	 * @param department
+	 * @param data
+	 */
 
+	private void createDepartment(String tenantId, Department department,String data){
+
+		Long createdTime=new Date().getTime();
+
+		StringBuffer depeartmentQuery=new StringBuffer();
+		depeartmentQuery.append("insert into egpt_mstr_department(tenantId,code,data,");
+		depeartmentQuery.append("createdBy, lastModifiedBy, createdTime,lastModifiedTime)");
+		depeartmentQuery.append(" values(?,?,?,?,?,?,?)");
+
+
+		final PreparedStatementCreator psc = new PreparedStatementCreator() {
+			@Override
+			public PreparedStatement createPreparedStatement(final Connection connection) throws SQLException {
+				final PreparedStatement ps = connection.prepareStatement(depeartmentQuery.toString(), new String[] { "id" });
+				ps.setString(1, department.getTenantId());
+				ps.setString(2, department.getCode());
+				PGobject jsonObject = new PGobject();
+				jsonObject.setType("jsonb");
+				jsonObject.setValue(data);
+				ps.setObject(3,jsonObject);
+				ps.setString(4, department.getAuditDetails().getCreatedBy());
+				ps.setString(5, department.getAuditDetails().getLastModifiedBy());
+				ps.setLong(6, createdTime);
+				ps.setLong(7, createdTime);
+				return ps;
+			}
+		};
+
+		// The newly generated key will be saved in this object
+		final KeyHolder holder = new GeneratedKeyHolder();
+		jdbcTemplate.update(psc, holder);
+		department.setId(Long.valueOf(holder.getKey().intValue()));
+		department.getAuditDetails().setCreatedTime(createdTime);
+		department.getAuditDetails().setLastModifiedTime(createdTime);
+	}
 
 	/**
 	 * Description : This method will use for creating department type
@@ -89,43 +130,12 @@ public class MasterServiceImpl  implements Masterservice{
 
 		for(Department department:departmentRequest.getDepartments()){
 
-			Long createdTime=new Date().getTime();
-
 			Gson gson=new GsonBuilder().setExclusionStrategies(new ExcludeFileds()).serializeNulls().create();
 
 			String data=gson.toJson(department);
 
-			StringBuffer depeartmentQuery=new StringBuffer();
-			depeartmentQuery.append("insert into egpt_mstr_department(tenantId,code,data,");
-			depeartmentQuery.append("createdBy, lastModifiedBy, createdTime,lastModifiedTime)");
-			depeartmentQuery.append(" values(?,?,?,?,?,?,?)");
 
-
-			final PreparedStatementCreator psc = new PreparedStatementCreator() {
-				@Override
-				public PreparedStatement createPreparedStatement(final Connection connection) throws SQLException {
-					final PreparedStatement ps = connection.prepareStatement(depeartmentQuery.toString(), new String[] { "id" });
-					ps.setString(1, department.getTenantId());
-					ps.setString(2, department.getCode());
-					PGobject jsonObject = new PGobject();
-					jsonObject.setType("jsonb");
-					jsonObject.setValue(data);
-					ps.setObject(3,jsonObject);
-					ps.setString(4, department.getAuditDetails().getCreatedBy());
-					ps.setString(5, department.getAuditDetails().getLastModifiedBy());
-					ps.setLong(6, createdTime);
-					ps.setLong(7, createdTime);
-					return ps;
-				}
-			};
-
-			// The newly generated key will be saved in this object
-			final KeyHolder holder = new GeneratedKeyHolder();
-			jdbcTemplate.update(psc, holder);
-			department.setId(Long.valueOf(holder.getKey().intValue()));
-			department.getAuditDetails().setCreatedTime(createdTime);
-			department.getAuditDetails().setLastModifiedTime(createdTime);
-
+			createDepartment(tenantId, department,data);
 
 		}
 		ResponseInfo responseInfo=responseInfoFactory.createResponseInfoFromRequestInfo(departmentRequest.getRequestInfo(),true);
@@ -134,42 +144,51 @@ public class MasterServiceImpl  implements Masterservice{
 		departmentResponse.setDepartments(departmentRequest.getDepartments());
 		departmentResponse.setResponseInfo(responseInfo);
 		return departmentResponse;
+	}
+
+	/**
+	 * update department query creation and using this method in updateDepartmentMaster
+	 * @param department
+	 * @param data
+	 * @param id
+	 */
+	private void updateDepartment(Department department, String data, Long id){
+		Long modifiedTime=new Date().getTime();
+
+		String departmentTypeUpdate = "UPDATE egpt_mstr_department set tenantId = ?, code = ?,data = ?, lastModifiedBy = ?, lastModifiedTime = ? where id = " +id;
+
+
+		final PreparedStatementCreator psc = new PreparedStatementCreator() {
+			@Override
+			public PreparedStatement createPreparedStatement(final Connection connection) throws SQLException {
+				final PreparedStatement ps = connection.prepareStatement(departmentTypeUpdate, new String[] { "id" });
+				ps.setString(1, department.getTenantId());	
+				ps.setString(2,department.getCode());
+				PGobject jsonObject = new PGobject();
+				jsonObject.setType("jsonb");
+				jsonObject.setValue(data);
+				ps.setObject(3,jsonObject);
+				ps.setString(4, department.getAuditDetails().getLastModifiedBy());
+				ps.setLong(5, modifiedTime);
+				return ps;
+			}
+		};
+		jdbcTemplate.update(psc);
+		department.getAuditDetails().setLastModifiedTime(modifiedTime);
+
 	}
 
 	@Override
 	@Transactional
 	public DepartmentResponseInfo updateDepartmentMaster(String tenantId, Long id, DepartmentRequest departmentRequest) {
 
-		for(Department department:departmentRequest.getDepartments()){
-
-			Long modifiedTime=new Date().getTime();
+		for(Department department:departmentRequest.getDepartments()){			
 
 			Gson gson=new GsonBuilder().setExclusionStrategies(new ExcludeFileds()).serializeNulls().create();
 
 			String data=gson.toJson(department);
 
-			String departmentTypeUpdate = "UPDATE egpt_mstr_department set tenantId = ?, code = ?,data = ?, lastModifiedBy = ?, lastModifiedTime = ? where id = " +id;
-
-
-			final PreparedStatementCreator psc = new PreparedStatementCreator() {
-				@Override
-				public PreparedStatement createPreparedStatement(final Connection connection) throws SQLException {
-					final PreparedStatement ps = connection.prepareStatement(departmentTypeUpdate, new String[] { "id" });
-					ps.setString(1, department.getTenantId());	
-					ps.setString(2,department.getCode());
-					PGobject jsonObject = new PGobject();
-					jsonObject.setType("jsonb");
-					jsonObject.setValue(data);
-					ps.setObject(3,jsonObject);
-					ps.setString(4, department.getAuditDetails().getLastModifiedBy());
-					ps.setLong(5, modifiedTime);
-					return ps;
-				}
-			};
-			jdbcTemplate.update(psc);
-			department.getAuditDetails().setLastModifiedTime(modifiedTime);
-
-
+			updateDepartment(department,data,id);
 		}
 		ResponseInfo responseInfo=responseInfoFactory.createResponseInfoFromRequestInfo(departmentRequest.getRequestInfo(),true);
 
@@ -180,58 +199,30 @@ public class MasterServiceImpl  implements Masterservice{
 	}
 
 
-	@Override
-	public DepartmentResponseInfo getDepartmentMaster(RequestInfo requestInfo, String tenantId, Integer[] ids, String category, String name, String code, String nameLocal, Integer pageSize, Integer offSet) {
+	/**
+	 * Description: department search and using this in get DepartmentMaster
+	 * @param requestInfo
+	 * @param tenantId
+	 * @param ids
+	 * @param category
+	 * @param name
+	 * @param code
+	 * @param nameLocal
+	 * @param pageSize
+	 * @param offSet
+	 * @return
+	 */
+	private DepartmentResponseInfo getDepartment(RequestInfo requestInfo,
+			String tenantId,
+			Integer[] ids,
+			String category,
+			String name,
+			String code,
+			String nameLocal,
+			Integer pageSize,
+			Integer offSet){
 		Gson gson=new GsonBuilder().setExclusionStrategies(new ExcludeFileds()).serializeNulls().create();
-		StringBuffer departmentSearchSql = new StringBuffer();
-
-		departmentSearchSql.append("select * from egpt_mstr_department where tenantid ='"+tenantId+"'");
-
-		if (ids!=null && ids.length>0){
-
-			String  departmentIds= "";
-
-			int count = 1;
-			for (Integer id : ids){
-				if (count<ids.length)
-					departmentIds = departmentIds+id+",";
-				else
-					departmentIds = departmentIds+id;
-
-				count++;
-			}
-			departmentSearchSql.append(" AND id IN ("+departmentIds+")");
-		}
-
-		JSONObject data = new JSONObject();
-
-		if (code!=null && !code.isEmpty())
-			departmentSearchSql.append(" AND code = '"+code+"'");
-
-		if(name!=null || category!=null || nameLocal!=null)
-			departmentSearchSql.append(" AND data @> '");
-
-		if (name!=null && !name.isEmpty())
-			data.put("name", name);
-
-		if (nameLocal!=null && !nameLocal.isEmpty())
-			data.put("nameLocal", nameLocal);
-
-
-		if ( category!=null &&  !category.isEmpty()  )
-			data.put("category", category);
-
-
-		if(name!=null || category!=null || nameLocal!=null)
-			departmentSearchSql.append(data.toJSONString()+"'");
-
-
-		if ( pageSize == null )
-			pageSize = 30;
-		if ( offSet ==null)
-			offSet = 0;
-		departmentSearchSql.append("offset "+offSet+" limit "+pageSize);
-
+		StringBuffer departmentSearchSql = createSearchQuery("egpt_mstr_department", tenantId, ids, name, nameLocal, code, null, null, null, category, pageSize, offSet);
 		DepartmentResponseInfo departmentResponse = new DepartmentResponseInfo();
 
 		try {
@@ -254,11 +245,118 @@ public class MasterServiceImpl  implements Masterservice{
 			throw new PropertySearchException("invalid input",requestInfo);
 		}
 		return departmentResponse;
-
 	}
 
 
+	/**
+	 * Description: search for deparment
+	 * @param requestInfo
+	 * @param tenantId
+	 * @param ids
+	 * @param category
+	 * @param name
+	 * @param code
+	 * @param nameLocal
+	 * @param pageSize
+	 * @param offSet
+	 * @return
+	 */
+	@Override
+	public DepartmentResponseInfo getDepartmentMaster(RequestInfo requestInfo, String tenantId, Integer[] ids, String category, String name, String code, String nameLocal, Integer pageSize, Integer offSet) {
 
+		return	getDepartment( requestInfo,  tenantId, ids,  category,  name,  code,  nameLocal,  pageSize,  offSet);
+	}
+
+
+	/***
+	 * <p>This method will form the search query based on the given parameters</p>
+	 * @author anil
+	 * @param tableName
+	 * @param tenantId
+	 * @param ids
+	 * @param name
+	 * @param nameLocal
+	 * @param code
+	 * @param active
+	 * @param isResidential
+	 * @param orderNumber
+	 * @param category
+	 * @param pageSize
+	 * @param offSet
+	 * @return {@link StringBuffer} search sql query in string buffer object
+	 */
+	private StringBuffer createSearchQuery(String tableName,
+			String tenantId,
+			Integer[] ids,
+			String name,
+			String nameLocal,
+			String code,
+			Boolean active,
+			Boolean isResidential,
+			Integer orderNumber
+			,String category,
+			Integer pageSize, 
+			Integer offSet){
+
+
+		StringBuffer searchSql = new StringBuffer();
+
+		searchSql.append("select * from "+tableName+" where tenantId = '"+tenantId+"'");
+
+		if ( ids!=null && ids.length>0 ){
+
+			String  searchIds =  "";
+			int count 		  =  1;
+			for ( Integer id : ids ){
+
+				if (count<ids.length)
+					searchIds = searchIds+id+",";
+				else
+					searchIds = searchIds+id;
+
+				count ++;
+			}
+			searchSql.append(" AND id IN ("+searchIds+")");
+		}
+
+		if ( code!=null && !code.isEmpty() )
+			searchSql.append(" AND code = '"+code+"'");
+
+		JSONObject dataSearch = new JSONObject();
+
+		if( name!=null || nameLocal!=null || active!=null || isResidential!=null || orderNumber!=null || category!=null  )
+			searchSql.append(" AND data @> '");
+
+		if ( name!=null && !name.isEmpty() )
+			dataSearch.put("name", name);
+
+		if (nameLocal!=null && !nameLocal.isEmpty())
+			dataSearch.put("nameLocal", nameLocal);
+
+		if ( active!=null )
+			dataSearch.put("active", active);
+
+		if( isResidential!=null )
+			dataSearch.put("isResidential", isResidential);
+
+		if ( orderNumber != null )
+			dataSearch.put("orderNumber", orderNumber);
+
+		if ( category!=null && !category.isEmpty() )
+			dataSearch.put("category", category);
+
+		if(name!=null || nameLocal!=null || active!=null || isResidential!=null || orderNumber!=null || category!=null  )
+			searchSql.append(dataSearch.toJSONString()+"'");
+
+
+		if ( pageSize == null )
+			pageSize = 30;
+		if ( offSet == null )
+			offSet = 0;
+		searchSql.append("offset "+offSet+" limit "+pageSize);
+
+		return searchSql;
+	}
 
 
 	/**
@@ -932,6 +1030,48 @@ public class MasterServiceImpl  implements Masterservice{
 
 
 	}
+	
+	/**
+	 * creating structure query and used in createStructureClassMaster method
+	 */
+	public void craeateStructureClass(String tenantId, StructureClass structureClass, String data) {
+		
+		Long createdTime=new Date().getTime();
+		
+		StringBuffer structureClassQuery=new StringBuffer();
+		structureClassQuery.append("insert into egpt_mstr_structureclass(tenantId,code,data,");
+		structureClassQuery.append("createdBy, lastModifiedBy, createdTime,lastModifiedTime)");
+		structureClassQuery.append(" values(?,?,?,?,?,?,?)");
+
+
+		final PreparedStatementCreator psc = new PreparedStatementCreator() {
+			@Override
+			public PreparedStatement createPreparedStatement(final Connection connection) throws SQLException {
+				final PreparedStatement ps = connection.prepareStatement(structureClassQuery.toString(), new String[] { "id" });
+				ps.setString(1, structureClass.getTenantId());
+				ps.setString(2, structureClass.getCode());
+				PGobject jsonObject = new PGobject();
+				jsonObject.setType("jsonb");
+				jsonObject.setValue(data);
+				ps.setObject(3,jsonObject);
+				ps.setString(4, structureClass.getAuditDetails().getCreatedBy());
+				ps.setString(5, structureClass.getAuditDetails().getLastModifiedBy());
+				ps.setLong(6, createdTime);
+				ps.setLong(7, createdTime);
+				return ps;
+			}
+		};
+
+		// The newly generated key will be saved in this object
+		final KeyHolder holder = new GeneratedKeyHolder();
+		jdbcTemplate.update(psc, holder);
+		structureClass.setId(Long.valueOf(holder.getKey().intValue()));
+		structureClass.getAuditDetails().setCreatedTime(createdTime);
+		structureClass.getAuditDetails().setLastModifiedTime(createdTime);
+
+	}
+	
+	
 
 	/**
 	 * Description : This api for creating strctureClass master
@@ -948,43 +1088,15 @@ public class MasterServiceImpl  implements Masterservice{
 
 		for(StructureClass structureClass:structureClassRequest.getStructureClasses()){
 
-			Long createdTime=new Date().getTime();
+			
 
 			Gson gson=new GsonBuilder().setExclusionStrategies(new ExcludeFileds()).serializeNulls().create();
 
 			String data=gson.toJson(structureClass);
+			
+			craeateStructureClass(tenantId,structureClass,data);
 
-			StringBuffer structureClassQuery=new StringBuffer();
-			structureClassQuery.append("insert into egpt_mstr_structureclass(tenantId,code,data,");
-			structureClassQuery.append("createdBy, lastModifiedBy, createdTime,lastModifiedTime)");
-			structureClassQuery.append(" values(?,?,?,?,?,?,?)");
-
-
-			final PreparedStatementCreator psc = new PreparedStatementCreator() {
-				@Override
-				public PreparedStatement createPreparedStatement(final Connection connection) throws SQLException {
-					final PreparedStatement ps = connection.prepareStatement(structureClassQuery.toString(), new String[] { "id" });
-					ps.setString(1, structureClass.getTenantId());
-					ps.setString(2, structureClass.getCode());
-					PGobject jsonObject = new PGobject();
-					jsonObject.setType("jsonb");
-					jsonObject.setValue(data);
-					ps.setObject(3,jsonObject);
-					ps.setString(4, structureClass.getAuditDetails().getCreatedBy());
-					ps.setString(5, structureClass.getAuditDetails().getLastModifiedBy());
-					ps.setLong(6, createdTime);
-					ps.setLong(7, createdTime);
-					return ps;
-				}
-			};
-
-			// The newly generated key will be saved in this object
-			final KeyHolder holder = new GeneratedKeyHolder();
-			jdbcTemplate.update(psc, holder);
-			structureClass.setId(Long.valueOf(holder.getKey().intValue()));
-			structureClass.getAuditDetails().setCreatedTime(createdTime);
-			structureClass.getAuditDetails().setLastModifiedTime(createdTime);
-
+			
 		}
 		ResponseInfo responseInfo=responseInfoFactory.createResponseInfoFromRequestInfo(structureClassRequest.getRequestInfo(),true);
 
@@ -994,6 +1106,40 @@ public class MasterServiceImpl  implements Masterservice{
 		structureClassResponse.setResponseInfo(responseInfo);
 
 		return structureClassResponse;
+	}
+			
+	/**
+	 * update structure query formation and used in updatestructureclassMaster
+	 * @param tenantId
+	 * @param id
+	 * @param structureClass
+	 * @param data
+	 */
+	public void updateStructureClass(String tenantId,Long id,StructureClass structureClass,String data) {
+		
+		Long modifiedTime=new Date().getTime();
+		
+		String departmentTypeUpdate = "UPDATE egpt_mstr_structureclass set tenantId = ?, code = ?,data = ?, lastModifiedBy = ?, lastModifiedTime = ? where id = " +id;
+
+
+		final PreparedStatementCreator psc = new PreparedStatementCreator() {
+			@Override
+			public PreparedStatement createPreparedStatement(final Connection connection) throws SQLException {
+				final PreparedStatement ps = connection.prepareStatement(departmentTypeUpdate, new String[] { "id" });
+				ps.setString(1, structureClass.getTenantId());	
+				ps.setString(2,structureClass.getCode());
+				PGobject jsonObject = new PGobject();
+				jsonObject.setType("jsonb");
+				jsonObject.setValue(data);
+				ps.setObject(3, jsonObject);
+				ps.setString(4, structureClass.getAuditDetails().getLastModifiedBy());
+				ps.setLong(5, modifiedTime);
+				return ps;
+			}
+		};
+		jdbcTemplate.update(psc);
+		structureClass.getAuditDetails().setLastModifiedTime(modifiedTime);
+		
 	}
 
 	/**
@@ -1011,32 +1157,11 @@ public class MasterServiceImpl  implements Masterservice{
 
 		for(StructureClass structureClass:structureClassRequest.getStructureClasses()){
 
-			Long modifiedTime=new Date().getTime();
 
 			Gson gson=new GsonBuilder().setExclusionStrategies(new ExcludeFileds()).serializeNulls().create();
 
 			String data=gson.toJson(structureClass);
-
-			String departmentTypeUpdate = "UPDATE egpt_mstr_structureclass set tenantId = ?, code = ?,data = ?, lastModifiedBy = ?, lastModifiedTime = ? where id = " +id;
-
-
-			final PreparedStatementCreator psc = new PreparedStatementCreator() {
-				@Override
-				public PreparedStatement createPreparedStatement(final Connection connection) throws SQLException {
-					final PreparedStatement ps = connection.prepareStatement(departmentTypeUpdate, new String[] { "id" });
-					ps.setString(1, structureClass.getTenantId());	
-					ps.setString(2,structureClass.getCode());
-					PGobject jsonObject = new PGobject();
-					jsonObject.setType("jsonb");
-					jsonObject.setValue(data);
-					ps.setObject(3, jsonObject);
-					ps.setString(4, structureClass.getAuditDetails().getLastModifiedBy());
-					ps.setLong(5, modifiedTime);
-					return ps;
-				}
-			};
-			jdbcTemplate.update(psc);
-			structureClass.getAuditDetails().setLastModifiedTime(modifiedTime);
+			updateStructureClass(tenantId, id, structureClass, data);
 
 		}
 		ResponseInfo responseInfo=responseInfoFactory.createResponseInfoFromRequestInfo(structureClassRequest.getRequestInfo(),true);
@@ -1067,58 +1192,7 @@ public class MasterServiceImpl  implements Masterservice{
 	@Override
 	public StructureClassResponse getStructureClassMaster(RequestInfo requestInfo, String tenantId, Integer[] ids, String name, String code, String nameLocal, Boolean active, Integer orderNumber, Integer pageSize, Integer offSet) {
 
-		StringBuffer structureSearchSql = new StringBuffer();
-
-		structureSearchSql.append("select * from egpt_mstr_structureclass where tenantid ='"+tenantId+"'");
-
-		if (ids!=null && ids.length>0){
-
-			String  structureIds= "";
-
-			int count = 1;
-			for (Integer id : ids){
-				if (count<ids.length)
-					structureIds = structureIds+id+",";
-				else
-					structureIds = structureIds+id;
-				count++;
-			}
-
-			structureSearchSql.append(" AND id IN ("+structureIds+")");
-
-		}
-
-
-		if (code!=null && !code.isEmpty())
-			structureSearchSql.append(" AND code = '"+code+"'");
-
-		JSONObject data = new JSONObject();
-
-		if (name != null || nameLocal != null || active != null || orderNumber != null)
-			structureSearchSql.append(" AND data @> '");
-
-		if (name!=null && !name.isEmpty())
-			data.put("name", name);
-
-		if (nameLocal!=null && !nameLocal.isEmpty())
-			data.put("nameLocal", nameLocal);
-
-		if ( active!=null )
-			data.put("active", active);
-
-
-		if(orderNumber != null)
-			data.put("orderNumber", orderNumber);
-
-		if(name!=null || active!=null || nameLocal!=null || orderNumber != null)
-			structureSearchSql.append(data.toJSONString()+"'");
-
-
-		if ( pageSize == null)
-			pageSize = 30;
-		if ( offSet == null )
-			offSet = 0;
-		structureSearchSql.append("offset "+offSet+ " limit "+pageSize);
+		StringBuffer structureSearchSql = createSearchQuery("egpt_mstr_structureclass", tenantId, ids, name, nameLocal, code, active, null, orderNumber, null, pageSize, offSet);
 
 		StructureClassResponse structureClassResponse= new StructureClassResponse();
 
@@ -1147,6 +1221,50 @@ public class MasterServiceImpl  implements Masterservice{
 	}
 
 	/**
+	 * Description: It create a property type query and used in createPropertyTypeMaster
+	 * @param tenantId
+	 * @param propertyType
+	 * @param data
+	 */
+	public void createPropertyType(String tenantId, PropertyType propertyType,String data) {
+
+		Long createdTime = new Date().getTime();
+
+		StringBuffer propertyTypeQuery=new StringBuffer();
+		propertyTypeQuery.append("insert into egpt_mstr_propertytype(tenantId,code,data,");
+		propertyTypeQuery.append("createdBy, lastModifiedBy, createdTime,lastModifiedTime)");
+		propertyTypeQuery.append(" values(?,?,?,?,?,?,?)");
+
+		final PreparedStatementCreator psc = new PreparedStatementCreator() {
+			@Override
+			public PreparedStatement createPreparedStatement(final Connection connection) throws SQLException {
+				final PreparedStatement ps = connection.prepareStatement(propertyTypeQuery.toString(), new String[] { "id" });
+				ps.setString(1, propertyType.getTenantId());
+				ps.setString(2, propertyType.getCode());
+				PGobject jsonObject = new PGobject();
+				jsonObject.setType("jsonb");
+				jsonObject.setValue(data);
+				ps.setObject(3,jsonObject);
+				ps.setString(4, propertyType.getAuditDetails().getCreatedBy());
+				ps.setString(5, propertyType.getAuditDetails().getLastModifiedBy());
+				ps.setLong(6, createdTime);
+				ps.setLong(7, createdTime);
+				return ps;
+			}
+		};
+
+		// The newly generated key will be saved in this object
+		final KeyHolder holder = new GeneratedKeyHolder();
+		jdbcTemplate.update(psc, holder);
+		propertyType.setId(Long.valueOf(holder.getKey().intValue()));
+		propertyType.getAuditDetails().setCreatedTime(createdTime);
+		propertyType.getAuditDetails().setLastModifiedTime(createdTime);
+
+
+	}
+
+
+	/**
 	 * Description : This method will use for creating property type
 	 * @param tenantId
 	 * @param propertyTypeRequest
@@ -1159,43 +1277,12 @@ public class MasterServiceImpl  implements Masterservice{
 
 		for(PropertyType propertyType:propertyTypeRequest.getPropertyTypes()){
 
-			Long createdTime = new Date().getTime();
 
 			Gson gson=new GsonBuilder().setExclusionStrategies(new ExcludeFileds()).serializeNulls().create();
 
 			String data=gson.toJson(propertyType);
 
-			StringBuffer propertyTypeQuery=new StringBuffer();
-			propertyTypeQuery.append("insert into egpt_mstr_propertytype(tenantId,code,data,");
-			propertyTypeQuery.append("createdBy, lastModifiedBy, createdTime,lastModifiedTime)");
-			propertyTypeQuery.append(" values(?,?,?,?,?,?,?)");
-
-			final PreparedStatementCreator psc = new PreparedStatementCreator() {
-				@Override
-				public PreparedStatement createPreparedStatement(final Connection connection) throws SQLException {
-					final PreparedStatement ps = connection.prepareStatement(propertyTypeQuery.toString(), new String[] { "id" });
-					ps.setString(1, propertyType.getTenantId());
-					ps.setString(2, propertyType.getCode());
-					PGobject jsonObject = new PGobject();
-					jsonObject.setType("jsonb");
-					jsonObject.setValue(data);
-					ps.setObject(3,jsonObject);
-					ps.setString(4, propertyType.getAuditDetails().getCreatedBy());
-					ps.setString(5, propertyType.getAuditDetails().getLastModifiedBy());
-					ps.setLong(6, createdTime);
-					ps.setLong(7, createdTime);
-					return ps;
-				}
-			};
-
-			// The newly generated key will be saved in this object
-			final KeyHolder holder = new GeneratedKeyHolder();
-			jdbcTemplate.update(psc, holder);
-			propertyType.setId(Long.valueOf(holder.getKey().intValue()));
-			propertyType.getAuditDetails().setCreatedTime(createdTime);
-			propertyType.getAuditDetails().setLastModifiedTime(createdTime);
-
-
+			createPropertyType(tenantId, propertyType, data);
 
 		}
 		ResponseInfo responseInfo=responseInfoFactory.createResponseInfoFromRequestInfo(propertyTypeRequest.getRequestInfo(),true);
@@ -1209,6 +1296,33 @@ public class MasterServiceImpl  implements Masterservice{
 		return propertyTypeResponse;
 	}
 
+	public void updatePropertyType(String tenantId, Long id,PropertyType propertyType, String data) {
+		Long modifiedTime=new Date().getTime();
+
+		String propertyTypeUpdate = "UPDATE egpt_mstr_propertytype set tenantId = ?, code = ?,data = ?, "
+				+ "lastModifiedBy = ?, lastModifiedTime = ? where id = " +id;
+
+
+		final PreparedStatementCreator psc = new PreparedStatementCreator() {
+			@Override
+			public PreparedStatement createPreparedStatement(final Connection connection) throws SQLException {
+				final PreparedStatement ps = connection.prepareStatement(propertyTypeUpdate, new String[] { "id" });
+				ps.setString(1, propertyType.getTenantId());  
+				ps.setString(2,propertyType.getCode());
+				PGobject jsonObject = new PGobject();
+				jsonObject.setType("jsonb");
+				jsonObject.setValue(data);
+				ps.setObject(3,jsonObject);
+				ps.setString(4, propertyType.getAuditDetails().getLastModifiedBy());
+				ps.setLong(5, modifiedTime);
+				return ps;
+			}
+		};
+		jdbcTemplate.update(psc);
+		propertyType.getAuditDetails().setCreatedTime(modifiedTime);
+
+
+	}
 
 	/**
 	 * Description : This method will use for update property type
@@ -1222,33 +1336,13 @@ public class MasterServiceImpl  implements Masterservice{
 		for(PropertyType propertyType: propertyTypeRequest.getPropertyTypes()){
 
 
-			Long modifiedTime=new Date().getTime();
+
 
 			Gson gson=new GsonBuilder().setExclusionStrategies(new ExcludeFileds()).serializeNulls().create();
 
 			String data=gson.toJson(propertyType);
 
-			String propertyTypeUpdate = "UPDATE egpt_mstr_propertytype set tenantId = ?, code = ?,data = ?, "
-					+ "lastModifiedBy = ?, lastModifiedTime = ? where id = " +id;
-
-
-			final PreparedStatementCreator psc = new PreparedStatementCreator() {
-				@Override
-				public PreparedStatement createPreparedStatement(final Connection connection) throws SQLException {
-					final PreparedStatement ps = connection.prepareStatement(propertyTypeUpdate, new String[] { "id" });
-					ps.setString(1, propertyType.getTenantId());  
-					ps.setString(2,propertyType.getCode());
-					PGobject jsonObject = new PGobject();
-					jsonObject.setType("jsonb");
-					jsonObject.setValue(data);
-					ps.setObject(3,jsonObject);
-					ps.setString(4, propertyType.getAuditDetails().getLastModifiedBy());
-					ps.setLong(5, modifiedTime);
-					return ps;
-				}
-			};
-			jdbcTemplate.update(psc);
-			propertyType.getAuditDetails().setCreatedTime(modifiedTime);
+			updatePropertyType(tenantId, id, propertyType, data);
 
 
 		}
@@ -1258,6 +1352,10 @@ public class MasterServiceImpl  implements Masterservice{
 		propertyTypeResponse.setPropertyTypes(propertyTypeRequest.getPropertyTypes());
 		propertyTypeResponse.setResponseInfo(responseInfo);
 		return propertyTypeResponse;
+	}
+
+	public PropertyTypeResponse getPropertyType(RequestInfo requestInfo, String tenantId, Integer[] ids, String name, String code, String nameLocal, Boolean active, Integer orderNumber, Integer pageSize, Integer offSet) {
+		return getPropertyTypeMaster(requestInfo, tenantId, ids, name, code, nameLocal, active, orderNumber, pageSize, offSet);
 	}
 
 	/**
@@ -1279,62 +1377,7 @@ public class MasterServiceImpl  implements Masterservice{
 	@Override
 	public PropertyTypeResponse getPropertyTypeMaster(RequestInfo requestInfo, String tenantId, Integer[] ids, String name, String code, String nameLocal, Boolean active, Integer orderNumber, Integer pageSize, Integer offSet) {
 
-		StringBuffer propertyTypeSearchSql = new StringBuffer();
-
-		propertyTypeSearchSql.append("select * from egpt_mstr_propertytype where tenantid ='"+tenantId+"'");
-
-
-
-		if (ids!=null && ids.length>0){
-
-			String  propertyTypeIds= "";
-
-			int count = 1;
-			for (Integer id : ids){
-				if (count<ids.length)
-					propertyTypeIds = propertyTypeIds+id+",";
-				else
-					propertyTypeIds = propertyTypeIds+id;
-				count++;
-
-			}
-
-			propertyTypeSearchSql.append(" AND id IN ("+propertyTypeIds+")");
-
-
-		}
-
-
-		if (code!=null && !code.isEmpty())
-			propertyTypeSearchSql.append(" AND code = '"+code+"'");
-
-		JSONObject data = new JSONObject();
-
-		if(name!=null || nameLocal!=null || active!=null || orderNumber!=null)
-			propertyTypeSearchSql.append(" AND data @> '");
-
-
-		if (name!=null && !name.isEmpty())
-			data.put("name", name);
-
-		if (nameLocal!=null && !nameLocal.isEmpty())
-			data.put("nameLocal", nameLocal);
-
-		if ( active!=null)
-			data.put("active", active);
-
-		if ( orderNumber!=null)
-			data.put("orderNumber", orderNumber);
-
-		if(name!=null || active!=null || nameLocal!=null || active!=null || orderNumber != null)
-			propertyTypeSearchSql.append(data.toJSONString()+"'");
-
-
-		if ( pageSize == null)
-			pageSize = 30;
-		if ( offSet == null )
-			offSet = 0;
-		propertyTypeSearchSql.append("offset "+offSet+ " limit "+pageSize);
+		StringBuffer propertyTypeSearchSql = createSearchQuery("egpt_mstr_propertytype", tenantId, ids, name, nameLocal, code, active, null, orderNumber, null, pageSize, offSet);
 
 		PropertyTypeResponse propertyTypeResponse = new PropertyTypeResponse();
 
@@ -1363,6 +1406,46 @@ public class MasterServiceImpl  implements Masterservice{
 	}
 
 	/**
+	 * Description: create ocuapancy and used this method in createOccuapancyMaster
+	 * @param tenantId
+	 * @param occuapancy
+	 * @param data
+	 */
+	private void createOccuapancy(String tenantId, OccuapancyMaster occuapancy,String data) {
+		Long createdTime = new Date().getTime();
+		StringBuffer occuapancyQuery=new StringBuffer();
+		occuapancyQuery.append("insert into egpt_mstr_occuapancy(tenantId,code,data,");
+		occuapancyQuery.append("createdBy, lastModifiedBy, createdTime,lastModifiedTime)");
+		occuapancyQuery.append(" values(?,?,?,?,?,?,?)");
+
+		final PreparedStatementCreator psc = new PreparedStatementCreator() {
+			@Override
+			public PreparedStatement createPreparedStatement(final Connection connection) throws SQLException {
+				final PreparedStatement ps = connection.prepareStatement(occuapancyQuery.toString(), new String[] { "id" });
+				ps.setString(1, occuapancy.getTenantId());
+				ps.setString(2, occuapancy.getCode());
+				PGobject jsonObject = new PGobject();
+				jsonObject.setType("jsonb");
+				jsonObject.setValue(data);
+				ps.setObject(3,jsonObject);
+				ps.setString(4, occuapancy.getAuditDetails().getCreatedBy());
+				ps.setString(5, occuapancy.getAuditDetails().getLastModifiedBy());
+				ps.setLong(6, createdTime);
+				ps.setLong(7, createdTime);
+				return ps;
+			}
+		};
+
+		// The newly generated key will be saved in this object
+		final KeyHolder holder = new GeneratedKeyHolder();
+		jdbcTemplate.update(psc, holder);
+		occuapancy.setId(Long.valueOf(holder.getKey().intValue()));
+		occuapancy.getAuditDetails().setCreatedTime(createdTime);
+		occuapancy.getAuditDetails().setLastModifiedTime(createdTime);
+
+	}
+
+	/**
 	 * Description : This method will use for creating Occuapancy
 	 * @param tenantId
 	 * @param occuapancyRequest
@@ -1375,41 +1458,13 @@ public class MasterServiceImpl  implements Masterservice{
 
 		for(OccuapancyMaster occuapancy: occuapancyMasterRequest.getOccuapancyMasters()){
 
-			Long createdTime = new Date().getTime();
+
 
 			Gson gson=new GsonBuilder().setExclusionStrategies(new ExcludeFileds()).serializeNulls().create();
 
 			String data=gson.toJson(occuapancy);
 
-			StringBuffer occuapancyQuery=new StringBuffer();
-			occuapancyQuery.append("insert into egpt_mstr_occuapancy(tenantId,code,data,");
-			occuapancyQuery.append("createdBy, lastModifiedBy, createdTime,lastModifiedTime)");
-			occuapancyQuery.append(" values(?,?,?,?,?,?,?)");
-
-			final PreparedStatementCreator psc = new PreparedStatementCreator() {
-				@Override
-				public PreparedStatement createPreparedStatement(final Connection connection) throws SQLException {
-					final PreparedStatement ps = connection.prepareStatement(occuapancyQuery.toString(), new String[] { "id" });
-					ps.setString(1, occuapancy.getTenantId());
-					ps.setString(2, occuapancy.getCode());
-					PGobject jsonObject = new PGobject();
-					jsonObject.setType("jsonb");
-					jsonObject.setValue(data);
-					ps.setObject(3,jsonObject);
-					ps.setString(4, occuapancy.getAuditDetails().getCreatedBy());
-					ps.setString(5, occuapancy.getAuditDetails().getLastModifiedBy());
-					ps.setLong(6, createdTime);
-					ps.setLong(7, createdTime);
-					return ps;
-				}
-			};
-
-			// The newly generated key will be saved in this object
-			final KeyHolder holder = new GeneratedKeyHolder();
-			jdbcTemplate.update(psc, holder);
-			occuapancy.setId(Long.valueOf(holder.getKey().intValue()));
-			occuapancy.getAuditDetails().setCreatedTime(createdTime);
-			occuapancy.getAuditDetails().setLastModifiedTime(createdTime);
+			createOccuapancy(tenantId, occuapancy, data);
 
 		}
 		ResponseInfo responseInfo=responseInfoFactory.createResponseInfoFromRequestInfo(occuapancyMasterRequest.getRequestInfo(),true);
@@ -1421,6 +1476,40 @@ public class MasterServiceImpl  implements Masterservice{
 		occuapancyMasterResponse.setResponseInfo(responseInfo);
 
 		return occuapancyMasterResponse;
+	}
+
+	/**
+	 * Description: update occuapancy and used in updateOccuapancyMaster
+	 * @param tenantId
+	 * @param id
+	 * @param occuapancyMaster
+	 * @param data
+	 */
+	public void updateOccuapancy(String tenantId, Long id, OccuapancyMaster occuapancyMaster, String data) {
+
+		Long modifiedTime=new Date().getTime();
+
+		String occupancyTypeUpdate = "UPDATE egpt_mstr_occuapancy set tenantId = ?, code = ?,data = ?, "
+				+ "lastModifiedBy = ?, lastModifiedTime = ? where id = " +id;
+
+
+		final PreparedStatementCreator psc = new PreparedStatementCreator() {
+			@Override
+			public PreparedStatement createPreparedStatement(final Connection connection) throws SQLException {
+				final PreparedStatement ps = connection.prepareStatement(occupancyTypeUpdate, new String[] { "id" });
+				ps.setString(1, occuapancyMaster.getTenantId());  
+				ps.setString(2,occuapancyMaster.getCode());
+				PGobject jsonObject = new PGobject();
+				jsonObject.setType("jsonb");
+				jsonObject.setValue(data);
+				ps.setObject(3,jsonObject);
+				ps.setString(4, occuapancyMaster.getAuditDetails().getLastModifiedBy());
+				ps.setLong(5, modifiedTime);
+				return ps;
+			}
+		};
+		jdbcTemplate.update(psc);
+		occuapancyMaster.getAuditDetails().setLastModifiedTime(modifiedTime);
 	}
 
 	/**
@@ -1436,33 +1525,13 @@ public class MasterServiceImpl  implements Masterservice{
 		for(OccuapancyMaster occuapancyMaster: occuapancyRequest.getOccuapancyMasters()){
 
 
-			Long modifiedTime=new Date().getTime();
+
 
 			Gson gson=new GsonBuilder().setExclusionStrategies(new ExcludeFileds()).serializeNulls().create();
 
 			String data=gson.toJson(occuapancyMaster);
 
-			String occupancyTypeUpdate = "UPDATE egpt_mstr_occuapancy set tenantId = ?, code = ?,data = ?, "
-					+ "lastModifiedBy = ?, lastModifiedTime = ? where id = " +id;
-
-
-			final PreparedStatementCreator psc = new PreparedStatementCreator() {
-				@Override
-				public PreparedStatement createPreparedStatement(final Connection connection) throws SQLException {
-					final PreparedStatement ps = connection.prepareStatement(occupancyTypeUpdate, new String[] { "id" });
-					ps.setString(1, occuapancyMaster.getTenantId());  
-					ps.setString(2,occuapancyMaster.getCode());
-					PGobject jsonObject = new PGobject();
-					jsonObject.setType("jsonb");
-					jsonObject.setValue(data);
-					ps.setObject(3,jsonObject);
-					ps.setString(4, occuapancyMaster.getAuditDetails().getLastModifiedBy());
-					ps.setLong(5, modifiedTime);
-					return ps;
-				}
-			};
-			jdbcTemplate.update(psc);
-			occuapancyMaster.getAuditDetails().setLastModifiedTime(modifiedTime);
+			updateOccuapancy(tenantId, id, occuapancyMaster, data);
 
 
 		}
@@ -1472,6 +1541,26 @@ public class MasterServiceImpl  implements Masterservice{
 		occuapancyResponse.setOccuapancyMasters(occuapancyRequest.getOccuapancyMasters());
 		occuapancyResponse.setResponseInfo(responseInfo);
 		return occuapancyResponse;
+	}
+
+	/**
+	 * Description: search occupancy query formation and used in getOccupancyMaster method
+	 * @param requestInfo
+	 * @param tenantId
+	 * @param ids
+	 * @param name
+	 * @param code
+	 * @param nameLocal
+	 * @param active
+	 * @param orderNumber
+	 * @param pageSize
+	 * @param offSet
+	 * @return
+	 */
+	public OccuapancyMasterResponse getOccuapancy(RequestInfo requestInfo, String tenantId, Integer[] ids,
+			String name, String code, String nameLocal, Boolean active, Integer orderNumber, Integer pageSize,
+			Integer offSet) {
+		return getOccuapancyMaster(requestInfo, tenantId, ids, name, code, nameLocal, active, orderNumber, pageSize, offSet);
 	}
 
 	/**
@@ -1494,59 +1583,7 @@ public class MasterServiceImpl  implements Masterservice{
 			String name, String code, String nameLocal, Boolean active, Integer orderNumber, Integer pageSize,
 			Integer offSet) {
 
-		StringBuffer occuapancySearchSql = new StringBuffer();
-
-		occuapancySearchSql.append("select * from egpt_mstr_occuapancy where tenantid ='"+tenantId+"'");
-
-		if (ids!=null && ids.length>0){
-
-			String  occuapancyIds= "";
-
-			int count = 1;
-			for (Integer id : ids){
-				if (count<ids.length)
-					occuapancyIds = occuapancyIds+id+",";
-				else
-					occuapancyIds = occuapancyIds+id;
-				count++;
-
-			}
-
-			occuapancySearchSql.append(" AND id IN ("+occuapancyIds+")");
-
-		}
-
-		JSONObject data = new JSONObject();
-
-		if (code!=null && !code.isEmpty())
-			occuapancySearchSql.append(" AND code = '"+code+"'");
-
-		if(name!=null || nameLocal!=null || active!=null || orderNumber!=null)
-			occuapancySearchSql.append(" AND data @> '");
-
-
-		if (name!=null && !name.isEmpty())
-			data.put("name", name);
-
-		if (nameLocal!=null && !nameLocal.isEmpty())
-			data.put("nameLocal", nameLocal);
-
-		if ( active!=null)
-			data.put("active", active);
-
-		if ( orderNumber!=null)
-			data.put("orderNumber", orderNumber);
-
-		if(name!=null || active!=null || nameLocal!=null || active!=null || orderNumber != null)
-			occuapancySearchSql.append(data.toJSONString()+"'");
-
-
-
-		if ( pageSize == null)
-			pageSize = 30;
-		if ( offSet == null )
-			offSet = 0;
-		occuapancySearchSql.append("offset "+offSet+ " limit "+pageSize);
+		StringBuffer occuapancySearchSql = createSearchQuery("egpt_mstr_occuapancy", tenantId, ids, name, nameLocal, code, active, null, orderNumber, null, pageSize, offSet);
 
 		OccuapancyMasterResponse occuapancyResponse = new OccuapancyMasterResponse();
 

@@ -2,7 +2,7 @@ package org.egov.propertyUser.userConsumer;
 
 import java.util.HashMap;
 import java.util.Map;
-import org.egov.propertyUser.model.*;
+
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.common.serialization.StringDeserializer;
@@ -10,6 +10,7 @@ import org.egov.models.Property;
 import org.egov.models.PropertyRequest;
 import org.egov.models.User;
 import org.egov.models.UserResponseInfo;
+import org.egov.propertyUser.model.UserRequestInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
@@ -127,7 +128,8 @@ public class Consumer {
 
 						if(userResponse.getResponseInfo()!=null){
 							if(userResponse.getUser()==null){
-								UserRequestInfo userRequestInfo=new UserRequestInfo();
+								UserRequestInfo userRequestInfo = new UserRequestInfo();
+								
 								userRequestInfo.setRequestInfo(propertyRequest.getRequestInfo());
 								userRequestInfo.setUser(user);
 								UserResponseInfo userCreateResponse = restTemplate.postForObject(createUrl.toString(),
@@ -177,7 +179,7 @@ public class Consumer {
 						userRequestInfo.setRequestInfo(propertyRequest.getRequestInfo());
 						userRequestInfo.setUser(user);
 						UserResponseInfo userCreateResponse = restTemplate.postForObject(updateUrl.toString(),
-								userRequestInfo, UserResponseInfo.class);
+								userRequestInfo, UserResponseInfo.class, user.getId());
 					}else{
 						user.setUserName(user.getMobileNumber());
 						UserRequestInfo userRequestInfo=new UserRequestInfo();

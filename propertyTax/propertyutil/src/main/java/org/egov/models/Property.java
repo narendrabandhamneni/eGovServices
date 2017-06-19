@@ -306,6 +306,7 @@ public class Property   {
 	 * There will be work flow to create a new property in a system. The assessment date is the final approval and UPIC no generation date.
 	 * @return assessmentDate
 	 **/
+
 	public String getAssessmentDate() {
 		return assessmentDate;
 	}
