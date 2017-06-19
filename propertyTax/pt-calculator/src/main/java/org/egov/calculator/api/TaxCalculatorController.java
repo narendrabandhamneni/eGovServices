@@ -105,7 +105,7 @@ public class TaxCalculatorController {
 		return calculatorService.createGuidanceValue(tenantId,
 				guidanceValueRequest);
 	}
-	
+
 	/**
 	 * Description : This api for updating guidanceValue(s)
 	 * 
@@ -123,7 +123,7 @@ public class TaxCalculatorController {
 		return calculatorService.updateGuidanceValue(tenantId,
 				guidanceValueRequest);
 	}
-	
+
 	/**
 	 * Description : This api for getting guidancevalue details
 	 * 
@@ -153,10 +153,11 @@ public class TaxCalculatorController {
 			@RequestParam(required = true) String code) throws Exception {
 
 		return calculatorService.getGuidanceValue(requestInfo.getRequestInfo(),
-				tenantId, boundary, structure, usage, subUsage, occupancy, validDate, code);
+				tenantId, boundary, structure, usage, subUsage, occupancy,
+				validDate, code);
 
 	}
-	
+
 	/**
 	 * Description : This api for creating new taxRate(s)
 	 * 
@@ -166,15 +167,12 @@ public class TaxCalculatorController {
 	 * @throws Exception
 	 */
 	@RequestMapping(path = "/taxrates/_create", method = RequestMethod.POST)
-	public TaxRatesResponse createTaxRate(
-			@RequestParam String tenantId,
-			@RequestBody TaxRatesRequest taxRatesRequest)
-			throws Exception {
+	public TaxRatesResponse createTaxRate(@RequestParam String tenantId,
+			@RequestBody TaxRatesRequest taxRatesRequest) throws Exception {
 
-		return calculatorService.createTaxRate(tenantId,
-				taxRatesRequest);
+		return calculatorService.createTaxRate(tenantId, taxRatesRequest);
 	}
-	
+
 	/**
 	 * Description : This api for updating taxRate(s)
 	 * 
@@ -184,15 +182,12 @@ public class TaxCalculatorController {
 	 * @throws Exception
 	 */
 	@RequestMapping(path = "/taxrates/_update", method = RequestMethod.POST)
-	public TaxRatesResponse updateTaxRate(
-			@RequestParam String tenantId,
-			@RequestBody TaxRatesRequest taxRatesRequest)
-			throws Exception {
+	public TaxRatesResponse updateTaxRate(@RequestParam String tenantId,
+			@RequestBody TaxRatesRequest taxRatesRequest) throws Exception {
 
-		return calculatorService.updateTaxRate(tenantId,
-				taxRatesRequest);
+		return calculatorService.updateTaxRate(tenantId, taxRatesRequest);
 	}
-	
+
 	/**
 	 * Description : This api for getting taxRate details
 	 * 
@@ -211,13 +206,14 @@ public class TaxCalculatorController {
 			@RequestParam(required = true) String tenantId,
 			@RequestParam(required = true) String taxHead,
 			@RequestParam(required = true) String validDate,
-			@RequestParam(required = false) String parentTaxHead) throws Exception {
+			@RequestParam(required = false) String parentTaxHead)
+			throws Exception {
 
 		return calculatorService.getTaxRate(requestInfo.getRequestInfo(),
 				tenantId, taxHead, validDate, parentTaxHead);
 
 	}
-	
+
 	/**
 	 * Description : This api for creating new taxperiod(s)
 	 * 
@@ -227,15 +223,12 @@ public class TaxCalculatorController {
 	 * @throws Exception
 	 */
 	@RequestMapping(path = "/taxperiods/_create", method = RequestMethod.POST)
-	public TaxPeriodResponse createTaxPeriod(
-			@RequestParam String tenantId,
-			@RequestBody TaxPeriodRequest taxPeriodRequest)
-			throws Exception {
+	public TaxPeriodResponse createTaxPeriod(@RequestParam String tenantId,
+			@RequestBody TaxPeriodRequest taxPeriodRequest) throws Exception {
 
-		return calculatorService.createTaxPeriod(tenantId,
-				taxRatesRequest);
+		return calculatorService.createTaxPeriod(tenantId, taxRatesRequest);
 	}
-	
+
 	/**
 	 * Description : This api for updating taxperiod(s)
 	 * 
@@ -245,15 +238,12 @@ public class TaxCalculatorController {
 	 * @throws Exception
 	 */
 	@RequestMapping(path = "/taxperiods/_update", method = RequestMethod.POST)
-	public TaxPeriodResponse updateTaxPeriod(
-			@RequestParam String tenantId,
-			@RequestBody TaxPeriodRequest taxPeriodRequest)
-			throws Exception {
+	public TaxPeriodResponse updateTaxPeriod(@RequestParam String tenantId,
+			@RequestBody TaxPeriodRequest taxPeriodRequest) throws Exception {
 
-		return calculatorService.updateTaxPeriod(tenantId,
-				taxRatesRequest);
+		return calculatorService.updateTaxPeriod(tenantId, taxRatesRequest);
 	}
-	
+
 	/**
 	 * Description : This api for getting taxperiod details
 	 * 
@@ -275,5 +265,5 @@ public class TaxCalculatorController {
 				tenantId, validDate, code);
 
 	}
-	
+
 }
