@@ -1,4 +1,4 @@
-package org.egov.id.util;
+package org.egov.id.service;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
