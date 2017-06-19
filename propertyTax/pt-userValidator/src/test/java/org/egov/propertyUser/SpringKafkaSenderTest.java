@@ -120,7 +120,7 @@ public class SpringKafkaSenderTest {
 			owner.setTenantId("default");
 			owner.setUserName("9703080696");
 			owner.setAuthToken("08db73a8-945e-4164-94e3-63ccef7856d4");
-			owner.salutation("testing");
+			owner.setSalutation("testing");
 			owner.setName("anil");
 			owner.setGender("male");
 			owner.setMobileNumber("9333555666");
