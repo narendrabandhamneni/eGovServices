@@ -1,8 +1,8 @@
 package org.egov.id.api;
 
+import org.egov.id.model.IdGenerationRequest;
+import org.egov.id.model.IdGenerationResponse;
 import org.egov.id.service.IdGenerationService;
-import org.egov.models.IdGenerationRequest;
-import org.egov.models.IdGenerationResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;

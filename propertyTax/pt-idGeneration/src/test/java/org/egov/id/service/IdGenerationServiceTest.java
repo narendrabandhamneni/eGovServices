@@ -6,10 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.egov.id.PtIdGenerationApplication;
-import org.egov.models.IdGenerationRequest;
-import org.egov.models.IdGenerationResponse;
-import org.egov.models.IdRequest;
-import org.egov.models.RequestInfo;
+import org.egov.id.model.IdGenerationRequest;
+import org.egov.id.model.IdGenerationResponse;
+import org.egov.id.model.IdRequest;
+import org.egov.id.model.RequestInfo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

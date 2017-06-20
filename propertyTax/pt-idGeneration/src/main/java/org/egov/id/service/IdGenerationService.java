@@ -13,15 +13,15 @@ import java.util.regex.Pattern;
 
 import javax.sql.DataSource;
 
-import org.egov.models.IDSeqNotFoundException;
-import org.egov.models.IDSeqOverflowException;
-import org.egov.models.IdGenerationRequest;
-import org.egov.models.IdGenerationResponse;
-import org.egov.models.IdRequest;
-import org.egov.models.IdResponse;
-import org.egov.models.InvalidIDFormatException;
-import org.egov.models.RequestInfo;
-import org.egov.models.ResponseInfoFactory;
+import org.egov.id.model.IDSeqNotFoundException;
+import org.egov.id.model.IDSeqOverflowException;
+import org.egov.id.model.IdGenerationRequest;
+import org.egov.id.model.IdGenerationResponse;
+import org.egov.id.model.IdRequest;
+import org.egov.id.model.IdResponse;
+import org.egov.id.model.InvalidIDFormatException;
+import org.egov.id.model.RequestInfo;
+import org.egov.id.model.ResponseInfoFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DataSourceUtils;
