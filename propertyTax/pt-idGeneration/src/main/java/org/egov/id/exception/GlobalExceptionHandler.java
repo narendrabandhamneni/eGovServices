@@ -43,8 +43,8 @@ public class GlobalExceptionHandler {
 			errors.put(error.getField(), error.getDefaultMessage());
 		}
 
-		Error error = new Error(HttpStatus.BAD_REQUEST.toString(), environment.getProperty("invalid.input"), null,
-				errors);
+		Error error = new Error(HttpStatus.BAD_REQUEST.toString(),
+				environment.getProperty("invalid.input"), null, errors);
 		List<Error> errorList = new ArrayList<Error>();
 		errorList.add(error);
 		ResponseInfo responseInfo = new ResponseInfo();
@@ -59,47 +59,59 @@ public class GlobalExceptionHandler {
 	 * @param req
 	 * @return
 	 */
-	@ExceptionHandler(value = { Exception.class })
+	@ExceptionHandler(value = {Exception.class})
 	public ErrorRes unknownException(Exception ex, WebRequest req) {
 		if (ex instanceof InvalidIDFormatException) {
-			Error error = new Error(HttpStatus.BAD_REQUEST.toString(), ((InvalidIDFormatException) ex).getCustomMsg(),
-					null, new HashMap<String, String>());
+			Error error = new Error(HttpStatus.BAD_REQUEST.toString(),
+					((InvalidIDFormatException) ex).getCustomMsg(), null,
+					new HashMap<String, String>());
 			ResponseInfo responseInfo = new ResponseInfo();
-			responseInfo.setApiId(((InvalidIDFormatException) ex).getRequestInfo().getApiId());
-			responseInfo.setVer(((InvalidIDFormatException) ex).getRequestInfo().getVer());
-			responseInfo.setMsgId(((InvalidIDFormatException) ex).getRequestInfo().getMsgId());
+			responseInfo.setApiId(((InvalidIDFormatException) ex)
+					.getRequestInfo().getApiId());
+			responseInfo.setVer(
+					((InvalidIDFormatException) ex).getRequestInfo().getVer());
+			responseInfo.setMsgId(((InvalidIDFormatException) ex)
+					.getRequestInfo().getMsgId());
 			responseInfo.setTs(new Date().getTime());
 			responseInfo.setStatus(StatusEnum.FAILED.toString());
 			List<Error> errorList = new ArrayList<Error>();
 			errorList.add(error);
 			return new ErrorRes(responseInfo, errorList);
 		} else if (ex instanceof IDSeqOverflowException) {
-			Error error = new Error(HttpStatus.BAD_REQUEST.toString(), ((IDSeqOverflowException) ex).getCustomMsg(),
-					null, new HashMap<String, String>());
+			Error error = new Error(HttpStatus.BAD_REQUEST.toString(),
+					((IDSeqOverflowException) ex).getCustomMsg(), null,
+					new HashMap<String, String>());
 			ResponseInfo responseInfo = new ResponseInfo();
-			responseInfo.setApiId(((IDSeqOverflowException) ex).getRequestInfo().getApiId());
-			responseInfo.setVer(((IDSeqOverflowException) ex).getRequestInfo().getVer());
-			responseInfo.setMsgId(((IDSeqOverflowException) ex).getRequestInfo().getMsgId());
+			responseInfo.setApiId(
+					((IDSeqOverflowException) ex).getRequestInfo().getApiId());
+			responseInfo.setVer(
+					((IDSeqOverflowException) ex).getRequestInfo().getVer());
+			responseInfo.setMsgId(
+					((IDSeqOverflowException) ex).getRequestInfo().getMsgId());
 			responseInfo.setTs(new Date().getTime());
 			responseInfo.setStatus(StatusEnum.FAILED.toString());
 			List<Error> errorList = new ArrayList<Error>();
 			errorList.add(error);
 			return new ErrorRes(responseInfo, errorList);
 		} else if (ex instanceof IDSeqNotFoundException) {
-			Error error = new Error(HttpStatus.BAD_REQUEST.toString(), ((IDSeqNotFoundException) ex).getCustomMsg(),
-					null, new HashMap<String, String>());
+			Error error = new Error(HttpStatus.BAD_REQUEST.toString(),
+					((IDSeqNotFoundException) ex).getCustomMsg(), null,
+					new HashMap<String, String>());
 			ResponseInfo responseInfo = new ResponseInfo();
-			responseInfo.setApiId(((IDSeqNotFoundException) ex).getRequestInfo().getApiId());
-			responseInfo.setVer(((IDSeqNotFoundException) ex).getRequestInfo().getVer());
-			responseInfo.setMsgId(((IDSeqNotFoundException) ex).getRequestInfo().getMsgId());
+			responseInfo.setApiId(
+					((IDSeqNotFoundException) ex).getRequestInfo().getApiId());
+			responseInfo.setVer(
+					((IDSeqNotFoundException) ex).getRequestInfo().getVer());
+			responseInfo.setMsgId(
+					((IDSeqNotFoundException) ex).getRequestInfo().getMsgId());
 			responseInfo.setTs(new Date().getTime());
 			responseInfo.setStatus(StatusEnum.FAILED.toString());
 			List<Error> errorList = new ArrayList<Error>();
 			errorList.add(error);
 			return new ErrorRes(responseInfo, errorList);
 		} else {
-			Error error = new Error(HttpStatus.BAD_REQUEST.toString(), ex.getMessage(), null,
-					new HashMap<String, String>());
+			Error error = new Error(HttpStatus.BAD_REQUEST.toString(),
+					ex.getMessage(), null, new HashMap<String, String>());
 			ResponseInfo responseInfo = new ResponseInfo();
 			responseInfo.setStatus(environment.getProperty("failed"));
 			List<Error> errorList = new ArrayList<Error>();

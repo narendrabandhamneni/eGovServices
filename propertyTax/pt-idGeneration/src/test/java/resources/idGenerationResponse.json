@@ -1,0 +1,15 @@
+{
+    "responseInfo": {
+        "apiId": "emp",
+        "ver": "1.0",
+        "ts": 120,
+        "resMsgId": "uief87324",
+        "msgId": "20170310130900",
+        "status": "SUCCESSFUL"
+    },
+    "idResponses": [
+        {
+            "id": "AP-PT-2017/06/20-000011-13"
+        }
+    ]
+}

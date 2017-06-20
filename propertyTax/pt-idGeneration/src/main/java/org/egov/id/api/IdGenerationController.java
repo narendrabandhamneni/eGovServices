@@ -29,10 +29,12 @@ public class IdGenerationController {
 	 * @throws Exception
 	 */
 	@RequestMapping(method = RequestMethod.POST, path = "_genearate")
-	public IdGenerationResponse generateIdResponse(@RequestBody IdGenerationRequest idGenerationRequest)
+	public IdGenerationResponse generateIdResponse(
+			@RequestBody IdGenerationRequest idGenerationRequest)
 			throws Exception {
 
-		IdGenerationResponse idGenerationResponse = idGenerationService.generateIdResponse(idGenerationRequest);
+		IdGenerationResponse idGenerationResponse = idGenerationService
+				.generateIdResponse(idGenerationRequest);
 
 		return idGenerationResponse;
 	}

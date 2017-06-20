@@ -1,0 +1,18 @@
+{  
+   "requestInfo":{  
+         "apiId":"emp",
+         "ver":"1.0",
+         "ts":120,
+         "action":"create",
+         "did":"1",
+         "key":"abcdkey",
+         "msgId":"20170310130900",
+         "requesterId":"pavan",
+         "authToken":"d0058c65-7c55-445e-89b3-7f5b0cfdc12b"
+      },
+      "idRequests":[{
+      	"idName": "propertytax.acknumber",
+      	"tenantId": "ap.propertytax.acknumber",
+      	"format": "AP-PT-[yyyy/MM/dd]-[SEQ_ACK_NUM]-[d{2}]"
+      }]
+}
