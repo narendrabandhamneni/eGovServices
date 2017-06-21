@@ -3,6 +3,8 @@ package org.egov.calculator.api;
 import org.egov.calculator.service.CalculatorService;
 import org.egov.models.CalculationFactorRequest;
 import org.egov.models.CalculationFactorResponse;
+import org.egov.models.CalculationRequest;
+import org.egov.models.CalculationResponse;
 import org.egov.models.GuidanceValueRequest;
 import org.egov.models.GuidanceValueResponse;
 import org.egov.models.TaxRatesRequest;
@@ -226,7 +228,7 @@ public class TaxCalculatorController {
 	public TaxPeriodResponse createTaxPeriod(@RequestParam String tenantId,
 			@RequestBody TaxPeriodRequest taxPeriodRequest) throws Exception {
 
-		return calculatorService.createTaxPeriod(tenantId, taxRatesRequest);
+		return calculatorService.createTaxPeriod(tenantId, taxPeriodRequest);
 	}
 
 	/**
@@ -241,7 +243,7 @@ public class TaxCalculatorController {
 	public TaxPeriodResponse updateTaxPeriod(@RequestParam String tenantId,
 			@RequestBody TaxPeriodRequest taxPeriodRequest) throws Exception {
 
-		return calculatorService.updateTaxPeriod(tenantId, taxRatesRequest);
+		return calculatorService.updateTaxPeriod(tenantId, taxPeriodRequest);
 	}
 
 	/**
@@ -264,6 +266,12 @@ public class TaxCalculatorController {
 		return calculatorService.getTaxPeriod(requestInfo.getRequestInfo(),
 				tenantId, validDate, code);
 
+	}
+	
+	@RequestMapping(path="", method=RequestMethod.POST)
+	public CalculationResponse calculatePropertyTax(@RequestBody CalculationRequest calculationRequest){
+		
+		return calculatorService.calculatePropertyTax(calculationRequest);
 	}
 
 }

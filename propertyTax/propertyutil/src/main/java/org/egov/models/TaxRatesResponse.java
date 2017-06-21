@@ -9,8 +9,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class WoodTypeResponse {
-	private ResponseInfo responseInfo;
+public class TaxRatesResponse {
 
-	private List<WoodType> woodTypes;
+	private List<TaxRates> taxRates;
+
+	private ResponseInfo responseInfo;
 }

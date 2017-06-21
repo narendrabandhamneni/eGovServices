@@ -4,12 +4,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>org.egov</groupId>
-	<artifactId>pt-taxCalculator</artifactId>
+	<artifactId>pt-calculator</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
-
-	<name>pt-taxCalculator</name>
-	<description>Demo project for Spring Boot</description>
+	<name>pt-calculator</name>
+	<description>property tax calculation</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -92,22 +91,15 @@
 			<artifactId>flyway-core</artifactId>
 		</dependency>
 
-		<dependency>
-			<groupId>com.google.code.gson</groupId>
-			<artifactId>gson</artifactId>
-		</dependency>
 		
-		<dependency>
-			<groupId>com.googlecode.json-simple</groupId>
-			<artifactId>json-simple</artifactId>			
-		</dependency>
-
 		<!-- https://mvnrepository.com/artifact/org.modelmapper/modelmapper -->
-		<dependency>
-			<groupId>org.modelmapper</groupId>
-			<artifactId>modelmapper</artifactId>
-			<version>0.7.5</version>
-		</dependency>
+		
+	<dependency>
+    <groupId>org.kie</groupId>
+    <artifactId>kie-api</artifactId>
+    <version>7.0.0.Final</version>
+  </dependency>
+  
 	</dependencies>
 
 
