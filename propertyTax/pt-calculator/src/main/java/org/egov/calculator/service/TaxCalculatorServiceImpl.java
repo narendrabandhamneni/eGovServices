@@ -4,12 +4,14 @@ import java.util.Date;
 import java.util.List;
 
 import org.egov.calculator.exception.InvalidInputException;
+import org.egov.calculator.repository.CalculatorRepostory;
 import org.egov.calculator.repository.TaxCalculatorRepository;
 import org.egov.models.CalculationFactor;
 import org.egov.models.CalculationFactorRequest;
 import org.egov.models.CalculationFactorResponse;
 import org.egov.models.CalculationRequest;
 import org.egov.models.CalculationResponse;
+import org.egov.models.GuidanceValue;
 import org.egov.models.GuidanceValueRequest;
 import org.egov.models.GuidanceValueResponse;
 import org.egov.models.RequestInfo;
@@ -33,179 +35,225 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class TaxCalculatorServiceImpl implements TaxCalculatorService {
 
-	@Autowired
-	TaxCalculatorRepository taxCalculatorRepository;
+    @Autowired
+    TaxCalculatorRepository taxCalculatorRepository;
 
-	@Autowired
-	ResponseInfoFactory responseInfoFactory;
+    @Autowired
+    ResponseInfoFactory responseInfoFactory;
 
-	@Override
-	@Transactional
-	public CalculationFactorResponse createFactor(String tenantId,
-			CalculationFactorRequest calculationFactorRequest) {
+    @Autowired
+    CalculatorRepostory calculatorRepository;
 
-		for (CalculationFactor calculationFactor : calculationFactorRequest
-				.getCalculationFactors()) {
+    @Override
+    @Transactional
+    public CalculationFactorResponse createFactor(String tenantId,
+            CalculationFactorRequest calculationFactorRequest) {
 
-			try {
+        for (CalculationFactor calculationFactor : calculationFactorRequest
+                .getCalculationFactors()) {
 
-				Long id = taxCalculatorRepository.createFactor(tenantId,
-						calculationFactor);
-				calculationFactor.setId(id);
+            try {
 
-			} catch (Exception e) {
+                Long id = taxCalculatorRepository.createFactor(tenantId,
+                        calculationFactor);
+                calculationFactor.setId(id);
 
-				throw new InvalidInputException(
-						calculationFactorRequest.getRequestInfo());
+            } catch (Exception e) {
 
-			}
-		}
+                throw new InvalidInputException(
+                        calculationFactorRequest.getRequestInfo());
 
-		CalculationFactorResponse calculationFactorResponse = new CalculationFactorResponse();
+            }
+        }
 
-		ResponseInfo responseInfo = responseInfoFactory
-				.createResponseInfoFromRequestInfo(
-						calculationFactorRequest.getRequestInfo(), true);
-		calculationFactorResponse.setCalculationFactors(
-				calculationFactorRequest.getCalculationFactors());
-		calculationFactorResponse.setResponseInfo(responseInfo);
+        CalculationFactorResponse calculationFactorResponse = new CalculationFactorResponse();
 
-		return calculationFactorResponse;
-	}
+        ResponseInfo responseInfo = responseInfoFactory
+                .createResponseInfoFromRequestInfo(
+                        calculationFactorRequest.getRequestInfo(), true);
+        calculationFactorResponse.setCalculationFactors(
+                calculationFactorRequest.getCalculationFactors());
+        calculationFactorResponse.setResponseInfo(responseInfo);
 
-	@Override
-	@Transactional
-	public CalculationFactorResponse updateFactor(String tenantId,
-			CalculationFactorRequest calculationFactorRequest) {
+        return calculationFactorResponse;
+    }
 
-		for (CalculationFactor calculationFactor : calculationFactorRequest
-				.getCalculationFactors()) {
+    @Override
+    @Transactional
+    public CalculationFactorResponse updateFactor(String tenantId,
+            CalculationFactorRequest calculationFactorRequest) {
 
-			try {
+        for (CalculationFactor calculationFactor : calculationFactorRequest
+                .getCalculationFactors()) {
 
-				long updatedTime = new Date().getTime();
-				long id = calculationFactor.getId();
-				calculationFactor.getAuditDetails()
-						.setLastModifiedTime(updatedTime);
-				taxCalculatorRepository.updateFactor(tenantId, id,
-						calculationFactor);
+            try {
 
-			} catch (Exception e) {
+                long updatedTime = new Date().getTime();
+                long id = calculationFactor.getId();
+                calculationFactor.getAuditDetails()
+                        .setLastModifiedTime(updatedTime);
+                taxCalculatorRepository.updateFactor(tenantId, id,
+                        calculationFactor);
 
-				throw new InvalidInputException(
-						calculationFactorRequest.getRequestInfo());
+            } catch (Exception e) {
 
-			}
-		}
+                throw new InvalidInputException(
+                        calculationFactorRequest.getRequestInfo());
 
-		CalculationFactorResponse calculationFactorResponse = new CalculationFactorResponse();
+            }
+        }
 
-		ResponseInfo responseInfo = responseInfoFactory
-				.createResponseInfoFromRequestInfo(
-						calculationFactorRequest.getRequestInfo(), true);
-		calculationFactorResponse.setCalculationFactors(
-				calculationFactorRequest.getCalculationFactors());
-		calculationFactorResponse.setResponseInfo(responseInfo);
+        CalculationFactorResponse calculationFactorResponse = new CalculationFactorResponse();
 
-		return calculationFactorResponse;
-	}
+        ResponseInfo responseInfo = responseInfoFactory
+                .createResponseInfoFromRequestInfo(
+                        calculationFactorRequest.getRequestInfo(), true);
+        calculationFactorResponse.setCalculationFactors(
+                calculationFactorRequest.getCalculationFactors());
+        calculationFactorResponse.setResponseInfo(responseInfo);
 
-	@Override
-	public CalculationFactorResponse getFactor(RequestInfo requestInfo,
-			String tenantId, String factorType, String validDate, String code) {
+        return calculationFactorResponse;
+    }
 
-		CalculationFactorResponse calculationFactorResponse = new CalculationFactorResponse();
+    @Override
+    public CalculationFactorResponse getFactor(RequestInfo requestInfo,
+            String tenantId, String factorType, String validDate, String code) {
 
-		try {
+        CalculationFactorResponse calculationFactorResponse = new CalculationFactorResponse();
 
-			List<CalculationFactor> calculationFactors = taxCalculatorRepository
-					.searchFactor(tenantId, factorType, validDate, code);
-			ResponseInfo responseInfo = responseInfoFactory
-					.createResponseInfoFromRequestInfo(requestInfo, true);
+        try {
 
-			calculationFactorResponse.setCalculationFactors(calculationFactors);
-			calculationFactorResponse.setResponseInfo(responseInfo);
-		} catch (Exception e) {
-			throw new InvalidInputException(requestInfo);
-		}
-		return calculationFactorResponse;
-	}
+            List<CalculationFactor> calculationFactors = taxCalculatorRepository
+                    .searchFactor(tenantId, factorType, validDate, code);
+            ResponseInfo responseInfo = responseInfoFactory
+                    .createResponseInfoFromRequestInfo(requestInfo, true);
 
-	@Override
-	public GuidanceValueResponse createGuidanceValue(String tenantId,
-			GuidanceValueRequest guidanceValueRequest) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
+            calculationFactorResponse.setCalculationFactors(calculationFactors);
+            calculationFactorResponse.setResponseInfo(responseInfo);
+        } catch (Exception e) {
+            throw new InvalidInputException(requestInfo);
+        }
+        return calculationFactorResponse;
+    }
 
-	@Override
-	public GuidanceValueResponse updateGuidanceValue(String tenantId,
-			GuidanceValueRequest guidanceValueRequest) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    @Transactional
+    public GuidanceValueResponse createGuidanceValue(String tenantId, GuidanceValueRequest guidanceValueRequest)
+            throws Exception {
+        // TODO Auto-generated method stub
 
-	@Override
-	public GuidanceValueResponse getGuidanceValue(RequestInfo requestInfo,
-			String tenantId, String boundary, String structure, String usage,
-			String subUsage, String occupancy, String validDate, String code)
-			throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
+        for (GuidanceValue guidanceValue : guidanceValueRequest.getGuidanceValues()) {
 
-	@Override
-	public TaxRatesResponse createTaxRate(String tenantId,
-			TaxRatesRequest taxRatesRequest) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	};
+            Long createdTime = new Date().getTime();
+            Long id = calculatorRepository.saveGuidanceValue(tenantId, guidanceValue);
 
-	@Override
-	public TaxRatesResponse updateTaxRate(String tenantId,
-			TaxRatesRequest taxRatesRequest) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	};
+            guidanceValue.setId(id);
+            guidanceValue.getAuditDetails().setCreatedTime(createdTime);
+            guidanceValue.getAuditDetails().setLastModifiedTime(createdTime);
+        }
 
-	@Override
-	public TaxRatesResponse getTaxRate(RequestInfo requestInfo, String tenantId,
-			String taxHead, String validDate, String parentTaxHead)
-			throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	};
+        ResponseInfo responseInfo = responseInfoFactory.createResponseInfoFromRequestInfo(guidanceValueRequest.getRequestInfo(),
+                true);
+        GuidanceValueResponse guidanceValueResponce = new GuidanceValueResponse();
+        guidanceValueResponce.setGuidanceValues(guidanceValueRequest.getGuidanceValues());
+        guidanceValueResponce.setResponseInfo(responseInfo);
+        return guidanceValueResponce;
+    }
 
-	@Override
-	public TaxPeriodResponse createTaxPeriod(String tenantId,
-			TaxPeriodRequest taxPeriodRequest) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	};
+    @Override
+    @Transactional
+    public GuidanceValueResponse updateGuidanceValue(String tenantId, GuidanceValueRequest guidanceValueRequest)
+            throws Exception {
+        // TODO Auto-generated method stub
+        for (GuidanceValue guidanceValue : guidanceValueRequest.getGuidanceValues()) {
 
-	@Override
-	public TaxPeriodResponse updateTaxPeriod(String tenantId,
-			TaxPeriodRequest taxPeriodRequest) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	};
+            Long modifiedTime = new Date().getTime();
+            calculatorRepository.udpateGuidanceValue(tenantId, guidanceValue);
+            guidanceValue.getAuditDetails().setLastModifiedTime(modifiedTime);
+        }
 
-	@Override
-	public TaxPeriodResponse getTaxPeriod(RequestInfo requestInfo,
-			String tenantId, String validDate, String code) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
+        ResponseInfo requestInfo = responseInfoFactory.createResponseInfoFromRequestInfo(guidanceValueRequest.getRequestInfo(),
+                true);
+        GuidanceValueResponse guidanceValueResponse = new GuidanceValueResponse();
+        guidanceValueResponse.setGuidanceValues(guidanceValueRequest.getGuidanceValues());
+        guidanceValueResponse.setResponseInfo(requestInfo);
+        return guidanceValueResponse;
+    }
 
-	/**
-	 * 
-	 */
+    @Override
+    public GuidanceValueResponse getGuidanceValue(RequestInfo requestInfo,
+            String tenantId, String boundary, String structure, String usage,
+            String subUsage, String occupancy, String validDate, String code)
+            throws Exception {
+        GuidanceValueResponse guidanceValueResponse = new GuidanceValueResponse();
 
-	@Override
-	public CalculationResponse calculatePropertyTax(
-			CalculationRequest calculationRequest) {
-		// TODO Auto-generated method stub
-		return new CalculationResponse();
-	};
+        try {
+
+            List<GuidanceValue> guidanceValues = calculatorRepository
+                    .searchGuidanceValue(tenantId, boundary, structure, usage, subUsage, occupancy, validDate, code);
+            ResponseInfo responseInfo = responseInfoFactory
+                    .createResponseInfoFromRequestInfo(requestInfo, true);
+
+            guidanceValueResponse.setGuidanceValues(guidanceValues);
+            guidanceValueResponse.setResponseInfo(responseInfo);
+        } catch (Exception e) {
+            throw new InvalidInputException(requestInfo);
+        }
+        return guidanceValueResponse;
+    }
+
+    @Override
+    public TaxRatesResponse createTaxRate(String tenantId,
+            TaxRatesRequest taxRatesRequest) throws Exception {
+        // TODO Auto-generated method stub
+        return null;
+    };
+
+    @Override
+    public TaxRatesResponse updateTaxRate(String tenantId,
+            TaxRatesRequest taxRatesRequest) throws Exception {
+        // TODO Auto-generated method stub
+        return null;
+    };
+
+    @Override
+    public TaxRatesResponse getTaxRate(RequestInfo requestInfo, String tenantId,
+            String taxHead, String validDate, String parentTaxHead)
+            throws Exception {
+        // TODO Auto-generated method stub
+        return null;
+    };
+
+    @Override
+    public TaxPeriodResponse createTaxPeriod(String tenantId,
+            TaxPeriodRequest taxPeriodRequest) throws Exception {
+        // TODO Auto-generated method stub
+        return null;
+    };
+
+    @Override
+    public TaxPeriodResponse updateTaxPeriod(String tenantId,
+            TaxPeriodRequest taxPeriodRequest) throws Exception {
+        // TODO Auto-generated method stub
+        return null;
+    };
+
+    @Override
+    public TaxPeriodResponse getTaxPeriod(RequestInfo requestInfo,
+            String tenantId, String validDate, String code) throws Exception {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * 
+     */
+
+    @Override
+    public CalculationResponse calculatePropertyTax(
+            CalculationRequest calculationRequest) {
+        // TODO Auto-generated method stub
+        return new CalculationResponse();
+    };
 
 }

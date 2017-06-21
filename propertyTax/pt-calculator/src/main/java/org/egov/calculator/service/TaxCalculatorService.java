@@ -14,43 +14,69 @@ import org.egov.models.RequestInfo;
 
 public interface TaxCalculatorService {
 
-	// factor
-	public CalculationFactorResponse createFactor(String tenantId, CalculationFactorRequest calculationFactorRequest)
-			throws Exception;
+    // factor
+    public CalculationFactorResponse createFactor(String tenantId, CalculationFactorRequest calculationFactorRequest)
+            throws Exception;
 
-	public CalculationFactorResponse updateFactor(String tenantId, CalculationFactorRequest calculationFactorRequest)
-			throws Exception;
+    public CalculationFactorResponse updateFactor(String tenantId, CalculationFactorRequest calculationFactorRequest)
+            throws Exception;
 
-	public CalculationFactorResponse getFactor(RequestInfo requestInfo, String tenantId, String factorType,
-			String validDate, String code) throws Exception;
+    public CalculationFactorResponse getFactor(RequestInfo requestInfo, String tenantId, String factorType,
+            String validDate, String code) throws Exception;
 
-	// guidancevalue
-	public GuidanceValueResponse createGuidanceValue(String tenantId, GuidanceValueRequest guidanceValueRequest)
-			throws Exception;
+    /**
+     * Description: create guidance
+     * @param tenantId
+     * @param guidanceValueRequest
+     * @return
+     * @throws Exception
+     */
+    public GuidanceValueResponse createGuidanceValue(String tenantId, GuidanceValueRequest guidanceValueRequest)
+            throws Exception;
 
-	public GuidanceValueResponse updateGuidanceValue(String tenantId, GuidanceValueRequest guidanceValueRequest)
-			throws Exception;
+    /**
+     * Description: update guidance
+     * @param tenantId
+     * @param guidanceValueRequest
+     * @return
+     * @throws Exception
+     */
+    public GuidanceValueResponse updateGuidanceValue(String tenantId, GuidanceValueRequest guidanceValueRequest)
+            throws Exception;
 
-	public GuidanceValueResponse getGuidanceValue(RequestInfo requestInfo, String tenantId, String boundary,
-			String structure, String usage, String subUsage, String occupancy, String validDate, String code)
-			throws Exception;
+    /**
+     * Description: search guidance
+     * @param requestInfo
+     * @param tenantId
+     * @param boundary
+     * @param structure
+     * @param usage
+     * @param subUsage
+     * @param occupancy
+     * @param validDate
+     * @param code
+     * @return GuidanceValueResponse
+     */
+    public GuidanceValueResponse getGuidanceValue(RequestInfo requestInfo, String tenantId, String boundary,
+            String structure, String usage, String subUsage, String occupancy, String validDate, String code)
+            throws Exception;
 
-	// taxrates
-	public TaxRatesResponse createTaxRate(String tenantId, TaxRatesRequest taxRatesRequest) throws Exception;
+    // taxrates
+    public TaxRatesResponse createTaxRate(String tenantId, TaxRatesRequest taxRatesRequest) throws Exception;
 
-	public TaxRatesResponse updateTaxRate(String tenantId, TaxRatesRequest taxRatesRequest) throws Exception;
+    public TaxRatesResponse updateTaxRate(String tenantId, TaxRatesRequest taxRatesRequest) throws Exception;
 
-	public TaxRatesResponse getTaxRate(RequestInfo requestInfo, String tenantId, String taxHead, String validDate,
-			String parentTaxHead) throws Exception;
+    public TaxRatesResponse getTaxRate(RequestInfo requestInfo, String tenantId, String taxHead, String validDate,
+            String parentTaxHead) throws Exception;
 
-	// taxperiod
-	public TaxPeriodResponse createTaxPeriod(String tenantId, TaxPeriodRequest taxPeriodRequest) throws Exception;
+    // taxperiod
+    public TaxPeriodResponse createTaxPeriod(String tenantId, TaxPeriodRequest taxPeriodRequest) throws Exception;
 
-	public TaxPeriodResponse updateTaxPeriod(String tenantId, TaxPeriodRequest taxPeriodRequest) throws Exception;
+    public TaxPeriodResponse updateTaxPeriod(String tenantId, TaxPeriodRequest taxPeriodRequest) throws Exception;
 
-	public TaxPeriodResponse getTaxPeriod(RequestInfo requestInfo, String tenantId, String validDate, String code)
-			throws Exception;
-	
-	public CalculationResponse calculatePropertyTax(CalculationRequest calculationRequest);
+    public TaxPeriodResponse getTaxPeriod(RequestInfo requestInfo, String tenantId, String validDate, String code)
+            throws Exception;
+
+    public CalculationResponse calculatePropertyTax(CalculationRequest calculationRequest);
 
 }
