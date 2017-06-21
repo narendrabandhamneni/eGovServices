@@ -7,11 +7,11 @@ import org.egov.models.CalculationRequest;
 import org.egov.models.CalculationResponse;
 import org.egov.models.GuidanceValueRequest;
 import org.egov.models.GuidanceValueResponse;
-import org.egov.models.TaxRatesRequest;
-import org.egov.models.TaxRatesResponse;
+import org.egov.models.RequestInfoWrapper;
 import org.egov.models.TaxPeriodRequest;
 import org.egov.models.TaxPeriodResponse;
-import org.egov.models.RequestInfoWrapper;
+import org.egov.models.TaxRatesRequest;
+import org.egov.models.TaxRatesResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -267,10 +267,11 @@ public class TaxCalculatorController {
 				tenantId, validDate, code);
 
 	}
-	
-	@RequestMapping(path="", method=RequestMethod.POST)
-	public CalculationResponse calculatePropertyTax(@RequestBody CalculationRequest calculationRequest){
-		
+
+	@RequestMapping(path = "", method = RequestMethod.POST)
+	public CalculationResponse calculatePropertyTax(
+			@RequestBody CalculationRequest calculationRequest) {
+
 		return calculatorService.calculatePropertyTax(calculationRequest);
 	}
 

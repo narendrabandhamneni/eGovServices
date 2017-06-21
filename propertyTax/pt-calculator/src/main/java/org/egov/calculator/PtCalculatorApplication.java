@@ -24,4 +24,5 @@ public class PtCalculatorApplication {
 	public ResponseInfoFactory responseInfoFactory() {
 		return new ResponseInfoFactory();
 	}
+
 }
