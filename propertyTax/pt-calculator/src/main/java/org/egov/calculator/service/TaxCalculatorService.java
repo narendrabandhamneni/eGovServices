@@ -12,7 +12,7 @@ import org.egov.models.TaxPeriodRequest;
 import org.egov.models.TaxPeriodResponse;
 import org.egov.models.RequestInfo;
 
-public interface CalculatorService {
+public interface TaxCalculatorService {
 
 	// factor
 	public CalculationFactorResponse createFactor(String tenantId, CalculationFactorRequest calculationFactorRequest)

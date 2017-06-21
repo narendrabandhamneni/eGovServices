@@ -1,4 +1,4 @@
-package org.egov;
+package org.egov.calculator.controller;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

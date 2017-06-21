@@ -1,6 +1,6 @@
 package org.egov.calculator.api;
 
-import org.egov.calculator.service.CalculatorService;
+import org.egov.calculator.service.TaxCalculatorService;
 import org.egov.models.CalculationFactorRequest;
 import org.egov.models.CalculationFactorResponse;
 import org.egov.models.CalculationRequest;
@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class TaxCalculatorController {
 
 	@Autowired
-	CalculatorService calculatorService;
+	TaxCalculatorService calculatorService;
 
 	/**
 	 * Description : This api for creating new factor(s)

@@ -23,7 +23,7 @@ import org.springframework.stereotype.Service;
  */
 
 @Service
-public class CalculatorServiceImpl implements CalculatorService {
+public class TaxCalculatorServiceImpl implements TaxCalculatorService {
 	
 	@Autowired
 	private KieSession kieSession;
