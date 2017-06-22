@@ -11,7 +11,7 @@ public class TimeStampUtil {
 		DateFormat formatter = null;
 		Date dateObj = null;
 		try {
-			
+
 			formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 			dateObj = formatter.parse(date);
 

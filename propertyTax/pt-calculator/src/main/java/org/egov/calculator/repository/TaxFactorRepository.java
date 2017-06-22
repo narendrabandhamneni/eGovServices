@@ -19,17 +19,26 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 /**
- * Description : TaxCalculatorRepository class
+ * Description : TaxFactorRepository class
  * 
  * @author Pavan Kumar Kamma
  *
  */
 @Repository
+@SuppressWarnings({"rawtypes", "unchecked"})
 public class TaxFactorRepository {
 
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 
+	/**
+	 * Description : This method for creating new factor(s)
+	 * 
+	 * @param tenantId
+	 * @param calculationFactorRequest
+	 * @return calculationFactorResponse
+	 * @throws Exception
+	 */
 	public Long saveFactor(String tenantId,
 			CalculationFactor calculationFactor) {
 
@@ -71,6 +80,14 @@ public class TaxFactorRepository {
 
 	}
 
+	/**
+	 * Description : This method to Update any of the factor
+	 * 
+	 * @param tenantId
+	 * @param calculationFactorRequest
+	 * @return calculationFactorResponse
+	 * @throws Exception
+	 */
 	public void updateFactor(String tenantId, Long id,
 			CalculationFactor calculationFactor) {
 
@@ -104,6 +121,18 @@ public class TaxFactorRepository {
 		jdbcTemplate.update(psc, holder);
 	}
 
+	/**
+	 * Description : This method for search factor details
+	 * 
+	 * @param tenantId
+	 * @param factorType
+	 * @param validDate
+	 * @param code
+	 * @param requestInfo
+	 * @return calculationFactorResponse
+	 * @throws Exception
+	 */
+
 	public List<CalculationFactor> searchFactor(String tenantId,
 			String factorType, String validDate, String code) {
 
@@ -112,24 +141,37 @@ public class TaxFactorRepository {
 
 		List<CalculationFactor> calculationFactors = new ArrayList<CalculationFactor>();
 
-		calculationFactors = jdbcTemplate.query(factorSearchSql.toString(), new BeanPropertyRowMapper(CalculationFactor.class));
+		calculationFactors = jdbcTemplate.query(factorSearchSql.toString(),
+				new BeanPropertyRowMapper(CalculationFactor.class));
 
 		return calculationFactors;
 
 	}
-	
-	public List<CalculationFactor> getFactorsByTenantIdAndValidDate(String tenantId,
-			String validDate) {
+
+	/**
+	 * Description : This method for getting factors
+	 * 
+	 * @param tenantId
+	 * @param validDate
+	 * @param requestInfo
+	 * @return calculationFactorResponse
+	 * @throws Exception
+	 */
+
+	public List<CalculationFactor> getFactorsByTenantIdAndValidDate(
+			String tenantId, String validDate) {
 
 		String factorSearchSql = FactorQueryBuilder
-				.getFactorSearchQueryByTenantIdAndValidDate(tenantId, validDate);
+				.getFactorSearchQueryByTenantIdAndValidDate(tenantId,
+						validDate);
 
 		List<CalculationFactor> calculationFactors = new ArrayList<CalculationFactor>();
 
-		calculationFactors = jdbcTemplate.query(factorSearchSql.toString(), new BeanPropertyRowMapper(CalculationFactor.class));
+		calculationFactors = jdbcTemplate.query(factorSearchSql.toString(),
+				new BeanPropertyRowMapper(CalculationFactor.class));
 
 		return calculationFactors;
 
 	}
-	
+
 }

@@ -1,8 +1,9 @@
 package org.egov.calculator.repository.builder;
 /**
  * 
- * @author Pavan Kumar Kamma This Class will have all the queries which are used
- *         in the factor API's
+ * @author Pavan Kumar Kamma 
+ * 
+ * This Class will have all the queries which are used in the factor API's
  *
  */
 public class FactorQueryBuilder {
@@ -26,15 +27,16 @@ public class FactorQueryBuilder {
 
 		return searchSql.toString();
 	}
-	
-	public static String getFactorSearchQueryByTenantIdAndValidDate(String tenantId, String validDate){
 
-			StringBuffer searchSql = new StringBuffer();
-			searchSql.append("SELECT * FROM egpt_mstr_factor WHERE tenantId = '"
-					+ tenantId + "' AND (fromdate < '"
-					+ validDate + "' AND todate > '" + validDate + "')");
+	public static String getFactorSearchQueryByTenantIdAndValidDate(
+			String tenantId, String validDate) {
 
-			return searchSql.toString();
+		StringBuffer searchSql = new StringBuffer();
+		searchSql.append("SELECT * FROM egpt_mstr_factor WHERE tenantId = '"
+				+ tenantId + "' AND (fromdate < '" + validDate
+				+ "' AND todate > '" + validDate + "')");
+
+		return searchSql.toString();
 	}
 
 }

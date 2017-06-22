@@ -34,150 +34,152 @@ import org.springframework.test.web.servlet.MockMvc;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(TaxCalculatorController.class)
-@ContextConfiguration(classes = {
-    PtCalculatorApplication.class
-})
+@ContextConfiguration(classes = {PtCalculatorApplication.class})
 public class TaxCalculatorControllerTest {
 
-    @MockBean
-    private TaxCalculatorService taxCalculatorService;
+	@MockBean
+	private TaxCalculatorService taxCalculatorService;
 
-    @Autowired
-    private MockMvc mockMvc;
+	@Autowired
+	private MockMvc mockMvc;
 
-    @Test
-    public void testShouldCreateFactor() {
+	@Test
+	public void testShouldCreateFactor() {
 
-        List < CalculationFactor > calculationFactors = new ArrayList < > ();
-        CalculationFactor calculationFactor = new CalculationFactor();
-        calculationFactor.setTenantId("default");
+		List<CalculationFactor> calculationFactors = new ArrayList<>();
+		CalculationFactor calculationFactor = new CalculationFactor();
+		calculationFactor.setTenantId("default");
 
-        AuditDetails auditDetails = new AuditDetails();
-        calculationFactor.setAuditDetails(auditDetails);
+		AuditDetails auditDetails = new AuditDetails();
+		calculationFactor.setAuditDetails(auditDetails);
 
-        CalculationFactorResponse calculationFactorResponse = new CalculationFactorResponse();
-        calculationFactors.add(calculationFactor);
+		CalculationFactorResponse calculationFactorResponse = new CalculationFactorResponse();
+		calculationFactors.add(calculationFactor);
 
-        calculationFactorResponse.setResponseInfo(new ResponseInfo());
-        calculationFactorResponse.setCalculationFactors(calculationFactors);
+		calculationFactorResponse.setResponseInfo(new ResponseInfo());
+		calculationFactorResponse.setCalculationFactors(calculationFactors);
 
-        try {
-            when(taxCalculatorService.createFactor(any(String.class),
-                    any(CalculationFactorRequest.class)))
-                .thenReturn(calculationFactorResponse);
+		try {
+			when(taxCalculatorService.createFactor(any(String.class),
+					any(CalculationFactorRequest.class)))
+							.thenReturn(calculationFactorResponse);
 
-            mockMvc.perform(post("/factor/_create").param("tenantId", "default")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(getFileContents("createFactorRequest.json")))
-                .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(
-                    MediaType.APPLICATION_JSON))
-                .andExpect(content().json(
-                    getFileContents("createFactorResponse.json")));
+			mockMvc.perform(post("/factor/_create").param("tenantId", "default")
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(getFileContents("createFactorRequest.json")))
+					.andExpect(status().isOk())
+					.andExpect(content().contentTypeCompatibleWith(
+							MediaType.APPLICATION_JSON))
+					.andExpect(content().json(
+							getFileContents("createFactorResponse.json")));
 
-        } catch (Exception e) {
+		} catch (Exception e) {
 
-            assertTrue(Boolean.FALSE);
-        }
+			assertTrue(Boolean.FALSE);
+		}
 
-        assertTrue(Boolean.TRUE);
-    }
+		assertTrue(Boolean.TRUE);
+	}
 
-    @Test
-    public void testShouldUpdateFactor() {
+	@Test
+	public void testShouldUpdateFactor() {
 
-        List < CalculationFactor > calculationFactors = new ArrayList < > ();
-        CalculationFactor calculationFactor = new CalculationFactor();
-        calculationFactor.setId(1l);
-        calculationFactor.setTenantId("default");
-        calculationFactor.setFactorCode("propertytax");
-        calculationFactor.setFactorType("occupancy");
-        calculationFactor.setFactorValue(1234.12);
-        calculationFactor.setFromDate("10/06/2007  00:00:00");
-        calculationFactor.setToDate("25/06/2017  00:00:00");
+		List<CalculationFactor> calculationFactors = new ArrayList<>();
+		CalculationFactor calculationFactor = new CalculationFactor();
+		calculationFactor.setId(1l);
+		calculationFactor.setTenantId("default");
+		calculationFactor.setFactorCode("propertytax");
+		calculationFactor.setFactorType("occupancy");
+		calculationFactor.setFactorValue(1234.12);
+		calculationFactor.setFromDate("10/06/2007  00:00:00");
+		calculationFactor.setToDate("25/06/2017  00:00:00");
 
-        AuditDetails auditDetails = new AuditDetails();
-        calculationFactor.setAuditDetails(auditDetails);
+		AuditDetails auditDetails = new AuditDetails();
+		calculationFactor.setAuditDetails(auditDetails);
 
-        CalculationFactorResponse calculationFactorResponse = new CalculationFactorResponse();
-        calculationFactors.add(calculationFactor);
+		CalculationFactorResponse calculationFactorResponse = new CalculationFactorResponse();
+		calculationFactors.add(calculationFactor);
 
-        calculationFactorResponse.setResponseInfo(new ResponseInfo());
-        calculationFactorResponse.setCalculationFactors(calculationFactors);
+		calculationFactorResponse.setResponseInfo(new ResponseInfo());
+		calculationFactorResponse.setCalculationFactors(calculationFactors);
 
-        try {
+		try {
 
-            when(taxCalculatorService.updateFactor(any(String.class),
-                    any(CalculationFactorRequest.class)))
-                .thenReturn(calculationFactorResponse);
+			when(taxCalculatorService.updateFactor(any(String.class),
+					any(CalculationFactorRequest.class)))
+							.thenReturn(calculationFactorResponse);
 
-            mockMvc.perform(post("/factor/_update").param("tenantId", "default")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(getFileContents("updateFactorRequest.json")))
-                .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(
-                    MediaType.APPLICATION_JSON))
-                .andExpect(content().json(
-                    getFileContents("updateFactorResponse.json")));
+			mockMvc.perform(post("/factor/_update").param("tenantId", "default")
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(getFileContents("updateFactorRequest.json")))
+					.andExpect(status().isOk())
+					.andExpect(content().contentTypeCompatibleWith(
+							MediaType.APPLICATION_JSON))
+					.andExpect(content().json(
+							getFileContents("updateFactorResponse.json")));
 
-        } catch (Exception e) {
+		} catch (Exception e) {
 
-            assertTrue(Boolean.FALSE);
+			assertTrue(Boolean.FALSE);
 
-        }
+		}
 
-        assertTrue(Boolean.TRUE);
-    }
+		assertTrue(Boolean.TRUE);
+	}
 
-    @Test
-    public void testShouldSearchFactor() {
+	@Test
+	public void testShouldSearchFactor() {
 
-        List < CalculationFactor > calculationFactors = new ArrayList < > ();
-        CalculationFactor calculationFactor = new CalculationFactor();
-        calculationFactor.setTenantId("default");
-        calculationFactor.setFactorCode("propertytax");
-        calculationFactor.setFactorType("occupancy");
-        calculationFactor.setFactorValue(1234.12);
-        calculationFactor.setFromDate("10/06/2007  00:00:00");
-        calculationFactor.setToDate("25/06/2017  00:00:00");
+		List<CalculationFactor> calculationFactors = new ArrayList<>();
+		CalculationFactor calculationFactor = new CalculationFactor();
+		calculationFactor.setTenantId("default");
+		calculationFactor.setFactorCode("propertytax");
+		calculationFactor.setFactorType("occupancy");
+		calculationFactor.setFactorValue(1234.12);
+		calculationFactor.setFromDate("10/06/2007  00:00:00");
+		calculationFactor.setToDate("25/06/2017  00:00:00");
 
-        AuditDetails auditDetails = new AuditDetails();
-        calculationFactor.setAuditDetails(auditDetails);
+		AuditDetails auditDetails = new AuditDetails();
+		calculationFactor.setAuditDetails(auditDetails);
 
-        CalculationFactorResponse calculationFactorResponse = new CalculationFactorResponse();
-        calculationFactors.add(calculationFactor);
+		CalculationFactorResponse calculationFactorResponse = new CalculationFactorResponse();
+		calculationFactors.add(calculationFactor);
 
-        calculationFactorResponse.setResponseInfo(new ResponseInfo());
-        calculationFactorResponse.setCalculationFactors(calculationFactors);
+		calculationFactorResponse.setResponseInfo(new ResponseInfo());
+		calculationFactorResponse.setCalculationFactors(calculationFactors);
 
-        try {
+		try {
 
-            when(taxCalculatorService.getFactor(any(RequestInfo.class),  any(String.class), any(String.class),
-                    any(String.class), any(String.class)))
-                .thenReturn(calculationFactorResponse);
+			when(taxCalculatorService.getFactor(any(RequestInfo.class),
+					any(String.class), any(String.class), any(String.class),
+					any(String.class))).thenReturn(calculationFactorResponse);
 
-            mockMvc.perform(post("/factor/_search").param("tenantId", "default")
-            		.param("factorType", "building").param("validDate", "10/06/2007")
-            		.param("code", "propertytax")
-                    .contentType(MediaType.APPLICATION_JSON).content(getFileContents("searchFactorRequest.json")))
-                .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(content().json(getFileContents("searchFactorResponse.json")));
+			mockMvc.perform(post("/factor/_search").param("tenantId", "default")
+					.param("factorType", "building")
+					.param("validDate", "10/06/2007")
+					.param("code", "propertytax")
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(getFileContents("searchFactorRequest.json")))
+					.andExpect(status().isOk())
+					.andExpect(content().contentTypeCompatibleWith(
+							MediaType.APPLICATION_JSON))
+					.andExpect(content().json(
+							getFileContents("searchFactorResponse.json")));
 
-        } catch (Exception e) {
+		} catch (Exception e) {
 
-            assertTrue(Boolean.FALSE);
+			assertTrue(Boolean.FALSE);
 
-        }
-        assertTrue(Boolean.TRUE);
+		}
+		assertTrue(Boolean.TRUE);
 
-    }
+	}
 
-    private String getFileContents(String fileName) throws IOException {
-        ClassLoader classLoader = getClass().getClassLoader();
-        return new String(Files.readAllBytes(
-            new File(classLoader.getResource(fileName).getFile())
-            .toPath()));
-    }
+	private String getFileContents(String fileName) throws IOException {
+		ClassLoader classLoader = getClass().getClassLoader();
+		return new String(Files.readAllBytes(
+				new File(classLoader.getResource(fileName).getFile())
+						.toPath()));
+	}
 
 }
