@@ -30,7 +30,7 @@ public class TaxCalculatorRepository {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 
-	public Long createFactor(String tenantId,
+	public Long saveFactor(String tenantId,
 			CalculationFactor calculationFactor) {
 
 		Long createdTime = new Date().getTime();
@@ -65,7 +65,8 @@ public class TaxCalculatorRepository {
 		// The newly generated key will be saved in this object
 		final KeyHolder holder = new GeneratedKeyHolder();
 		jdbcTemplate.update(psc, holder);
-
+		calculationFactor.getAuditDetails().setCreatedTime(createdTime);
+		calculationFactor.getAuditDetails().setLastModifiedTime(createdTime);
 		return Long.valueOf(holder.getKey().intValue());
 
 	}
@@ -111,8 +112,7 @@ public class TaxCalculatorRepository {
 
 		List<CalculationFactor> calculationFactors = new ArrayList<CalculationFactor>();
 
-		calculationFactors = jdbcTemplate.query(factorSearchSql.toString(),
-				new BeanPropertyRowMapper(CalculationFactor.class));
+		calculationFactors = jdbcTemplate.query(factorSearchSql.toString(), new BeanPropertyRowMapper(CalculationFactor.class));
 
 		return calculationFactors;
 

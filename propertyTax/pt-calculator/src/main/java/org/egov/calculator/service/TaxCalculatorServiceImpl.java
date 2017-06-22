@@ -54,7 +54,7 @@ public class TaxCalculatorServiceImpl implements TaxCalculatorService {
 
             try {
 
-                Long id = taxCalculatorRepository.createFactor(tenantId,
+                Long id = taxCalculatorRepository.saveFactor(tenantId,
                         calculationFactor);
                 calculationFactor.setId(id);
 
