@@ -26,5 +26,15 @@ public class FactorQueryBuilder {
 
 		return searchSql.toString();
 	}
+	
+	public static String getFactorSearchQueryByTenantIdAndValidDate(String tenantId, String validDate){
+
+			StringBuffer searchSql = new StringBuffer();
+			searchSql.append("SELECT * FROM egpt_mstr_factor WHERE tenantId = '"
+					+ tenantId + "' AND (fromdate < '"
+					+ validDate + "' AND todate > '" + validDate + "')");
+
+			return searchSql.toString();
+	}
 
 }

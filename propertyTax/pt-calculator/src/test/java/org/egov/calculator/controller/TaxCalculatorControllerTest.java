@@ -91,10 +91,10 @@ public class TaxCalculatorControllerTest {
         calculationFactor.setId(1l);
         calculationFactor.setTenantId("default");
         calculationFactor.setFactorCode("propertytax");
-        calculationFactor.setFactorType("building");
+        calculationFactor.setFactorType("occupancy");
         calculationFactor.setFactorValue(1234.12);
-        calculationFactor.setFromDate("10/06/2007");
-        calculationFactor.setToDate("25/06/2017");
+        calculationFactor.setFromDate("10/06/2007  00:00:00");
+        calculationFactor.setToDate("25/06/2017  00:00:00");
 
         AuditDetails auditDetails = new AuditDetails();
         calculationFactor.setAuditDetails(auditDetails);
@@ -136,10 +136,10 @@ public class TaxCalculatorControllerTest {
         CalculationFactor calculationFactor = new CalculationFactor();
         calculationFactor.setTenantId("default");
         calculationFactor.setFactorCode("propertytax");
-        calculationFactor.setFactorType("building");
+        calculationFactor.setFactorType("occupancy");
         calculationFactor.setFactorValue(1234.12);
-        calculationFactor.setFromDate("10/06/2007");
-        calculationFactor.setToDate("25/06/2017");
+        calculationFactor.setFromDate("10/06/2007  00:00:00");
+        calculationFactor.setToDate("25/06/2017  00:00:00");
 
         AuditDetails auditDetails = new AuditDetails();
         calculationFactor.setAuditDetails(auditDetails);

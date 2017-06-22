@@ -5,7 +5,8 @@ import java.util.List;
 
 import org.egov.calculator.exception.InvalidInputException;
 import org.egov.calculator.repository.CalculatorRepostory;
-import org.egov.calculator.repository.TaxCalculatorRepository;
+import org.egov.calculator.repository.TaxFactorRepository;
+import org.egov.calculator.repository.TaxRatesRepository;
 import org.egov.models.CalculationFactor;
 import org.egov.models.CalculationFactorRequest;
 import org.egov.models.CalculationFactorResponse;
@@ -19,6 +20,7 @@ import org.egov.models.ResponseInfo;
 import org.egov.models.ResponseInfoFactory;
 import org.egov.models.TaxPeriodRequest;
 import org.egov.models.TaxPeriodResponse;
+import org.egov.models.TaxRates;
 import org.egov.models.TaxRatesRequest;
 import org.egov.models.TaxRatesResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,13 +38,16 @@ import org.springframework.transaction.annotation.Transactional;
 public class TaxCalculatorServiceImpl implements TaxCalculatorService {
 
     @Autowired
-    TaxCalculatorRepository taxCalculatorRepository;
+    TaxFactorRepository taxFactorRepository;
 
     @Autowired
     ResponseInfoFactory responseInfoFactory;
 
     @Autowired
     CalculatorRepostory calculatorRepository;
+    
+    @Autowired
+    TaxRatesRepository taxRatesRepository;
 
     @Override
     @Transactional
@@ -54,7 +59,7 @@ public class TaxCalculatorServiceImpl implements TaxCalculatorService {
 
             try {
 
-                Long id = taxCalculatorRepository.saveFactor(tenantId,
+                Long id = taxFactorRepository.saveFactor(tenantId,
                         calculationFactor);
                 calculationFactor.setId(id);
 
@@ -92,7 +97,7 @@ public class TaxCalculatorServiceImpl implements TaxCalculatorService {
                 long id = calculationFactor.getId();
                 calculationFactor.getAuditDetails()
                         .setLastModifiedTime(updatedTime);
-                taxCalculatorRepository.updateFactor(tenantId, id,
+                taxFactorRepository.updateFactor(tenantId, id,
                         calculationFactor);
 
             } catch (Exception e) {
@@ -123,7 +128,7 @@ public class TaxCalculatorServiceImpl implements TaxCalculatorService {
 
         try {
 
-            List<CalculationFactor> calculationFactors = taxCalculatorRepository
+            List<CalculationFactor> calculationFactors = taxFactorRepository
                     .searchFactor(tenantId, factorType, validDate, code);
             ResponseInfo responseInfo = responseInfoFactory
                     .createResponseInfoFromRequestInfo(requestInfo, true);
@@ -202,26 +207,109 @@ public class TaxCalculatorServiceImpl implements TaxCalculatorService {
         return guidanceValueResponse;
     }
 
-    @Override
+    /**
+	 * Description: This method creates Taxrates
+	 * 
+	 * @param tenantId
+	 * @param taxRatesRequest
+	 * @return taxRatesResponse
+	 * @throws Exception
+	 */
+	@Override
+	@Transactional
     public TaxRatesResponse createTaxRate(String tenantId,
             TaxRatesRequest taxRatesRequest) throws Exception {
-        // TODO Auto-generated method stub
-        return null;
+        
+		for (TaxRates taxRates : taxRatesRequest.getTaxRates()) {
+
+			try {
+
+				Long id = taxRatesRepository.createTaxRates(tenantId, taxRates);
+				taxRates.setId(id);
+				
+			} catch (Exception e) {
+
+				throw new InvalidInputException(taxRatesRequest.getRequestInfo());
+			}
+		}
+
+		TaxRatesResponse taxRatesResponse = new TaxRatesResponse();
+		ResponseInfo responseInfo = responseInfoFactory
+				.createResponseInfoFromRequestInfo(taxRatesRequest.getRequestInfo(), true);
+		taxRatesResponse.setTaxRates(taxRatesRequest.getTaxRates());
+		taxRatesResponse.setResponseInfo(responseInfo);
+		return taxRatesResponse;
     };
 
+    /**
+	 * Description: This method updates Taxrates
+	 * 
+	 * @param tenantId
+	 * @param taxRatesRequest
+	 * @return taxRatesResponse
+	 * @throws Exception
+	 */
     @Override
+    @Transactional
     public TaxRatesResponse updateTaxRate(String tenantId,
             TaxRatesRequest taxRatesRequest) throws Exception {
-        // TODO Auto-generated method stub
-        return null;
+    	
+    	for (TaxRates taxRates : taxRatesRequest.getTaxRates()) {
+
+			try {
+				long updatedTime = new Date().getTime();
+				taxRates.getAuditDetails().setLastModifiedTime(updatedTime);
+				taxRatesRepository.updateTaxRates(tenantId, taxRates);
+
+			} catch (Exception e) {
+
+				throw new InvalidInputException(taxRatesRequest.getRequestInfo());
+			}
+		}
+		TaxRatesResponse taxRatesResponse = new TaxRatesResponse();
+		
+		ResponseInfo responseInfo = responseInfoFactory
+				.createResponseInfoFromRequestInfo(taxRatesRequest.getRequestInfo(), true);
+		taxRatesResponse.setTaxRates(taxRatesRequest.getTaxRates());
+		taxRatesResponse.setResponseInfo(responseInfo);
+		
+		return taxRatesResponse;
     };
 
+    /**
+	 * Description : This api for getting taxRate details
+	 * 
+	 * @param tenantId
+	 * @param taxHead
+	 * @param validDate
+	 * @param validARVAmount
+	 * @param parentTaxHead
+	 * @param requestInfo
+	 * @return TaxRatesResponse
+	 * @throws Exception
+	 */
     @Override
     public TaxRatesResponse getTaxRate(RequestInfo requestInfo, String tenantId,
-            String taxHead, String validDate, String parentTaxHead)
+            String taxHead, String validDate, Double validARVAmount, String parentTaxHead)
             throws Exception {
-        // TODO Auto-generated method stub
-        return null;
+        
+    	TaxRatesResponse taxRatesResponse = new TaxRatesResponse();
+
+		try {
+
+			List<TaxRates> listOfTaxRates = taxRatesRepository.searchTaxRates(tenantId, taxHead, validDate,
+					validARVAmount, parentTaxHead);
+			ResponseInfo responseInfo = responseInfoFactory.createResponseInfoFromRequestInfo(requestInfo, true);
+			taxRatesResponse.setTaxRates(listOfTaxRates);
+			taxRatesResponse.setResponseInfo(responseInfo);
+			
+		} catch (Exception e) {
+			
+			throw new InvalidInputException(requestInfo);
+			
+		}
+		
+		return taxRatesResponse;
     };
 
     @Override

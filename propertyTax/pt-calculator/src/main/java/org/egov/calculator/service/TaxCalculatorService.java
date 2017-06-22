@@ -67,7 +67,7 @@ public interface TaxCalculatorService {
     public TaxRatesResponse updateTaxRate(String tenantId, TaxRatesRequest taxRatesRequest) throws Exception;
 
     public TaxRatesResponse getTaxRate(RequestInfo requestInfo, String tenantId, String taxHead, String validDate,
-            String parentTaxHead) throws Exception;
+            Double validARVAmount, String parentTaxHead) throws Exception;
 
     // taxperiod
     public TaxPeriodResponse createTaxPeriod(String tenantId, TaxPeriodRequest taxPeriodRequest) throws Exception;

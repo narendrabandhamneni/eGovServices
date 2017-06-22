@@ -8,10 +8,11 @@ import java.util.Date;
 public class TimeStampUtil {
 	public static Timestamp getTimeStamp(String date) {
 
-		DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+		DateFormat formatter = null;
 		Date dateObj = null;
 		try {
-
+			
+			formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 			dateObj = formatter.parse(date);
 
 		} catch (Exception e) {

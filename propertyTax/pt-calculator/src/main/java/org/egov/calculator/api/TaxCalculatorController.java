@@ -196,6 +196,7 @@ public class TaxCalculatorController {
 	 * @param tenantId
 	 * @param taxHead
 	 * @param validDate
+	 * @param validARVAmount
 	 * @param parentTaxHead
 	 * @param requestInfo
 	 * @return TaxRatesResponse
@@ -208,11 +209,12 @@ public class TaxCalculatorController {
 			@RequestParam(required = true) String tenantId,
 			@RequestParam(required = true) String taxHead,
 			@RequestParam(required = true) String validDate,
+			@RequestParam(required = true) Double validARVAmount,
 			@RequestParam(required = false) String parentTaxHead)
 			throws Exception {
 
 		return calculatorService.getTaxRate(requestInfo.getRequestInfo(),
-				tenantId, taxHead, validDate, parentTaxHead);
+				tenantId, taxHead, validDate, validARVAmount, parentTaxHead);
 
 	}
 

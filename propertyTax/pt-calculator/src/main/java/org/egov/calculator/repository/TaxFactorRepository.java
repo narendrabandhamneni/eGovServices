@@ -25,7 +25,7 @@ import org.springframework.stereotype.Repository;
  *
  */
 @Repository
-public class TaxCalculatorRepository {
+public class TaxFactorRepository {
 
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
@@ -117,4 +117,19 @@ public class TaxCalculatorRepository {
 		return calculationFactors;
 
 	}
+	
+	public List<CalculationFactor> getFactorsByTenantIdAndValidDate(String tenantId,
+			String validDate) {
+
+		String factorSearchSql = FactorQueryBuilder
+				.getFactorSearchQueryByTenantIdAndValidDate(tenantId, validDate);
+
+		List<CalculationFactor> calculationFactors = new ArrayList<CalculationFactor>();
+
+		calculationFactors = jdbcTemplate.query(factorSearchSql.toString(), new BeanPropertyRowMapper(CalculationFactor.class));
+
+		return calculationFactors;
+
+	}
+	
 }
